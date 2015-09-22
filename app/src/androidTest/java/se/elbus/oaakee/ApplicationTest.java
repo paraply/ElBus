@@ -1,4 +1,4 @@
-package se.oaakee.oaakee;
+package se.elbus.oaakee;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

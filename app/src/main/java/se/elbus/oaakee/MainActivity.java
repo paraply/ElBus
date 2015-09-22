@@ -1,4 +1,4 @@
-package se.oaakee.oaakee;
+package se.elbus.oaakee;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
