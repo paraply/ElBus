@@ -1,4 +1,4 @@
-package se.goteborgelectricity.elbus;
+package com.elbus.ake;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

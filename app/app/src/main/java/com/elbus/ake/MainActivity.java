@@ -1,4 +1,4 @@
-package se.goteborgelectricity.elbus;
+package com.elbus.ake;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
