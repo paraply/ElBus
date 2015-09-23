@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
         <!-- ActionBar styles -->
         <item name="android:actionBarStyle">@style/CustomActionBarStyle</item>
@@ -11,10 +11,10 @@
     </style>
 
     <style name="CustomActionBarStyle" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/primary-color</item>
+        <item name="android:background">@color/primaryColor</item>
 
         <!-- Support library compatibility -->
-        <item name="background">@color/primary-color</item>
+        <item name="background">@color/primaryColor</item>
     </style>
 
 </resources>
