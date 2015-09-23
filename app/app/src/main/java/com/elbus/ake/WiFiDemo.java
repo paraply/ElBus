@@ -44,13 +44,15 @@ public class WiFiDemo extends Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        textStatus = (TextView) findViewById(R.id.textStatus);
         buttonScan = (Button) findViewById(R.id.buttonScan);
         buttonScan.setOnClickListener(this);
+
         lv = (ListView)findViewById(R.id.list);
 
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        Control.Wifi(true, this); // Starting wifi if it's off.
+
+        wifi.setWifiEnabled(true);
+
         this.adapter = new SimpleAdapter(WiFiDemo.this, arraylist, R.layout.row, new String[] { ITEM_KEY }, new int[] { R.id.list_value });
 
         lv.setAdapter(this.adapter);
@@ -75,16 +77,20 @@ public class WiFiDemo extends Activity implements View.OnClickListener
             size = size - 1;
             while (size >= 0)
             {
+                ScanResult result = results.get(size);
+
                 HashMap<String, String> item = new HashMap<>();
-                item.put(ITEM_KEY, results.get(size).SSID + " MAC: " + results.get(size).BSSID);
+
+                item.put(ITEM_KEY, result.SSID + " MAC: " + result.BSSID);
                 arraylist.add(item);
                 size--;
-                adapter.notifyDataSetChanged();
             }
+            adapter.notifyDataSetChanged();
+
         }
         catch (Exception exception)
         {
-            Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
 
         }
     }
