@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="template">
+        <item>dgw</item>
+        <item>vin</item>
+        <item>reg</item>
+        <item>mac</item>
+        <item>type</item>
+    </string-array>
+
+    <string-array name="100020" >
+        <item>Ericsson$100020</item>
+        <item>YV3U0V222FA100020</item>
+        <item>EPO 131</item>
+        <item>0013951349f5</item>
+        <item>el</item>
+    </string-array>
+
+    <string-array name="100021" >
+        <item>Ericsson$100021</item>
+        <item>YV3U0V222FA100021</item>
+        <item>EPO 136</item>
+        <item>001395134bbe</item>
+        <item>el</item>
+    </string-array>
+
+    <string-array name="100022" >
+        <item>Ericsson$100022</item>
+        <item> YV3U0V222FA100022</item>
+        <item>EPO 143</item>
+        <item>001395143bf0</item>
+        <item>el</item>
+    </string-array>
+
+    <string-array name="171164" >
+        <item>Ericsson$171164</item>
+        <item>YV3T1U22XF1171164</item>
+        <item>EOG 604</item>
+        <item>00139514698a</item>
+        <item>hybrid</item>
+    </string-array>
+
+    <string-array name="171234" >
+        <item>Ericsson$171234</item>
+        <item> YV3T1U225F1171234</item>
+        <item>EOG 606</item>
+        <item>0013951349f7</item>
+        <item>hybrid</item>
+    </string-array>
+
+    <string-array name="171235" >
+        <item>Ericsson$171235</item>
+        <item>YV3T1U227F1171235</item>
+        <item>EOG 616</item>
+        <item>0013950f92a4</item>
+        <item>hybrid</item>
+    </string-array>
+
+    <string-array name="171327" >
+        <item>Ericsson$171327</item>
+        <item>YV3T1U221F1171327</item>
+        <item>EOG 622</item>
+        <item>001395136296</item>
+        <item>hybrid</item>
+    </string-array>
+
+    <string-array name="171328" >
+        <item>Ericsson$171328</item>
+        <item>YV3T1U223F1171328</item>
+        <item>EOG 627</item>
+        <item>001395134bbc</item>
+        <item>hybrid</item>
+    </string-array>
+
+    <string-array name="171329" >
+        <item>Ericsson$171329</item>
+        <item>YV3T1U225F1171329</item>
+        <item>EOG 631</item>
+        <item>001395143bf2</item>
+        <item>hybrid</item>
+    </string-array>
+    
+    <string-array name="171330" >
+        <item>Ericsson$171330</item>
+        <item>YV3T1U223F1171330</item>
+        <item>EOG 634</item>
+        <item> 001395135f20</item>
+        <item>hybrid</item>
+    </string-array>
+
+</resources>
