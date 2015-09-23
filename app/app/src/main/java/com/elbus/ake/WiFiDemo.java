@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class WiFiDemo extends Activity implements View.OnClickListener
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
@@ -45,11 +47,7 @@ public class WiFiDemo extends Activity implements View.OnClickListener
         lv = (ListView)findViewById(R.id.list);
 
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        if (!wifi.isWifiEnabled())
-        {
-            Toast.makeText(getApplicationContext(), "wifi is disabled..making it enabled", Toast.LENGTH_LONG).show();
-            wifi.setWifiEnabled(true);
-        }
+        Control.Wifi(true, this);
         this.adapter = new SimpleAdapter(WiFiDemo.this, arraylist, R.layout.row, new String[] { ITEM_KEY }, new int[] { R.id.list_value });
         lv.setAdapter(this.adapter);
 
@@ -81,7 +79,10 @@ public class WiFiDemo extends Activity implements View.OnClickListener
                 adapter.notifyDataSetChanged();
             }
         }
-        catch (Exception ignored)
-        { }
+        catch (Exception exception)
+        {
+            Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
     }
 }
