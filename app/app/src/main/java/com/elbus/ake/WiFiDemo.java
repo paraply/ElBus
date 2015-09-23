@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -16,6 +17,9 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.elbus.ake.Buses.BusFinder;
+
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +41,6 @@ public class WiFiDemo extends Activity implements View.OnClickListener
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
@@ -47,8 +50,9 @@ public class WiFiDemo extends Activity implements View.OnClickListener
         lv = (ListView)findViewById(R.id.list);
 
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        Control.Wifi(true, this);
+        Control.Wifi(true, this); // Starting wifi if it's off.
         this.adapter = new SimpleAdapter(WiFiDemo.this, arraylist, R.layout.row, new String[] { ITEM_KEY }, new int[] { R.id.list_value });
+
         lv.setAdapter(this.adapter);
 
         registerReceiver(new BroadcastReceiver() {
@@ -65,15 +69,14 @@ public class WiFiDemo extends Activity implements View.OnClickListener
         arraylist.clear();
         wifi.startScan();
 
-        Toast.makeText(this, "Scanning...." + size, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Scanning..." + size, Toast.LENGTH_SHORT).show();
         try
         {
             size = size - 1;
             while (size >= 0)
             {
                 HashMap<String, String> item = new HashMap<>();
-                item.put(ITEM_KEY, results.get(size).SSID + "  " + results.get(size).capabilities);
-
+                item.put(ITEM_KEY, results.get(size).SSID + " MAC: " + results.get(size).BSSID);
                 arraylist.add(item);
                 size--;
                 adapter.notifyDataSetChanged();
