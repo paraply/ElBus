@@ -2,11 +2,6 @@ package se.elbus.oaakee;
 
 import android.util.Base64;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Response;
-
-import java.io.IOException;
 import java.util.List;
 
 import retrofit.Call;
@@ -27,18 +22,9 @@ public class ECity_Client {
 
     public ECity_Client(){
         if (ecity_api == null){
-            OkHttpClient okClient = new OkHttpClient();
-            okClient.interceptors().add(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Response response = chain.proceed(chain.request());
-                    return response;
-                }
-            });
 
             Retrofit client = new Retrofit.Builder()
                     .baseUrl(ECAPI_URL)
-                    .client(okClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             ecity_api = client.create(ECity_API.class);
