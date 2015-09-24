@@ -1,5 +1,7 @@
 package se.elbus.oaakee;
 
+import android.util.Base64;
+
 import java.util.List;
 
 import retrofit.Call;
@@ -11,6 +13,12 @@ import retrofit.http.Query;
  * Created by mike on 2015-09-23.
  */
 public class ECity_Client {
+    private static final String ECAPI_URL = "https://ece01.ericsson.net:4443/";
+    final String CREDENTIALS = "grp31:C7CVFDHO48";
+    final String CREDENTIALS_BASE64 = "Basic " + Base64.encodeToString(CREDENTIALS.getBytes(), Base64.NO_WRAP);
+    private static ECity_API ecity_api;
+
+
 
 
     private interface ECity_API{
