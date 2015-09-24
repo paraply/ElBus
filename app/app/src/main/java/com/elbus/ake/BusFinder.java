@@ -1,0 +1,132 @@
+package com.elbus.ake;
+
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class BusFinder extends Activity implements View.OnClickListener
+{
+
+    /**
+     * Data Variables
+     */
+    String busMac = "";
+    String busId = "";
+    int size = 0;
+    WifiManager wifi;
+    List<ScanResult> results;
+
+    /**
+     * UI Variables
+     */
+    ListView lv;
+    Button buttonScan;
+    SimpleAdapter adapter;
+    String ITEM_KEY = "key";
+    ArrayList<HashMap<String, String>> arraylist = new ArrayList<>();
+    private WifiReceiver receiver;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+
+        /**
+         * TODO: Come up with a better way to import the buses into the application.
+         */
+        ArrayList<String[]> buses = new ArrayList<>();
+        buses.add(getResources().getStringArray(R.array.b1));
+        buses.add(getResources().getStringArray(R.array.b2));
+        buses.add(getResources().getStringArray(R.array.b3));
+        buses.add(getResources().getStringArray(R.array.b4));
+        buses.add(getResources().getStringArray(R.array.b5));
+        buses.add(getResources().getStringArray(R.array.b6));
+        buses.add(getResources().getStringArray(R.array.b7));
+        buses.add(getResources().getStringArray(R.array.b8));
+        buses.add(getResources().getStringArray(R.array.b9));
+        buses.add(getResources().getStringArray(R.array.b10));
+
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+
+        buttonScan = (Button) findViewById(R.id.buttonScan);
+        buttonScan.setOnClickListener(this);
+        lv = (ListView)findViewById(R.id.list);
+
+        this.adapter = new SimpleAdapter(BusFinder.this, arraylist, R.layout.row, new String[] { ITEM_KEY }, new int[] { R.id.list_value });
+        lv.setAdapter(this.adapter); // Connects the adapter between the data and the GUI
+
+        if(receiver == null)
+            receiver = new WifiReceiver();
+        startScan(this, receiver);
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(receiver != null)
+            this.unregisterReceiver(receiver);
+    }
+
+    public void onClick(View view)
+    {
+        wifi.startScan();
+        Toast.makeText(this, "Scanning..." + size, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * This is to initiate a scan, given a target reciever.
+     * @param context is the current context to use the wifi from.
+     * @param target is what will be bound to receive the list of networks.
+     */
+    public void startScan(Activity context, BroadcastReceiver target){
+        if(wifi == null)
+            wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        /*
+        TODO: Revise whether it's ok to always start wifi here.
+         */
+        wifi.setWifiEnabled(true);
+        context.registerReceiver(target, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        wifi.startScan();
+    }
+
+    class WifiReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            arraylist.clear();
+            results = wifi.getScanResults();
+            size = results.size();
+
+            size = size - 1;
+            while (size >= 0) {
+                ScanResult result = results.get(size);
+
+                HashMap<String, String> item = new HashMap<>();
+                if (result.SSID.contains("")) {
+                    busMac = result.BSSID;
+                    item.put(ITEM_KEY, result.SSID + " MAC: " + result.BSSID);
+                    arraylist.add(item);
+                }
+                size--;
+            }
+            adapter.notifyDataSetChanged();
+
+        }
+    }
+}
