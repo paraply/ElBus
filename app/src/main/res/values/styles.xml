@@ -11,10 +11,10 @@
     </style>
 
     <style name="CustomActionBarStyle" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/primaryColor</item>
+        <item name="android:background">@color/primary_color</item>
 
         <!-- Support library compatibility -->
-        <item name="background">@color/primaryColor</item>
+        <item name="background">@color/primary_color</item>
     </style>
 
 </resources>
