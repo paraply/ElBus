@@ -14,9 +14,21 @@ import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Query;
 
-/**
- * Created by mike on 2015-09-23.
- */
+/*      Created by mike on 2015-09-23.
+
+        Example usage:
+
+        ECITY_Client ecity_client = new ECITY_Client();
+
+        Calendar hundred_seconds_old = Calendar.getInstance();
+        hundred_seconds_old.add(Calendar.SECOND, -100);
+
+        ecity_client.get_bus_sensor("Ericsson$Vin_Num_001", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$GPS");
+        ecity_client.get_bus_sensor("", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$GPS");
+        ecity_client.get_bus_resource("Ericsson$Vin_Num_001", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Latitude_Value");
+        ecity_client.get_bus_resource("", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Latitude_Value");
+
+*/
 public class ECity_Client {
     private static final String ECAPI_URL = "https://ece01.ericsson.net:4443/";
     final String CREDENTIALS = "grp31:C7CVFDHO48";
@@ -34,12 +46,19 @@ public class ECity_Client {
         }
     }
 
+    // Gets sensor information from one/every bus
+    // Example sensors (more at http://platform.goteborgelectricity.se/api/sensorer-och-resurser):
+    // Ericsson$GPS
+    // Ericsson$Stop_Pressed
+    // Ericsson$Wlan_Connectivity
+    //
+    // Dates will be converted to unix epoch time in ms
     public void get_bus_sensor(String bus_ID_or_empty, Date start_time, Date end_time, String sensor ){
-        Call<List<Bus_info>> call;
-        if (bus_ID_or_empty.isEmpty()){
+        Call<List<Bus_info>> call; //API call to the interface. Returns a List of bus_info.
+        if (bus_ID_or_empty.isEmpty()){ //No bus_ID supplied. Get sensors for all buses
             call = ecity_api.get_all_buses_sensors(CREDENTIALS_BASE64, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), sensor);
             Log.i("### get_all_buses_sens", " time1:" + Long.toString(start_time.getTime()) + " time2:" + Long.toString(end_time.getTime()));
-        }else{
+        }else{ //bus_ID provided. Return sensor info from this bus
             call = ecity_api.get_bus_sensor(CREDENTIALS_BASE64, bus_ID_or_empty, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), sensor);
             Log.i("### get_bus_sensor", "ID:" + bus_ID_or_empty + " time1:" + Long.toString(start_time.getTime()) + " time2:" + Long.toString(end_time.getTime()) );
         }
@@ -60,6 +79,41 @@ public class ECity_Client {
             @Override
             public void onFailure(Throwable t) {
                 Log.i("### ERR get_bus_sensor",t.getMessage());
+            }
+        });
+    }
+
+    // Get a specific resource from one/every bus
+    // Example resources:
+    // Ericsson$Latitude_Value       - returns the Latitude the bus has travelled through between start and end time
+    // Ericsson$Stop_Pressed_Value
+
+    public void get_bus_resource(String bus_ID_or_empty, Date start_time, Date end_time, String resource ){
+        Call<List<Bus_info>> call;
+        if (bus_ID_or_empty.isEmpty()){
+            call = ecity_api.get_all_buses_resources(CREDENTIALS_BASE64, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), resource);
+            Log.i("### get_all_buses_res",  " time1:" + Long.toString(start_time.getTime()) + " time2:" + Long.toString(end_time.getTime()) );
+        }else{
+            call = ecity_api.get_bus_resource(CREDENTIALS_BASE64, bus_ID_or_empty, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), resource);
+            Log.i("### get_bus_resource", "ID:" + bus_ID_or_empty + " time1:" + Long.toString(start_time.getTime()) + " time2:" + Long.toString(end_time.getTime()) );
+        }
+        call.enqueue(new Callback<List<Bus_info>>() {
+            @Override
+            public void onResponse(retrofit.Response<List<Bus_info>> response) {
+                if (response.isSuccess()) {
+                    List<Bus_info> result = response.body();
+                    for (Bus_info res : result){
+                        Log.i("### RES RESULT", "BUS ID:" +  res.gatewayId + " RESOURCE:" + res.resourceSpec + " VALUE:" + res.value + " TIME:" + res.timestamp   );
+                    }
+
+                }else {
+                    Log.i("### ERR", "get_bus_resource response.isSuccess returned false");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.i("### onFailure",t.getMessage());
             }
         });
     }
