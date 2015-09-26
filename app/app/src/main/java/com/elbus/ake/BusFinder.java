@@ -40,6 +40,10 @@ public class BusFinder extends Activity implements View.OnClickListener
     ArrayList<HashMap<String, String>> arraylist = new ArrayList<>();
     private WifiReceiver receiver;
 
+    /**
+     * This is run when the activity is created.
+     * @param savedInstanceState is just the saved instance.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -76,6 +80,9 @@ public class BusFinder extends Activity implements View.OnClickListener
 
     }
 
+    /**
+     * This is wun when the activity is stopped.
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -83,6 +90,10 @@ public class BusFinder extends Activity implements View.OnClickListener
             this.unregisterReceiver(receiver);
     }
 
+    /**
+     * This is run when a bound view is clicked.
+     * @param view is the view clicked.
+     */
     public void onClick(View view)
     {
         wifi.startScan();
@@ -105,6 +116,9 @@ public class BusFinder extends Activity implements View.OnClickListener
         wifi.startScan();
     }
 
+    /**
+     * This is the class handling the wifi scan results.
+     */
     class WifiReceiver extends BroadcastReceiver {
 
         @Override
