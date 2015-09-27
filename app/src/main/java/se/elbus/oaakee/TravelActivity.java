@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -32,6 +33,21 @@ public class TravelActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mBusStop);
 
         spinner.setAdapter(adapter);
+
+
+        createDeparturesList();
+    }
+
+    /**
+     * Creates a list of departures from an array of strings
+     */
+    private void createDeparturesList(){
+        String[] departures = {"Lindholmen", "Tynnered", "Bergsjön", "Majorna"};
+
+        ArrayAdapter<String> adapter = new DeparturesAdapter(this, departures);
+        ListView departuresListView = (ListView) findViewById(R.id.departuresListView);
+        departuresListView.setAdapter(adapter);
+
     }
 
     @Override
