@@ -55,7 +55,7 @@ public class Buses{
     public static Bus findByMac(String mac) {
         checkInit();
         for (Bus b : buses){
-            if(b.getMac().matches(mac)){
+            if(b.getMac().matches(mac.toLowerCase())){
                 return b;
             }
         }
@@ -66,7 +66,7 @@ public class Buses{
     public Bus findByDgw(String dgw) {
         checkInit();
         for (Bus b : buses){
-            if(b.getDgw().matches(dgw)){
+            if(b.getDgw().matches(dgw.toLowerCase())){
                 return b;
             }
         }
@@ -77,7 +77,7 @@ public class Buses{
     public Bus findByReg(String reg) {
         checkInit();
         for (Bus b : buses){
-            if(b.getReg().matches(reg)){
+            if(b.getReg().matches(reg.toLowerCase())){
                 return b;
             }
         }
@@ -88,7 +88,7 @@ public class Buses{
     public Bus findByVin(String vin) {
         checkInit();
         for (Bus b : buses){
-            if(b.getVin().matches(vin)){
+            if(b.getVin().matches(vin.toLowerCase())){
                 return b;
             }
         }
