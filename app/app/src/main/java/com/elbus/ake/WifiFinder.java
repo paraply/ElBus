@@ -91,7 +91,7 @@ public abstract class WifiFinder extends BroadcastReceiver {
             return;
         }
         Bus bus = Buses.findByMac(wifi.BSSID);
-        receiveDgw(bus.getDgw());
+        receiveDgw(bus.dgw);
     }
 
     /**
