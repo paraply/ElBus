@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,11 +25,13 @@ public class BusFinder extends Activity implements View.OnClickListener
     /**
      * Data Variables
      */
-    String busMac = "";
-    String busId = "";
+    ArrayList<String> busMacs;
+    ArrayList<String> busIds;
     int size = 0;
     WifiManager wifi;
     List<ScanResult> results;
+
+    ArrayList<String[]> buses;
 
     /**
      * UI Variables
@@ -51,7 +54,7 @@ public class BusFinder extends Activity implements View.OnClickListener
         /**
          * TODO: Come up with a better way to import the buses into the application.
          */
-        ArrayList<String[]> buses = new ArrayList<>();
+        buses = new ArrayList<>(10);
         buses.add(getResources().getStringArray(R.array.b1));
         buses.add(getResources().getStringArray(R.array.b2));
         buses.add(getResources().getStringArray(R.array.b3));
@@ -62,6 +65,7 @@ public class BusFinder extends Activity implements View.OnClickListener
         buses.add(getResources().getStringArray(R.array.b8));
         buses.add(getResources().getStringArray(R.array.b9));
         buses.add(getResources().getStringArray(R.array.b10));
+        busMacs = new ArrayList<>(1);
 
 
         super.onCreate(savedInstanceState);
@@ -117,6 +121,22 @@ public class BusFinder extends Activity implements View.OnClickListener
     }
 
     /**
+     * This will return the id numbers of the buses (if duplicates).
+     * @param macs are the mac-adresses of the buses.
+     * @return an arraylist of id numbers.
+     */
+    public ArrayList<String> getBuses (ArrayList<String> macs){
+        ArrayList<String> result = new ArrayList<>(1);
+        for (String s : macs){
+            for (String[] b : buses ){
+                if (b[3].matches(s)) // TODO: Not hardcode the number 3 into this but rather another dynamic way of reading the data from the xml doc.
+                    result.add(b[0]); // TODO: Not hardcode the number 0 into this but rather another dynamic way of reading the data from the xml doc.
+            }
+        }
+        return result;
+    }
+
+    /**
      * This is the class handling the wifi scan results.
      */
     class WifiReceiver extends BroadcastReceiver {
@@ -132,13 +152,14 @@ public class BusFinder extends Activity implements View.OnClickListener
                 ScanResult result = results.get(size);
 
                 HashMap<String, String> item = new HashMap<>();
-                if (result.SSID.contains("")) {
-                    busMac = result.BSSID;
+                if (result.SSID.contains(getResources().getString(R.string.buswifiname))) {
+                    busMacs.add(result.BSSID);
                     item.put(ITEM_KEY, result.SSID + " MAC: " + result.BSSID);
                     arraylist.add(item);
                 }
                 size--;
             }
+            busIds = getBuses(busMacs);
             adapter.notifyDataSetChanged();
 
         }
