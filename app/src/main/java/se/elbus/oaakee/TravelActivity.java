@@ -9,30 +9,24 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TravelActivity extends AppCompatActivity {
 
-    private static List<String> mBusStop;
-    private static Spinner spinner;
+    private static Spinner mBusStopSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel);
 
-        mBusStop = new ArrayList<>();
+        String[] busStops = {"Chalmers", "Stormannyn", "Långnamnet", "Kungsportsplatsen"};
 
-        mBusStop.add("Chalmers");
-        mBusStop.add("Göteborg");
-        mBusStop.add("Saluhallen");
+        mBusStopSpinner = (Spinner) findViewById(R.id.spinner);
 
-        spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, busStops);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mBusStop);
-
-        spinner.setAdapter(adapter);
+        mBusStopSpinner.setAdapter(adapter);
 
 
         createDeparturesList();
