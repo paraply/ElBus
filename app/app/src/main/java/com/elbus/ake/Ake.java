@@ -1,13 +1,6 @@
 package com.elbus.ake;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.res.Resources;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,10 +12,8 @@ import com.elbus.ake.Buses.Buses;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class Ake extends Activity implements View.OnClickListener
-{
+public class Ake extends Activity implements View.OnClickListener {
     /**
      * UI Variables
      */
@@ -39,8 +30,7 @@ public class Ake extends Activity implements View.OnClickListener
      * This is run when the activity is created.
      */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.main);
 
@@ -48,12 +38,12 @@ public class Ake extends Activity implements View.OnClickListener
         this.buttonScan.setOnClickListener(this);
         this.lv = (ListView) this.findViewById(R.id.list);
 
-        this.adapter = new SimpleAdapter(this, this.arraylist, R.layout.row, new String[] {this.itemKey}, new int[] { R.id.list_value });
+        this.adapter = new SimpleAdapter(this, this.arraylist, R.layout.row, new String[]{this.itemKey}, new int[]{R.id.list_value});
         this.lv.setAdapter(this.adapter); // Connects the adapter between the data and the GUI
 
         Buses.initBuses(this);
         this.receiver =
-                new WifiFinder(this,getResources().getString(R.string.buswifiname)) {
+                new WifiFinder(this, getResources().getString(R.string.buswifiname)) {
                     @Override
                     public void receiveDgw(String dgw) {
                         HashMap<String, String> item = new HashMap<>();
@@ -69,8 +59,7 @@ public class Ake extends Activity implements View.OnClickListener
      * This is run when a bound view is clicked.
      */
     @Override
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
         this.receiver.scan(this);
         Toast.makeText(this, "Scanning...", Toast.LENGTH_SHORT).show();
     }

@@ -21,10 +21,20 @@ public class Bus {
     public String getDgw() {
         return this.dgw;
     }
+
     public String getMac() {
         return this.mac;
     }
-    public String getVin() {return this.vin;  }
-    public String getReg() {return this.reg;  }
-    public String getType() {return this.type;}
+
+    public String getVin() {
+        return this.vin;
+    }
+
+    public String getReg() {
+        return this.reg;
+    }
+
+    public String getType() {
+        return this.type;
+    }
 }

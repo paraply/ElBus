@@ -11,16 +11,17 @@ import java.util.List;
 /**
  * Created by TH on 2015-09-27.
  */
-public class Buses{
+public class Buses {
     private static List<Bus> buses;
 
     /**
      * This will read in all the buses into memory.
      * It will only read in the buses the first time called.
+     *
      * @param context
      */
     public static void initBuses(Context context) {
-        if (buses != null){
+        if (buses != null) {
             return;
         }
         ArrayList<String[]> temp = new ArrayList<>();
@@ -37,8 +38,8 @@ public class Buses{
         temp.add(resources.getStringArray(R.array.b10));
 
         buses = new ArrayList<>();
-        for(String[] sa : temp){
-            Bus b = new Bus(sa[0],sa[1],sa[2],sa[3],sa[4]);
+        for (String[] sa : temp) {
+            Bus b = new Bus(sa[0], sa[1], sa[2], sa[3], sa[4]);
             buses.add(b);
         }
 
@@ -46,7 +47,7 @@ public class Buses{
     }
 
     private static void checkInit() throws BusNotLoadedException {
-        if (buses == null){
+        if (buses == null) {
             throw new BusNotLoadedException("You need to initialize the buses!");
         }
     }
@@ -54,44 +55,44 @@ public class Buses{
 
     public static Bus findByMac(String mac) {
         checkInit();
-        for (Bus b : buses){
-            if(b.getMac().contentEquals(mac.toLowerCase())){
+        for (Bus b : buses) {
+            if (b.getMac().contentEquals(mac.toLowerCase())) {
                 return b;
             }
         }
-        return new Bus("","","","","");
+        return new Bus("", "", "", "", "");
     }
 
 
     public Bus findByDgw(String dgw) {
         checkInit();
-        for (Bus b : buses){
-            if(b.getDgw().contentEquals(dgw.toLowerCase())){
+        for (Bus b : buses) {
+            if (b.getDgw().contentEquals(dgw.toLowerCase())) {
                 return b;
             }
         }
-        return new Bus("","","","","");
+        return new Bus("", "", "", "", "");
     }
 
 
     public Bus findByReg(String reg) {
         checkInit();
-        for (Bus b : buses){
-            if(b.getReg().contentEquals(reg.toLowerCase())){
+        for (Bus b : buses) {
+            if (b.getReg().contentEquals(reg.toLowerCase())) {
                 return b;
             }
         }
-        return new Bus("","","","","");
+        return new Bus("", "", "", "", "");
     }
 
 
     public Bus findByVin(String vin) {
         checkInit();
-        for (Bus b : buses){
-            if(b.getVin().contentEquals(vin.toLowerCase())){
+        for (Bus b : buses) {
+            if (b.getVin().contentEquals(vin.toLowerCase())) {
                 return b;
             }
         }
-        return new Bus("","","","","");
+        return new Bus("", "", "", "", "");
     }
 }
