@@ -20,4 +20,9 @@
         android:id="@+id/spinner"
         android:layout_gravity="center_horizontal"
         android:spinnerMode="dropdown"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/departuresListView" />
 </LinearLayout>
