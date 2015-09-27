@@ -16,15 +16,20 @@ import com.elbus.ake.Buses.Buses;
 public abstract class WifiFinder extends BroadcastReceiver {
 
     private final String wifiName;
-    private boolean wifiOff; /* Assumed to be false at first. */
+    private boolean wifiOffBefore; /* Assumed to be false at first. */
 
     public WifiFinder(Context context, String wifiName) {
         this.wifiName = wifiName;
+        this.scan(context);
+    }
+
+
+    public void scan(Context context){
 
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
         if(wifi.setWifiEnabled(true)){
-            this.wifiOff = true;
+            this.wifiOffBefore = true;
             context.registerReceiver(this,new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
             wifi.startScan();
         }
@@ -55,8 +60,10 @@ public abstract class WifiFinder extends BroadcastReceiver {
             }
         }
 
-        if(this.wifiOff){
-            wifi.setWifiEnabled(false);
+        if(this.wifiOffBefore){
+            if(wifi.setWifiEnabled(false)){
+                this.wifiOffBefore = false;
+            }
         }
         this.handleData(result);
     }
