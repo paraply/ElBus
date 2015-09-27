@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +21,29 @@ public class TravelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel);
 
-        String[] busStops = {"Chalmers", "Stormannyn", "Långnamnet", "Kungsportsplatsen"};
+        createBusStopList();
+        createDeparturesList();
+    }
 
-        mBusStopSpinner = (Spinner) findViewById(R.id.spinner);
+    /**
+     * Populates the bus stop spinner
+     */
+    private void createBusStopList() {
+        String[] busStops = {"Chalmers", "Kapellplatsen", "Vasaplatsen", "Valand",
+                "Kungsportsplatsen", "Brunnsparken", "Centralstationen", "Långanamnhållplatsen abcdefgh"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, busStops);
+        mBusStopSpinner = (Spinner) findViewById(R.id.busStopSpinner);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, busStops);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mBusStopSpinner.setAdapter(adapter);
-
-
-        createDeparturesList();
     }
 
     /**
      * Creates a list of departures from an array of strings
      */
-    private void createDeparturesList(){
+    private void createDeparturesList() {
         String[] departures = {"Lindholmen", "Tynnered", "Bergsjön", "Majorna"};
 
         ArrayAdapter<String> adapter = new DeparturesAdapter(this, departures);

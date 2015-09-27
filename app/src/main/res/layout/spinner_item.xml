@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Everything is set so that it should be able to scroll but it doesn't -->
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ellipsize="marquee"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:marqueeRepeatLimit="marquee_forever"
+    android:padding="16dp"
+    android:scrollHorizontally="true"
+    android:singleLine="true"
+    android:textColor="@color/text_color_black"
+    android:textSize="20sp"/>

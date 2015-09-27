@@ -25,12 +25,10 @@
             android:textColor="@color/text_color_black"/>
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/busStopSpinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:clickable="false"
-            />
+            android:layout_marginRight="16dp"/>
     </LinearLayout>
 
 
