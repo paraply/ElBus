@@ -3,18 +3,25 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
-        <!-- ActionBar styles -->
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_color_dark</item>
+        <item name="colorAccent">@color/accent_color</item>
+
+
+        <!-- ActionBar styles
         <item name="android:actionBarStyle">@style/CustomActionBarStyle</item>
+        -->
 
         <!-- Support library compatibility -->
+        <!--
         <item name="actionBarStyle">@style/CustomActionBarStyle</item>
+        -->
+
     </style>
 
+    <!--
     <style name="CustomActionBarStyle" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/primary_color</item>
-
-        <!-- Support library compatibility -->
-        <item name="background">@color/primary_color</item>
     </style>
+    -->
 
 </resources>
