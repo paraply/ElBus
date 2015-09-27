@@ -18,7 +18,7 @@ public abstract class WifiFinder extends BroadcastReceiver {
     private final String wifiName;
     private boolean wifiOff; /* Assumed to be false at first. */
 
-    protected WifiFinder(Context context, String wifiName) {
+    public WifiFinder(Context context, String wifiName) {
         this.wifiName = wifiName;
 
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
