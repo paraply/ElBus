@@ -15,17 +15,23 @@ import com.elbus.ake.Buses.Buses;
  * Created by TH on 2015-09-27.
  */
 public abstract class WifiFinder extends BroadcastReceiver {
-
     private final String wifiName;
 
+    /**
+     * Constructor for the class.
+     * @param context is the context to first scan wifi from.
+     * @param wifiName is the exact name of the network to find.
+     */
     public WifiFinder(Context context, String wifiName) {
         this.wifiName = wifiName;
         this.scan(context);
     }
 
-
+    /**
+     * This is used if one wants to do a scan manually.
+     * @param context is the context to scan from.
+     */
     public void scan(Context context) {
-
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
         /*
@@ -35,7 +41,6 @@ public abstract class WifiFinder extends BroadcastReceiver {
             context.registerReceiver(this, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
             wifi.startScan();
         }
-
     }
 
     /**
@@ -43,7 +48,7 @@ public abstract class WifiFinder extends BroadcastReceiver {
      * If it can't find a result, it's going to return NULL TODO: Make this class NOT send NULL to handleData().
      *
      * @param context is the context to take the wifi from.
-     * @param intent  TODO: Add description.
+     * @param intent is the type of call received. (Example: SCAN_RESULTS_AVAILABLE_ACTION)
      */
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -53,8 +58,8 @@ public abstract class WifiFinder extends BroadcastReceiver {
         ScanResult result = null;
         for (ScanResult sr : wifi.getScanResults()) {
             /*
-             * If we don't have a result yet it will add it if matching the string,
-             * otherwise it's going to replace the result if we get a better signal.
+             * It it matches and we don't have anything, we save it.
+             * If we find another one with a better signal, that one will replace the previous one.
              */
             if (sr.SSID.contentEquals(wifiName)) {
                 if (result == null) {
@@ -74,7 +79,10 @@ public abstract class WifiFinder extends BroadcastReceiver {
     }
 
     /**
-     * If s1 had a higher or the same level, this will return true.
+     * Will compare the signals of two ScanResults.
+     * @param s1
+     * @param s2
+     * @return false is s2 is closer, otherwise true.
      */
     public static boolean isCloser(ScanResult s1, ScanResult s2) {
         return s1.level - s2.level >= 0;
@@ -82,7 +90,7 @@ public abstract class WifiFinder extends BroadcastReceiver {
 
     /**
      * Default implementation will try to find the dgw of the bus associated with the mac-address.
-     * If it can't find the bus it will return NULL. TODO: Make it NOT return NULL!
+     * If it can't find the bus, it will return NULL. TODO: Make it NOT return NULL!
      *
      * @param wifi is the closest wifi matching the search results.
      */
@@ -95,8 +103,8 @@ public abstract class WifiFinder extends BroadcastReceiver {
     }
 
     /**
-     * This is needed to receive the dgw somewhere.
-     *
+     * Since we don't know when the scan is finished, this will need to be implemented
+     * whenever an instance of this class is created.
      * @param dgw is the dgw of the wifi found.
      */
     public abstract void receiveDgw(String dgw);

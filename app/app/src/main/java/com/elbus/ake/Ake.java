@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Ake extends Activity implements View.OnClickListener {
-    /**
-     * UI Variables
-     */
+
     ListView lv;
     Button buttonScan;
 
@@ -28,6 +26,7 @@ public class Ake extends Activity implements View.OnClickListener {
 
     /**
      * This is run when the activity is created.
+     * @param savedInstanceState
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +41,7 @@ public class Ake extends Activity implements View.OnClickListener {
         this.lv.setAdapter(this.adapter); // Connects the adapter between the data and the GUI
 
         Buses.initBuses(this);
+
         this.receiver =
                 new WifiFinder(this, getResources().getString(R.string.buswifiname)) {
                     @Override
