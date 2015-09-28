@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary colors -->
+    <color name="primary_color">#8BC34A</color>
+    <color name="primary_color_dark">#689F38</color>
+    <color name="primary_color_light">#DCEDC8</color>
+
+    <!-- Accent colors -->
+    <color name="accent_color">#FF9800</color>
+
+    <!-- Other colors -->
+    <color name="text_color_black">#212121</color>
+    <color name="text_color_grey">#727272</color>
+    <color name="text_color_white">#FFFFFF</color>
+    <color name="divider_color">#B6B6B6</color>
+</resources>
