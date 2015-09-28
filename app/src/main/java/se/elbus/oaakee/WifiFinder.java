@@ -1,4 +1,4 @@
-package com.elbus.ake;
+package se.elbus.oaakee;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 
-import com.elbus.ake.Buses.Bus;
-import com.elbus.ake.Buses.Buses;
+import se.elbus.oaakee.Buses.Bus;
+import se.elbus.oaakee.Buses.Buses;
 
 /**
  * This class is used to scan wifi networks to find the closest bus.

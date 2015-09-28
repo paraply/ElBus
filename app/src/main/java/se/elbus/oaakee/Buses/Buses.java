@@ -1,4 +1,4 @@
-package com.elbus.ake.Buses;
+package se.elbus.oaakee.Buses;
 
 import android.content.Context;
 import android.content.res.Resources;

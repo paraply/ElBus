@@ -1,4 +1,4 @@
-package com.elbus.ake;
+package se.elbus.oaakee;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.elbus.ake.Buses.Buses;
+import se.elbus.oaakee.Buses.Buses;
 
 import java.util.ArrayList;
 import java.util.HashMap;
