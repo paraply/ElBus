@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Oaakee</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="current_bus_stop">Min hållplats:</string>
+    <string name="scan">Start Scanning!</string>
+    <string name="buswifiname">ElectriCity</string>
 </resources>
