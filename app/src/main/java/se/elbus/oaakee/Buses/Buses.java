@@ -1,12 +1,12 @@
-package com.elbus.ake.Buses;
+package se.elbus.oaakee.Buses;
 
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.elbus.ake.R;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import se.elbus.oaakee.R;
 
 /**
  * This class is used to store all the buses in a practical way.

@@ -2,16 +2,16 @@ package se.elbus.oaakee;
 
 import java.util.ArrayList;
 
-public class Bus {
+public class Line {
 
     private String mNumber;
     private String mName;
-    private ArrayList<BusStop> mBusStops;
+    private ArrayList<Stop> mStops;
 
-    public Bus(String number, String name) {
+    public Line(String number, String name) {
         mNumber = number;
         mName = name;
-        mBusStops = new ArrayList<>();
+        mStops = new ArrayList<>();
     }
     
     public String getNumber() {
@@ -30,11 +30,11 @@ public class Bus {
         mName = name;
     }
 
-    public ArrayList<BusStop> getBusStops() {
-        return mBusStops;
+    public ArrayList<Stop> getStops() {
+        return mStops;
     }
 
-    public void setBusStops(ArrayList<BusStop> busStops) {
-        mBusStops = busStops;
+    public void setStops(ArrayList<Stop> stops) {
+        mStops = stops;
     }
 }
