@@ -7,10 +7,6 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TravelActivity extends AppCompatActivity {
 
@@ -19,7 +15,7 @@ public class TravelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_travel);
+        setContentView(R.layout.fragment_travel);
 
         createBusStopList();
         createDeparturesList();
