@@ -2,15 +2,16 @@ package se.elbus.oaakee;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import se.elbus.oaakee.Fragments.TravelFragment;
 
-public class MainActivity extends FragmentActivity implements HamburgerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -25,20 +26,28 @@ public class MainActivity extends FragmentActivity implements HamburgerFragment.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hamburger);
+        setContentView(R.layout.activity_main);
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.container);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
 
         if(fragment == null){
             fragment = new TravelFragment();
+
+            /*
+             This will replace the placeholder in activity_main
+             with the default starting fragment, which is TravelFragment.
+             */
             fm.beginTransaction()
-                    .add(R.id.container,fragment)
+                    .add(R.id.main_container,fragment)
                     .commit();
+
         }
 
-        mHamburgerFragment = (HamburgerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        /*
+        This will find and save the hamburger menu fragment.
+         */
+        mHamburgerFragment = (HamburgerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         // Set up the drawer.
@@ -74,11 +83,8 @@ public class MainActivity extends FragmentActivity implements HamburgerFragment.
 
 
     public void restoreActionBar() {
-        android.app.ActionBar actionBar = getActionBar();
-        /*
-        TODO: Fix this!
-         */
-        //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
