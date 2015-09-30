@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import se.elbus.oaakee.Fragments.HamburgerFragment;
 import se.elbus.oaakee.Fragments.TravelFragment;
 
 public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks {
