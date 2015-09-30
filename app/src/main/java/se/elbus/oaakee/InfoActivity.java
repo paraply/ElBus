@@ -1,6 +1,8 @@
 package se.elbus.oaakee;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +13,14 @@ public class InfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+
+        if (fragment == null) {
+            fragment = new InfoFragment();
+            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+        }
     }
 
     @Override
