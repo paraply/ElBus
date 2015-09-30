@@ -5,4 +5,5 @@
     <string name="current_bus_stop">Min hållplats:</string>
     <string name="scan">Start Scanning!</string>
     <string name="buswifiname">ElectriCity</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

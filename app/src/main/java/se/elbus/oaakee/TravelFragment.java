@@ -1,40 +1,42 @@
 package se.elbus.oaakee;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TravelActivity extends AppCompatActivity {
+public class TravelFragment extends Fragment {
 
     private static Spinner mBusStopSpinner;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_travel);
 
-        createBusStopList();
-        createDeparturesList();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_travel,container,false);
+
+        createBusStopList(v);
+        createDeparturesList(v);
+
+        return v;
     }
+
 
     /**
      * Populates the bus stop spinner
+     * @param v
      */
-    private void createBusStopList() {
+    private void createBusStopList(View v) {
         String[] busStops = {"Chalmers", "Kapellplatsen", "Vasaplatsen", "Valand",
                 "Kungsportsplatsen", "Brunnsparken", "Centralstationen", "Långanamnhållplatsen abcdefgh"};
 
-        mBusStopSpinner = (Spinner) findViewById(R.id.busStopSpinner);
+        mBusStopSpinner = (Spinner) v.findViewById(R.id.busStopSpinner);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, busStops);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, busStops);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mBusStopSpinner.setAdapter(adapter);
@@ -42,21 +44,15 @@ public class TravelActivity extends AppCompatActivity {
 
     /**
      * Creates a list of departures from an array of strings
+     * @param v
      */
-    private void createDeparturesList() {
+    private void createDeparturesList(View v) {
         String[] departures = {"Lindholmen", "Tynnered", "Bergsjön", "Majorna"};
 
-        ArrayAdapter<String> adapter = new DeparturesAdapter(this, departures);
-        ListView departuresListView = (ListView) findViewById(R.id.departuresListView);
+        ArrayAdapter<String> adapter = new DeparturesAdapter(getContext(), departures);
+        ListView departuresListView = (ListView) v.findViewById(R.id.departuresListView);
         departuresListView.setAdapter(adapter);
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
