@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
 
-        if(fragment == null){
+        if (fragment == null) {
             fragment = new TravelFragment();
 
             /*
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
              with the default starting fragment, which is TravelFragment.
              */
             fm.beginTransaction()
-                    .add(R.id.main_container,fragment)
+                    .add(R.id.main_container, fragment)
                     .commit();
 
         }
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     /**
      * Called when an item in the navigation drawer is selected.
-     * @param position
      */
     @Override
     public void onNavigationDrawerItemSelected(int position) {

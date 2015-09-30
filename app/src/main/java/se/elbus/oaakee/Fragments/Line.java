@@ -13,7 +13,7 @@ public class Line {
         mName = name;
         mStops = new ArrayList<>();
     }
-    
+
     public String getNumber() {
         return mNumber;
     }

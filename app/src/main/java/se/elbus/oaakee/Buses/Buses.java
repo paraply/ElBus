@@ -3,26 +3,22 @@ package se.elbus.oaakee.Buses;
 import android.content.Context;
 import android.content.res.Resources;
 
+import se.elbus.oaakee.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import se.elbus.oaakee.R;
-
 /**
- * This class is used to store all the buses in a practical way.
- * (Might use more memory than it has to) TODO: Find a replacement.
- * Created by TH on 2015-09-27.
+ * This class is used to store all the buses in a practical way. (Might use more memory than it has
+ * to) TODO: Find a replacement. Created by TH on 2015-09-27.
  */
 public class Buses {
     private static List<Bus> buses;
 
     /**
-     * This will read in all the buses into memory.
-     * It will only read in the buses the first time called.
-     *
-     * TODO: If more resources are added, we need to change this code to make it import it!!
-     *
-     * @param context
+     * This will read in all the buses into memory. It will only read in the buses the first time
+     * called. <p> TODO: If more resources are added, we need to change this code to make it import
+     * it!!
      */
     public static void initBuses(Context context) {
         if (buses != null) {
@@ -56,7 +52,6 @@ public class Buses {
 
     /**
      * This is to warn if we've forgotten to initialize this class before trying to read from it.
-     * @throws BusesNotLoadedException
      */
     private static void checkInit() throws BusesNotLoadedException {
         if (buses == null) {
@@ -66,6 +61,7 @@ public class Buses {
 
     /**
      * This wil search through all the buses to find the one that matches the input mac.
+     *
      * @param mac is the mac-adress to look for.
      * @return the bus if it's found. If it's not found, it will return an empty bus.
      */

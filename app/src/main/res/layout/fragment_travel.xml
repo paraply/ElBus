@@ -6,35 +6,34 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/material_grey_300"
-        android:orientation="horizontal"
-        >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_grey_300"
+            android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/helloTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
-            android:clickable="false"
-            android:singleLine="false"
-            android:text="@string/current_bus_stop"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/text_color_black"/>
+                android:id="@+id/helloTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:clickable="false"
+                android:singleLine="false"
+                android:text="@string/current_bus_stop"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/text_color_black"/>
 
         <Spinner
-            android:id="@+id/busStopSpinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"/>
+                android:id="@+id/busStopSpinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"/>
     </LinearLayout>
 
 
     <ListView
-        android:id="@+id/departuresListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            android:id="@+id/departuresListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>

@@ -7,19 +7,16 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 
-import se.elbus.oaakee.Buses.Bus;
-import se.elbus.oaakee.Buses.Buses;
-
 /**
- * This class is used to scan wifi networks to find the closest bus.
- * Created by TH on 2015-09-27.
+ * This class is used to scan wifi networks to find the closest bus. Created by TH on 2015-09-27.
  */
 public abstract class WifiFinder extends BroadcastReceiver {
     private final String wifiName;
 
     /**
      * Constructor for the class.
-     * @param context is the context to first scan wifi from.
+     *
+     * @param context  is the context to first scan wifi from.
      * @param wifiName is the exact name of the network to find.
      */
     public WifiFinder(Context context, String wifiName) {
@@ -28,7 +25,17 @@ public abstract class WifiFinder extends BroadcastReceiver {
     }
 
     /**
+     * Will compare the signals of two ScanResults.
+     *
+     * @return false is s2 is closer, otherwise true.
+     */
+    public static boolean isCloser(ScanResult s1, ScanResult s2) {
+        return s1.level - s2.level >= 0;
+    }
+
+    /**
      * This is used if one wants to do a scan manually.
+     *
      * @param context is the context to scan from.
      */
     public void scan(Context context) {
@@ -44,11 +51,12 @@ public abstract class WifiFinder extends BroadcastReceiver {
     }
 
     /**
-     * This method will take the received data and find the closest one that matches the defined search expression.
-     * If it can't find a result, it's going to return NULL TODO: Make this class NOT send NULL to handleData().
+     * This method will take the received data and find the closest one that matches the defined
+     * search expression. If it can't find a result, it's going to return NULL TODO: Make this class
+     * NOT send NULL to handleData().
      *
      * @param context is the context to take the wifi from.
-     * @param intent is the type of call received. (Example: SCAN_RESULTS_AVAILABLE_ACTION)
+     * @param intent  is the type of call received. (Example: SCAN_RESULTS_AVAILABLE_ACTION)
      */
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -79,16 +87,6 @@ public abstract class WifiFinder extends BroadcastReceiver {
     }
 
     /**
-     * Will compare the signals of two ScanResults.
-     * @param s1
-     * @param s2
-     * @return false is s2 is closer, otherwise true.
-     */
-    public static boolean isCloser(ScanResult s1, ScanResult s2) {
-        return s1.level - s2.level >= 0;
-    }
-
-    /**
      * Default implementation will try to find the dgw of the bus associated with the mac-address.
      * If it can't find the bus, it will return NULL. TODO: Make it NOT return NULL!
      *
@@ -103,8 +101,9 @@ public abstract class WifiFinder extends BroadcastReceiver {
     }
 
     /**
-     * Since we don't know when the scan is finished, this will need to be implemented
-     * whenever an instance of this class is created.
+     * Since we don't know when the scan is finished, this will need to be implemented whenever an
+     * instance of this class is created.
+     *
      * @param dgw is the dgw of the wifi found.
      */
     public abstract void receiveDgw(String dgw);
