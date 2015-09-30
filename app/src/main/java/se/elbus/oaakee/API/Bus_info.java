@@ -1,4 +1,4 @@
-package se.elbus.oaakee;
+package se.elbus.oaakee.API;
 
 /**
  * Created by mike on 2015-09-24.

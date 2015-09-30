@@ -1,4 +1,4 @@
-package se.elbus.oaakee;
+package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
+
+import se.elbus.oaakee.R;
 
 /**
  * Custom adapter for departures ListView.

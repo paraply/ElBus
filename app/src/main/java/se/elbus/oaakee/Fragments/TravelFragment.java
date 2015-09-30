@@ -1,4 +1,4 @@
-package se.elbus.oaakee;
+package se.elbus.oaakee.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+
+import se.elbus.oaakee.R;
 
 public class TravelFragment extends Fragment {
 
