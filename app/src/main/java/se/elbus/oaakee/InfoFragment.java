@@ -20,14 +20,16 @@ public class InfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_info, container, false);
 
-        mTV = (TextView) v.findViewById(R.id.tjolle);
+
+        mTV = (TextView) v.findViewById(R.id.timeTilArrival);
+        mTV.setText("17");
         mTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View vClick) {
-                if (mTV.getText().equals("Tjolle")) {
-                    mTV.setText("Tjabba");
+                if (mTV.getText().equals("17")) {
+                    mTV.setText("7");
                 } else {
-                    mTV.setText("Tjolle");
+                    mTV.setText("17");
                 }
             }
         });
