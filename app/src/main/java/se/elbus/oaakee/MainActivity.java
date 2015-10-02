@@ -63,14 +63,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
      */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-
-        // TODO: Implement switching between fragments.
-        onSectionAttached(position+1);
-
-    }
-
-    public void onSectionAttached(int number) {
-        switch (number) {
+        switch (position+1) {
             case 1:
                 mTitle = getString(R.string.title_section1);
                 break;
@@ -80,7 +73,28 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
             case 3:
                 mTitle = getString(R.string.title_section3);
                 break;
+            case 4:
+                mTitle = getString(R.string.title_section4);
+                break;
+            case 5:
+                mTitle = getString(R.string.title_section5);
+                break;
         }
+
+        changeFragment(position);
+
+    }
+
+    public void onSectionAttached(int number) {
+        /*
+         * TODO: Switch fragments!
+         */
+    }
+
+    private void changeFragment(int i) {
+        /*
+         TODO: Change fragment here!
+         */
     }
 
 
