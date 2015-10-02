@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
         if (fragment == null) {
             fragment = new TravelFragment();
+            setTitle(getString(R.string.title_section1));
 
             /*
              This will replace the placeholder in activity_main
