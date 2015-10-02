@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import se.elbus.oaakee.Fragments.HamburgerFragment;
 import se.elbus.oaakee.Fragments.TravelFragment;
 
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
      */
     private HamburgerFragment mHamburgerFragment;
 
+    private ArrayList<Fragment> mFragments;
+
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -28,12 +32,14 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mFragments = new ArrayList<>();
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
 
         if (fragment == null) {
             fragment = new TravelFragment();
+            mFragments.add(fragment);
             setTitle(getString(R.string.title_section1));
 
             /*
@@ -45,6 +51,14 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
                     .commit();
 
         }
+
+        /*
+          Here is where we add the fragments in order.
+         */
+        mFragments.add(new TravelFragment());
+        mFragments.add(new TravelFragment());
+        mFragments.add(new TravelFragment());
+        mFragments.add(new TravelFragment());
 
         /*
         This will find and save the hamburger menu fragment.
@@ -81,20 +95,16 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
                 break;
         }
 
-        changeFragment(position);
+        if(mFragments != null){
+            Fragment newFragment = mFragments.get(position);
+            if(newFragment != null){
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction()
+                        .add(R.id.main_container, newFragment)
+                        .commit();
+            }
+        }
 
-    }
-
-    public void onSectionAttached(int number) {
-        /*
-         * TODO: Switch fragments!
-         */
-    }
-
-    private void changeFragment(int i) {
-        /*
-         TODO: Change fragment here!
-         */
     }
 
 
