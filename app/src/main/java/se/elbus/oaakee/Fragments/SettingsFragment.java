@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import se.elbus.oaakee.R;
+
 /**
  * Created by Tobias on 2015-10-02.
  */
@@ -16,6 +18,6 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        addPreferencesFromResource(R.xml.preferences);
     }
 }
