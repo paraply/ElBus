@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
     android:weightSum="1">
 
     <TextView
+        android:id="@+id/busNumberTextView"
         android:layout_width="91dp"
         android:layout_height="100dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="55"
-        android:id="@+id/busNumberTextView"
-        android:textSize="50dp"
-        android:textStyle="bold"
         android:layout_weight="0.22"
-        android:gravity="center" />
+        android:gravity="center"
+        android:text="55"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="50dp"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:layout_weight="0.78">
+        android:layout_weight="0.78"
+        android:orientation="vertical">
 
         <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="New Button"
             android:id="@+id/topDepartureButton"
-            android:background="@android:color/transparent" />
-
-        <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="New Button"
+            android:background="@android:color/transparent"
+            android:text="New Button" />
+
+        <Button
             android:id="@+id/bottomDepartureButton"
-            android:background="@android:color/transparent" />
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="New Button" />
     </LinearLayout>
 </LinearLayout>

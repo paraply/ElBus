@@ -19,7 +19,7 @@ public class TravelFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_travel,container,false);
+        View v = inflater.inflate(R.layout.fragment_travel, container, false);
 
         createBusStopList(v);
         createDeparturesList(v);
@@ -30,7 +30,6 @@ public class TravelFragment extends Fragment {
 
     /**
      * Populates the bus stop spinner
-     * @param v
      */
     private void createBusStopList(View v) {
         String[] busStops = {"Chalmers", "Kapellplatsen", "Vasaplatsen", "Valand",
@@ -46,7 +45,6 @@ public class TravelFragment extends Fragment {
 
     /**
      * Creates a list of departures from an array of strings
-     * @param v
      */
     private void createDeparturesList(View v) {
         String[] departures = {"Lindholmen", "Tynnered", "Bergsjön", "Majorna"};
