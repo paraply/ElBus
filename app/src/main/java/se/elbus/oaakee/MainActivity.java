@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
     public void onNavigationDrawerItemSelected(int position) {
 
         // TODO: Implement switching between fragments.
+        onSectionAttached(position+1);
 
     }
 
