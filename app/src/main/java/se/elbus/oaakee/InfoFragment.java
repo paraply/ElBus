@@ -27,7 +27,8 @@ public class InfoFragment extends Fragment {
             @Override
             public void onClick(View vClick) {
                 if (mTV.getText().equals("17")) {
-                    mTV.setText("7");
+                    //mTV.setText("7");
+                    modifyView(InfoFragment.this.getView());
                 } else {
                     mTV.setText("17");
                 }
@@ -35,5 +36,11 @@ public class InfoFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private void modifyView(View v) {
+        mTV = (TextView) v.findViewById(R.id.timeTilArrival);
+        mTV.setText("8");
+
     }
 }
