@@ -5,6 +5,7 @@
     <string name="current_bus_stop">Min hållplats:</string>
     <string name="scan">Start Scanning!</string>
     <string name="buswifiname">ElectriCity</string>
-    <string name="info_arrives_in">Ankommer om</string>
+    <string name="info_bus_name">7:an</string>
+    <string name="info_arrives_in">ankommer om</string>
     <string name="info_min">min</string>
 </resources>
