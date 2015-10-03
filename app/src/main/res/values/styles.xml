@@ -7,21 +7,8 @@
         <item name="colorPrimaryDark">@color/primary_color_dark</item>
         <item name="colorAccent">@color/accent_color</item>
 
-
-        <!-- ActionBar styles
-        <item name="android:actionBarStyle">@style/CustomActionBarStyle</item>
-        -->
-
-        <!-- Support library compatibility -->
-        <!--
-        <item name="actionBarStyle">@style/CustomActionBarStyle</item>
-        -->
-
     </style>
 
-    <!--
-    <style name="CustomActionBarStyle" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-    </style>
-    -->
+    <!-- TODO Add text appearance styles -->
 
 </resources>

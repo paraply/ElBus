@@ -7,7 +7,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
 
         <TextView
             android:id="@+id/infoArrivesIn"
@@ -18,7 +20,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
             android:text="@string/info_arrives_in"
-            android:textSize="24sp"/>
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <View
             android:id="@+id/infoCircleHolder"
@@ -55,12 +57,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="32sp"
             android:text="@string/info_bus_name"
             android:id="@+id/infoBusName"
             android:layout_above="@+id/infoArrivesIn"
-            android:layout_centerHorizontal="true"
-            android:textSize="40sp"/>
+            android:layout_centerHorizontal="true"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -68,27 +69,26 @@
             android:orientation="vertical"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:clickable="false"
+            android:layout_marginLeft="32dp"
+            android:layout_marginBottom="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Vald resa"
-                android:id="@+id/info_chosen_trip"
-                android:textColor="@color/text_color_grey"/>
+                android:id="@+id/info_chosen_trip"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Chalmers - Lindholmen"
-                android:id="@+id/info_from_to"
-                android:textColor="@color/text_color_black"/>
+                android:id="@+id/info_from_to"/>
 
         </LinearLayout>
-
-
 
 
     </RelativeLayout>
