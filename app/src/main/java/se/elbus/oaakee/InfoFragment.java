@@ -37,7 +37,7 @@ public class InfoFragment extends Fragment {
                     onBus = !onBus;
                     Random ran = new Random();
                     mTV.setText(Integer.toString(ran.nextInt(13) + 2));
-                    modifyView(InfoFragment.this.getView());
+                    modifyView();
                 } else {
                     mTV.setText(Integer.toString(minLeft - 1));
                 }
@@ -47,7 +47,8 @@ public class InfoFragment extends Fragment {
         return v;
     }
 
-    private void modifyView(View v) {
+    private void modifyView() {
+        View v = InfoFragment.this.getView();
         TextView tView = (TextView) v.findViewById(R.id.infoArrivesIn);
         TextView tBusName = (TextView) v.findViewById(R.id.infoBusName);
         if(onBus) {
@@ -58,5 +59,6 @@ public class InfoFragment extends Fragment {
             tBusName.setText(busNr + ":an");
             tView.setText("ankommer om");
         }
+
     }
 }
