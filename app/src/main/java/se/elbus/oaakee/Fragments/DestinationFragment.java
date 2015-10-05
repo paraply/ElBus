@@ -40,7 +40,7 @@ public class DestinationFragment extends Fragment {
      */
     private void populateDestinationsList(View destinationView){
         String destinations[] = {"Kapellplatsen", "Götaplatsen", "Valand", "Kungsportsplatsen", "Domkyrkan", "Lilla Bommen"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),R.layout.destination_chooser,destinations);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,destinations);
         ListView destinationsListView = (ListView) destinationView.findViewById(R.id.destinationsListView);
         destinationsListView.setAdapter(adapter);
     }
