@@ -34,31 +34,18 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         setContentView(R.layout.activity_main);
         mFragments = new ArrayList<>();
 
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
-
-        if (fragment == null) {
-            fragment = new TravelFragment();
-            mFragments.add(fragment);
-            setTitle(getString(R.string.title_section1));
-
-            /*
-             This will replace the placeholder in activity_main
-             with the default starting fragment, which is TravelFragment.
-             */
-            fm.beginTransaction()
-                    .add(R.id.main_container, fragment)
-                    .commit();
-
-        }
+        setTitle(getString(R.string.title_section1));
 
         /*
           Here is where we add the fragments in order.
          */
+        mFragments.add(new TravelFragment());
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Stämpla"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Konto"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Inställningar"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Historik"
+
+        changeFragment(mFragments.get(0));
 
         /*
         This will find and save the hamburger menu fragment.
@@ -98,15 +85,17 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         if(mFragments != null){
             Fragment newFragment = mFragments.get(position);
             if(newFragment != null){
-                FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction()
-                        .add(R.id.main_container, newFragment)
-                        .commit();
+                changeFragment(newFragment);
             }
         }
-
     }
 
+    private void changeFragment(Fragment f){
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.main_container, f)
+                .commit();
+    }
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
