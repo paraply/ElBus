@@ -8,4 +8,17 @@
     <string name="info_bus_name">7:an</string>
     <string name="info_arrives_in">ankommer om</string>
     <string name="info_min">min</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_hamburger">Hamburger</string>
+
+    <string name="title_section1">Min Resa</string>
+    <string name="title_section2">Stämpla</string>
+    <string name="title_section3">Konto</string>
+    <string name="title_section4">Inställningar</string>
+    <string name="title_section5">Historik</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
 </resources>

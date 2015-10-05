@@ -1,4 +1,4 @@
-package se.elbus.oaakee;
+package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,16 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
+import se.elbus.oaakee.R;
+
 /**
- * Custom adapter for departures ListView.
- *
- * TODO: should extend "ArrayAdapter<BusLine>" or something similar instead of "<String>"
- *
- * Created by Tobias on 15-09-27.
+ * Custom adapter for departures ListView. <p> TODO: should extend "ArrayAdapter<BusLine>" or
+ * something similar instead of "<String>" <p> Created by Tobias on 15-09-27.
  */
 public class DeparturesAdapter extends ArrayAdapter<String> {
     public DeparturesAdapter(Context context, String[] string) {
-        super(context, R.layout.busline_row,string);
+        super(context, R.layout.busline_row, string);
     }
 
     @Override
@@ -39,12 +38,12 @@ public class DeparturesAdapter extends ArrayAdapter<String> {
         return customView;
     }
 
-    private void setButtonAction(final Button button){
+    private void setButtonAction(final Button button) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String toastMessage = "You clicked: " + button.getText();
-                Toast.makeText(getContext(),toastMessage,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }

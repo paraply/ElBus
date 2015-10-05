@@ -1,4 +1,4 @@
-package se.elbus.oaakee;
+package se.elbus.oaakee.REST_API.EC_Model;
 
 /**
  * Created by mike on 2015-09-24.

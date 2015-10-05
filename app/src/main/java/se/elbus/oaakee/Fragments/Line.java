@@ -1,4 +1,4 @@
-package se.elbus.oaakee;
+package se.elbus.oaakee.Fragments;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class Line {
         mName = name;
         mStops = new ArrayList<>();
     }
-    
+
     public String getNumber() {
         return mNumber;
     }

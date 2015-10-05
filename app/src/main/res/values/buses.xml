@@ -8,7 +8,7 @@
         <item>type</item>
     </string-array>
 
-    <string-array name="b1" >
+    <string-array name="b1">
         <item>Ericsson$100020</item>
         <item>YV3U0V222FA100020</item>
         <item>EPO 131</item>
@@ -16,7 +16,7 @@
         <item>el</item>
     </string-array>
 
-    <string-array name="b2" >
+    <string-array name="b2">
         <item>Ericsson$100021</item>
         <item>YV3U0V222FA100021</item>
         <item>EPO 136</item>
@@ -24,7 +24,7 @@
         <item>el</item>
     </string-array>
 
-    <string-array name="b3" >
+    <string-array name="b3">
         <item>Ericsson$100022</item>
         <item>YV3U0V222FA100022</item>
         <item>EPO 143</item>
@@ -32,7 +32,7 @@
         <item>el</item>
     </string-array>
 
-    <string-array name="b4" >
+    <string-array name="b4">
         <item>Ericsson$171164</item>
         <item>YV3T1U22XF1171164</item>
         <item>EOG 604</item>
@@ -40,7 +40,7 @@
         <item>hybrid</item>
     </string-array>
 
-    <string-array name="b5" >
+    <string-array name="b5">
         <item>Ericsson$171234</item>
         <item>YV3T1U225F1171234</item>
         <item>EOG 606</item>
@@ -48,7 +48,7 @@
         <item>hybrid</item>
     </string-array>
 
-    <string-array name="b6" >
+    <string-array name="b6">
         <item>Ericsson$171235</item>
         <item>YV3T1U227F1171235</item>
         <item>EOG 616</item>
@@ -56,7 +56,7 @@
         <item>hybrid</item>
     </string-array>
 
-    <string-array name="b7" >
+    <string-array name="b7">
         <item>Ericsson$171327</item>
         <item>YV3T1U221F1171327</item>
         <item>EOG 622</item>
@@ -64,7 +64,7 @@
         <item>hybrid</item>
     </string-array>
 
-    <string-array name="b8" >
+    <string-array name="b8">
         <item>Ericsson$171328</item>
         <item>YV3T1U223F1171328</item>
         <item>EOG 627</item>
@@ -72,7 +72,7 @@
         <item>hybrid</item>
     </string-array>
 
-    <string-array name="b9" >
+    <string-array name="b9">
         <item>Ericsson$171329</item>
         <item>YV3T1U225F1171329</item>
         <item>EOG 631</item>
@@ -80,7 +80,7 @@
         <item>hybrid</item>
     </string-array>
 
-    <string-array name="b10" >
+    <string-array name="b10">
         <item>Ericsson$171330</item>
         <item>YV3T1U223F1171330</item>
         <item>EOG 634</item>
