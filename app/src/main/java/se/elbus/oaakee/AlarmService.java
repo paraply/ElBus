@@ -66,7 +66,7 @@ public class AlarmService extends IntentService implements EC_Callback{
 
     private void SendNotification() {
         Resources resources = getResources();
-        Intent i = TestActivity.newIntent(this);
+        Intent i = MainActivity.newIntent(this);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
         //Strings should be in resources, not hardcoded
