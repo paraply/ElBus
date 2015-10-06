@@ -9,23 +9,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
+import se.elbus.oaakee.Buses.WifiFinder;
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
+import se.elbus.oaakee.REST_API.EC_Callback;
+import se.elbus.oaakee.REST_API.EC_Client;
+import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
 
-public class InfoFragment extends Fragment {
+public class InfoFragment extends Fragment implements EC_Callback{
 
     private TextView mTV;
     private boolean onBus;
 
     private MainActivity parent;
+    private WifiFinder wifiFinder;
+    private EC_Client ec_client; // TODO: Maybe will get reference from parent
+    private String current_dgw;
 
     public InfoFragment(){}
 
-    // To create a new instance of this fragment.
-    // These arguments will probably change...
-    // Maybe use JourneyRefURL from VT_API...
+    // To create a new instance of this fragment
+    // TODO: These arguments will probably change...
+    // TODO: Maybe use JourneyRefURL from VT_API...
     public static InfoFragment newInstance(String stop_ID, String line_ID, String destination_ID){
         InfoFragment infoFragment = new InfoFragment();
 
@@ -40,6 +49,16 @@ public class InfoFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ec_client = new EC_Client(this);
+
+        wifiFinder = new WifiFinder(parent, "Electricity") {
+            @Override
+            // Found an Dgw close to us. We assume we are on this bus
+            public void receiveDgw(String dgw) {
+                current_dgw = dgw;
+            }
+        };
+
         super.onCreate(savedInstanceState);
     }
 
@@ -49,7 +68,6 @@ public class InfoFragment extends Fragment {
     public void onAttach(Context context){
         super.onAttach(context);
         parent = (MainActivity) getActivity();
-
     }
 
     @Override
@@ -92,6 +110,31 @@ public class InfoFragment extends Fragment {
             tBusName.setText(busNr + ":an");
             tView.setText("ankommer om");
         }
+
+    }
+
+    @Override
+    public void got_sensor_data(List<Bus_info> bus_info) {
+
+    }
+
+    @Override
+    public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {
+
+    }
+
+    @Override
+    public void got_reource_data(List<Bus_info> bus_info) {
+
+    }
+
+    @Override
+    public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
+
+    }
+
+    @Override
+    public void got_error(String during_method, String error_msg) {
 
     }
 }
