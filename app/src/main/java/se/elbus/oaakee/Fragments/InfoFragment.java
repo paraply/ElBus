@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
 
 public class InfoFragment extends Fragment {
@@ -16,18 +17,22 @@ public class InfoFragment extends Fragment {
     private TextView mTV;
     private boolean onBus;
 
+    private MainActivity parent;
+
     public InfoFragment(){}
 
     // To create a new instance of this fragment.
     // These arguments will probably change...
     // Maybe use JourneyRefURL from VT_API...
     public static InfoFragment newInstance(String stop_ID, String line_ID, String destination_ID){
+        InfoFragment infoFragment = new InfoFragment();
+
         Bundle fragment_args = new Bundle();                // Save the arguments in a bundle in case the state is destroyed and needs to be recreated (like screen rotation)
         fragment_args.putString("stop_ID", stop_ID);
         fragment_args.putString("line_ID", line_ID);
         fragment_args.putString("destination_ID", destination_ID);
-
-        return new InfoFragment();
+        infoFragment.setArguments(fragment_args);
+        return infoFragment;
     }
 
     @Override
