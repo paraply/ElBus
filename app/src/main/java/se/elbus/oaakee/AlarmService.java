@@ -14,6 +14,11 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.Calendar;
+import java.util.List;
+
+import se.elbus.oaakee.REST_API.EC_Callback;
+import se.elbus.oaakee.REST_API.EC_Client;
+import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
 
 /**
  * Created by Anton on 2015-09-30.
@@ -26,7 +31,7 @@ import java.util.Calendar;
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
 // The activity using the service must have a method equivalent to the newIntent method in this class (for the callback from the notification)
 
-public class AlarmService extends IntentService {
+public class AlarmService extends IntentService implements EC_Callback{
 
     private static final String TAG = "AlarmService";
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up
@@ -35,7 +40,7 @@ public class AlarmService extends IntentService {
     private String busID = "Ericsson$Vin_Num_001";
     private String destination = "Lindholmen";
 
-    ECity_Client client = new ECity_Client();
+    EC_Client client = new EC_Client(this);
 
     //Equivalent method must be in activity using this service
     public static Intent newIntent(Context context) {
@@ -57,26 +62,6 @@ public class AlarmService extends IntentService {
         } else {
             alarmManager.cancel(pi);
             pi.cancel();
-        }
-    }
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        if(!isNetworkAvailableAndConnected()) {
-            return;
-        }
-
-        Log.i(TAG, "AlarmService intent received");
-
-        Calendar fiveSeconds = Calendar.getInstance();
-        fiveSeconds.add(Calendar.SECOND, -5);
-
-        client.get_bus_sensor(busID, fiveSeconds.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
-
-        //How do I get the callback?
-
-        if(false) {
-            SendNotification();
         }
     }
 
@@ -106,5 +91,57 @@ public class AlarmService extends IntentService {
         boolean isNetworkConnected = isNetworkAvailable && cm.getActiveNetworkInfo().isConnected();
 
         return isNetworkConnected;
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        if(!isNetworkAvailableAndConnected()) {
+            return;
+        }
+
+        Log.i(TAG, "AlarmService intent received");
+
+        Calendar fiveSeconds = Calendar.getInstance();
+        fiveSeconds.add(Calendar.SECOND, -5);
+
+        client.get_bus_sensor(busID, fiveSeconds.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
+
+        //How do I get the callback?
+
+        if(false) {
+            SendNotification();
+        }
+    }
+
+    @Override
+    public void got_sensor_data(List<Bus_info> bus_info) {
+        for(Bus_info b : bus_info) {
+            Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
+        }
+    }
+    @Override
+    public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {
+        for (Bus_info b : bus_info) {
+            Log.i("### SENSOR RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
+        }
+    }
+
+    @Override
+    public void got_reource_data(List<Bus_info> bus_info) {
+        for (Bus_info b : bus_info) {
+            Log.i("### RSRC RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
+        }
+    }
+
+    @Override
+    public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
+        for (Bus_info b : bus_info) {
+            Log.i("### RSRC RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
+        }
+    }
+
+    @Override
+    public void got_error(String during_method, String error_msg) {
+        Log.i("### ERR", "during: " + during_method + "-" + error_msg);
     }
 }
