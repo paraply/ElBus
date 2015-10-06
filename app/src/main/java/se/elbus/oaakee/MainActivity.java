@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import se.elbus.oaakee.Fragments.HamburgerFragment;
+import se.elbus.oaakee.Fragments.PaymentFragment;
 import se.elbus.oaakee.Fragments.TravelFragment;
 
 public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks {
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
           Here is where we add the fragments in order.
          */
         mFragments.add(new TravelFragment());
-        mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Stämpla"
+        mFragments.add(new PaymentFragment()); // TODO: Change this to fragment for "Stämpla"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Konto"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Inställningar"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Historik"
