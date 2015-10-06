@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
           Here is where we add the fragments in order.
          */
         mFragments.add(new TravelFragment());
-        mFragments.add(new PaymentFragment()); // TODO: Change this to fragment for "Stämpla"
+        mFragments.add(new PaymentFragment());
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Konto"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Inställningar"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Historik"
