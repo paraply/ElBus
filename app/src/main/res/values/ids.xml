@@ -4,4 +4,5 @@
     <item name="buttonScan" type="id" />
     <item name="list" type="id" />
     <item name="list_value" type="id" />
+    <item name="chargeText" type="id" />
 </resources>
