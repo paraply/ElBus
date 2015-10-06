@@ -1,5 +1,7 @@
 package se.elbus.oaakee.Fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -32,12 +34,22 @@ public class InfoFragment extends Fragment {
         fragment_args.putString("line_ID", line_ID);
         fragment_args.putString("destination_ID", destination_ID);
         infoFragment.setArguments(fragment_args);
+
         return infoFragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    // Called when a fragment is first attached to its context
+    // Used to get reference to parent activity
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        parent = (MainActivity) getActivity();
+
     }
 
     @Override
