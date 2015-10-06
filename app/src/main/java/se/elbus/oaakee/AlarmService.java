@@ -22,10 +22,9 @@ import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
 
 /**
  * Created by Anton on 2015-09-30.
- * ToDo:
- *  Service to repeatedly check the next stop for the current bus.
- *  Check if stop matches the chosen destination.
- *  If so, send push notification.
+ * Service to repeatedly check the next stop for the current bus.
+ * Check if stop matches the chosen destination.
+ * If so, send push notification.
  */
 
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
@@ -35,7 +34,7 @@ public class AlarmService extends IntentService implements EC_Callback{
 
     private static final String TAG = "AlarmService";
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up
-    private static final int POLL_INTERVAL = 1000 * 5;
+    private static final int POLL_INTERVAL = 1000 * 30;
 
     private String busID = "Ericsson$Vin_Num_001";
     private String destination = "Lindholmen";
@@ -101,26 +100,28 @@ public class AlarmService extends IntentService implements EC_Callback{
 
         Log.i(TAG, "AlarmService intent received");
 
-        Calendar fiveSeconds = Calendar.getInstance();
-        fiveSeconds.add(Calendar.SECOND, -5);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MILLISECOND, POLL_INTERVAL);
 
-        client.get_bus_sensor(busID, fiveSeconds.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
-
-        //How do I get the callback?
-
-        if(false) {
-            SendNotification();
-        }
+        client.get_bus_sensor(busID, calendar.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
     }
 
     @Override
     public void got_sensor_data(List<Bus_info> bus_info) {
+        if(bus_info == null) return;
+
+        if(bus_info.get(bus_info.size()-1).value.equals(destination)) {
+            SendNotification();
+        }
+
         for(Bus_info b : bus_info) {
             Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
+
     @Override
     public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {
+        if(bus_info == null) return;
         for (Bus_info b : bus_info) {
             Log.i("### SENSOR RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
@@ -128,6 +129,7 @@ public class AlarmService extends IntentService implements EC_Callback{
 
     @Override
     public void got_reource_data(List<Bus_info> bus_info) {
+        if(bus_info == null) return;
         for (Bus_info b : bus_info) {
             Log.i("### RSRC RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
@@ -135,6 +137,7 @@ public class AlarmService extends IntentService implements EC_Callback{
 
     @Override
     public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
+        if(bus_info == null) return;
         for (Bus_info b : bus_info) {
             Log.i("### RSRC RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
