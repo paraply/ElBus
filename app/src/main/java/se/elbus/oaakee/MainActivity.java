@@ -1,5 +1,7 @@
 package se.elbus.oaakee;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -129,5 +131,10 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //For notifications etc.
+    public static Intent newIntent(Context context) {
+        return new Intent(context, MainActivity.class);
     }
 }

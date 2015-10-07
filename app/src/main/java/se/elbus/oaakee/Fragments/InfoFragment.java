@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+import se.elbus.oaakee.AlarmService;
 import se.elbus.oaakee.R;
 
 public class InfoFragment extends Fragment {
@@ -63,4 +64,7 @@ public class InfoFragment extends Fragment {
         }
 
     }
+
+    //For alarm functionality, add this
+    //AlarmService.setServiceAlarm(getActivity(), true);
 }
