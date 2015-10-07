@@ -114,8 +114,6 @@ public class InfoFragment extends Fragment implements EC_Callback{
 
     }
 
-    //For alarm functionality, add this
-    //AlarmService.setServiceAlarm(getActivity(), true);
     @Override
     public void got_sensor_data(List<Bus_info> bus_info) {
 
@@ -140,4 +138,7 @@ public class InfoFragment extends Fragment implements EC_Callback{
     public void got_error(String during_method, String error_msg) {
 
     }
+    
+    //For alarm functionality, add this
+    //AlarmService.setServiceAlarm(getActivity(), true);
 }
