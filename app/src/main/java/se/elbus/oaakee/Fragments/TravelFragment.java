@@ -11,11 +11,26 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import se.elbus.oaakee.R;
+import se.elbus.oaakee.REST_API.VT_Callback;
+import se.elbus.oaakee.REST_API.VT_Client;
+import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
+import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
+import se.elbus.oaakee.REST_API.VT_Model.LocationList;
 
-public class TravelFragment extends Fragment {
+public class TravelFragment extends Fragment implements VT_Callback {
 
     private static Spinner mBusStopSpinner;
+    private VT_Client vtClient;
 
+    public TravelFragment(){
+        vtClient = new VT_Client(this);
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,5 +83,25 @@ public class TravelFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void got_journey_details(JourneyDetail journeyDetail) {
+
+    }
+
+    @Override
+    public void got_nearby_stops(LocationList locationList) {
+
+    }
+
+    @Override
+    public void got_departure_board(DepartureBoard departureBoard) {
+
+    }
+
+    @Override
+    public void got_error(String during_method, String error_msg) {
+
     }
 }
