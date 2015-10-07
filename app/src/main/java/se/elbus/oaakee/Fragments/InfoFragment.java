@@ -138,7 +138,7 @@ public class InfoFragment extends Fragment implements EC_Callback{
     public void got_error(String during_method, String error_msg) {
 
     }
-    
+
     //For alarm functionality, add this
     //AlarmService.setServiceAlarm(getActivity(), true);
 }
