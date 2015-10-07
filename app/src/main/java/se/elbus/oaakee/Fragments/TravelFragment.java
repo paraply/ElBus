@@ -2,6 +2,7 @@ package se.elbus.oaakee.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,20 +17,23 @@ import se.elbus.oaakee.REST_API.VT_Client;
 import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
 import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
 import se.elbus.oaakee.REST_API.VT_Model.LocationList;
+import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 
 public class TravelFragment extends Fragment implements VT_Callback {
 
     private static Spinner mBusStopSpinner;
     private VT_Client vtClient;
+    private static final String TAG = "Travel";
 
-    public TravelFragment(){
-        vtClient = new VT_Client(this);
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.i(TAG,"Created");
+
+        vtClient = new VT_Client(this);
+        vtClient.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
     }
 
     @Override
@@ -92,7 +96,12 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     @Override
     public void got_nearby_stops(LocationList locationList) {
-
+        for (StopLocation s : locationList.stoplocation) { // List all nearby stops
+            Log.i(TAG, "### NEAR STOP " + s.name + " ID:" + s.id + " TRACK:" + s.track);
+        }
+        StopLocation closest = locationList.stoplocation.get(0); // The closest stop is at the top of the list
+        Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id + " TRACK:" +  closest.track );
+        vtClient.get_departure_board(closest.id); // Get departures from this stop
     }
 
     @Override
