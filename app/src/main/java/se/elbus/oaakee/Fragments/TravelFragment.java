@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -33,17 +34,16 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     private Location location;
 
+    private double latitude = 57.692395;
+    private double longitude = 11.972917;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i(TAG,"Created");
-
         vtClient = new VT_Client(this);
-        vtClient.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
-
-        //Location location = new Location()
+        vtClient.get_nearby_stops(latitude+"", longitude+"", "30", "1000");
+        Log.i(TAG,"Get nearby stops");
 
         try {
             Log.i(TAG,"Permission for GPS: " + checkGPSPermission());
@@ -91,6 +91,25 @@ public class TravelFragment extends Fragment implements VT_Callback {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mBusStopSpinner.setAdapter(adapter);
+
+        mBusStopSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString());
+                updateDeparturesList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.i(TAG,"Spinner nothing selected");
+            }
+        });
+
+    }
+
+    private void updateDeparturesList(){
+        Log.i(TAG,"Updated departure list");
+
     }
 
     /**
@@ -128,7 +147,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
     @Override
     public void got_nearby_stops(LocationList locationList) {
         for (StopLocation s : locationList.stoplocation) { // List all nearby stops
-            //Log.i(TAG, "### NEAR STOP " + s.name + " ID:" + s.id + " TRACK:" + s.track);
+            Log.i(TAG, "### NEAR STOP " + s.name + " ID:" + s.id + " TRACK:" + s.track);
         }
         StopLocation closest = locationList.stoplocation.get(0); // The closest stop is at the top of the list
         Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id + " TRACK:" +  closest.track );
