@@ -111,6 +111,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
     }
 
     private void updateBusStopList(List<StopLocation> stopLocations){
+        Log.i(TAG, "Updating bus stop list");
 
         ArrayList<String> stops = new ArrayList<String>();
 
@@ -124,12 +125,10 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
         mBusStopSpinner.setAdapter(adapter1);
 
-
-
     }
 
     private void updateDeparturesList(){
-        Log.i(TAG,"Updated departure list");
+        Log.i(TAG, "Updating departure list");
 
     }
 
@@ -143,6 +142,47 @@ public class TravelFragment extends Fragment implements VT_Callback {
         ListView departuresListView = (ListView) v.findViewById(R.id.departuresListView);
         departuresListView.setAdapter(adapter);
 
+    }
+
+
+    private void removeDuplicatesAndUpdateStopList(List<StopLocation> stopLocations){
+        List<StopLocation> stops = removeDuplicateStops(stopLocations);
+
+        for (StopLocation s : stops) { // List all nearby stops
+            Log.i(TAG, "### NEAR STOP" + " ID:" + s.id + " TRACK:" + s.track + " NAME: " + s.name);
+        }
+
+        StopLocation closest = stops.get(0); // The closest stop is at the top of the list
+        Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id);
+
+        vtClient.get_departure_board(closest.id); // Get departures from this stop
+
+        updateBusStopList(stopLocations);
+    }
+
+
+    private List<StopLocation> removeDuplicateStops(List<StopLocation> stopLocations){
+        List<StopLocation> stops = new ArrayList<>();
+
+        stops.add(stopLocations.get(0));
+
+        for (StopLocation s:stopLocations){
+            String stopName = s.name;
+
+            boolean contains = false;
+
+            for (StopLocation d:stops){
+                if ((stopName.equals(d.name))) {
+                    contains = true;
+                }
+            }
+
+            if (!contains){
+                stops.add(s);
+            }
+        }
+
+        return stops;
     }
 
     @Override
@@ -167,21 +207,14 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     @Override
     public void got_nearby_stops(LocationList locationList) {
-        for (StopLocation s : locationList.stoplocation) { // List all nearby stops
-            Log.i(TAG, "### NEAR STOP " + s.name + " ID:" + s.id + " TRACK:" + s.track);
-        }
-        StopLocation closest = locationList.stoplocation.get(0); // The closest stop is at the top of the list
-        Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id + " TRACK:" +  closest.track );
-        vtClient.get_departure_board(closest.id); // Get departures from this stop
-
-        updateBusStopList(locationList.stoplocation);
+        removeDuplicatesAndUpdateStopList(locationList.stoplocation);
     }
 
     @Override
     public void got_departure_board(DepartureBoard departureBoard) {
-        Log.i(TAG,"Departure board");
+        Log.i(TAG,"Departure board ");
         for (Departure d : departureBoard.departure) { // List all the departures from this stop
-            Log.i(TAG,"### DEPARTURES: " + d.name  + " SHORT NAME: " + d.sname + " DIRECTION: " + d.direction);
+            Log.i(TAG,"### DEPARTURES: " + d.name  + " SHORT NAME: " + d.sname + " DIRECTION: " + d.direction + " TIME: " + d.time);
             if (d.sname.equals("11") && d.direction.equals("Bergsjön")){ // If spårvagn 11 mot Bergsjön
                 vtClient.get_journey_details(d.journeyDetailRef); // Get journey details from this journey
                 return;
