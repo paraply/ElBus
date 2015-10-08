@@ -173,8 +173,4 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     }
 
-    @Override
-    public void previousFragment(Bundle bundle) {
-
-    }
 }
