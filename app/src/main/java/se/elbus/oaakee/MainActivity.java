@@ -111,6 +111,16 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
 
     }
+    private void changeFragmentWithBackstack(Fragment f){
+        FragmentManager fm = getSupportFragmentManager();
+
+        fm.beginTransaction()
+                .replace(R.id.main_container, f)
+                .addToBackStack(null)
+                .commit();
+
+
+    }
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -162,9 +172,22 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         newFragment.setArguments(args);
 
         mFragments.set(i,newFragment);
-        changeFragment(newFragment);
+        changeFragmentWithBackstack(newFragment);
         return;
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Fragment currFrag = mFragments.get(0);
+        if(currFrag == mTravelFragments.get(1)){
+            mFragments.set(0,mTravelFragments.get(0));
+            super.onBackPressed();
+        }else if(currFrag == mTravelFragments.get(2)){
+            mFragments.set(0,mTravelFragments.get(1));
+            super.onBackPressed();
+        }else{
+            System.exit(0);
+        }
+    }
 }
