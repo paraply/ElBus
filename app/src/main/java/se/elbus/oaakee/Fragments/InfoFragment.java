@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +44,10 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
     private String current_dgw;
     private VT_Client vt_client; // TODO: Will get reference from parent
     private JourneyDetailRef current_journey_ref;
+    private TextView textview_arrives;
 
-    private final int UPDATE_TIMER_INTERVAL = 5000;
+    private final int UPDATE_TIMER_INTERVAL = 1000; // TODO: Maybe need to adjust
+    private Timer vt_update_timer;
 
     public InfoFragment(){}
 
@@ -66,13 +69,12 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
 
     private void update_gui(){
         if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
-
+            textview_arrives.setText(R.string.arrived_at_destination);
         }else{
-//        vt_client.get_journey_details();
             if (onBus){
-
+                textview_arrives.setText(R.string.arrive_at_destination);
             }else{
-
+                textview_arrives.setText(R.string.bus_arrives_in);
             }
         }
 
@@ -101,47 +103,75 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
     }
 
     @Override
+    public void onDestroy(){ // Kill the timer when closing fragment
+        vt_update_timer.cancel();
+        vt_update_timer.purge();
+        super.onDestroy();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_info, container, false);
         TextView textview_line_short_name = (TextView) view.findViewById(R.id.infoBusName);
+        textview_arrives = (TextView) view.findViewById(R.id.infoArrivesIn);
+
         Bundle bundle = getArguments();
 
         if (savedInstanceState != null) {
+            Log.i("### info_frag", "has saved instance");
             onBus = savedInstanceState.getBoolean("onBus", false); // If has saved instance restore state. Otherwise assume we are not on the bus.
             arrived_at_destination = savedInstanceState.getBoolean("arrived_at_destination", false); // True if we already are at the destination
         }
 
-        textview_line_short_name.setText(parent.getString(R.string.info_bus_name_prefix) + bundle.getString("line_short_name") + parent.getString(R.string.info_bus_name_suffix));
+        textview_line_short_name.setText(parent.getString(R.string.info_bus_name_prefix) + bundle.getString("line_short_name") + parent.getString(R.string.info_bus_name_suffix)); //TODO: Not beautiful...
         current_journey_ref = new JourneyDetailRef(bundle.getString("line_ID")); // Create a new journey object since it's easier to handle strings in bundle..
 
         ec_client = new EC_Client(this); // TODO: Remove when get reference from parent
         vt_client = new VT_Client(this); // TODO: Remove when get reference from parent
 
-        if (!arrived_at_destination) { // has not arrived at destination yet. Create a timer that will update the status
+        if (!arrived_at_destination) { // has not arrived at destination yet.
 
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
+
+            if (!onBus) { // Start WiFi-Finder and check if we are on the bus
+                Log.i("### info_frag", "is not on bus yet as we know. Checking WiFi");
+                wifiFinder = new WifiFinder(parent, parent.getString(R.string.buswifiname)) {
+                    @Override
+                    // Found an Dgw close to us. We assume we are on this bus
+
+                    public void receiveDgw(String dgw) {
+                        Log.i("### info_frag", "Found Wifi, dgw: " + dgw);
+                        current_dgw = dgw;
+                        onBus = true;
+                    }
+                };
+            }
+
+            //  Create a timer that will update the status
+            vt_update_timer = new Timer();
+            vt_update_timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    Log.i("### info_frag", "TIMER EVENT, Checking Västtrafik API");
+
+                    // When you need to modify a UI element, do so on the UI thread.
+                    parent.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                            update_gui();
+                        }
+                    });
+//                    vt_client.get_journey_details(current_journey_ref);
 
                 }
             }, 0, UPDATE_TIMER_INTERVAL);
 
         }else{
+            Log.i("### info_frag", "has arrived at destination");
 
         }
 
-        if (!onBus) {
-            wifiFinder = new WifiFinder(parent, parent.getString(R.string.buswifiname)) {
-                @Override
-                // Found an Dgw close to us. We assume we are on this bus
 
-                public void receiveDgw(String dgw) {
-                    current_dgw = dgw;
-                    onBus = true;
-                }
-            };
-        }
 
 
 
@@ -171,20 +201,20 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
         return view;
     }
 
-    private void modifyView() {
-        View v = InfoFragment.this.getView();
-        TextView tView = (TextView) v.findViewById(R.id.infoArrivesIn);
-        TextView tBusName = (TextView) v.findViewById(R.id.infoBusName);
-        if(onBus) {
-            tView.setText("framme om");
-        } else {
-            Random ran = new Random();
-            int busNr = ran.nextInt(55) + 1;
-            tBusName.setText(busNr + ":an");
-            tView.setText("ankommer om");
-        }
-
-    }
+//    private void modifyView() {
+//        View v = InfoFragment.this.getView();
+//        TextView tView = (TextView) v.findViewById(R.id.infoArrivesIn);
+//        TextView tBusName = (TextView) v.findViewById(R.id.infoBusName);
+//        if(onBus) {
+//            tView.setText("framme om");
+//        } else {
+//            Random ran = new Random();
+//            int busNr = ran.nextInt(55) + 1;
+//            tBusName.setText(busNr + ":an");
+//            tView.setText("ankommer om");
+//        }
+//
+//    }
 
     @Override
     public void got_sensor_data(List<Bus_info> bus_info) {
