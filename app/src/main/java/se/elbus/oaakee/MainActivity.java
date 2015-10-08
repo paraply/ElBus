@@ -13,9 +13,11 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+import se.elbus.oaakee.Fragments.DestinationFragment;
 import se.elbus.oaakee.Fragments.FragmentSwitchCallbacks;
 import se.elbus.oaakee.Fragments.HamburgerFragment;
 import se.elbus.oaakee.Fragments.PaymentFragment;
+import se.elbus.oaakee.Fragments.InfoFragment;
 import se.elbus.oaakee.Fragments.TravelFragment;
 
 public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks, FragmentSwitchCallbacks {
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Inställningar"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Historik"
 
-        changeFragment(mFragments.get(0));
+        changeFragment(mFragments.get(0), false);
 
         /*
         This will find and save the hamburger menu fragment.
@@ -89,16 +91,25 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         if(mFragments != null){
             Fragment newFragment = mFragments.get(position);
             if(newFragment != null){
-                changeFragment(newFragment);
+                changeFragment(newFragment, false);
             }
         }
     }
 
-    private void changeFragment(Fragment f){
+    private void changeFragment(Fragment f, boolean backstack){
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction()
-                .replace(R.id.main_container, f)
-                .commit();
+        if(backstack){
+
+            fm.beginTransaction()
+                    .replace(R.id.main_container, f, f.getTag())
+                    .addToBackStack(null)
+                    .commit();
+        }else{
+            fm.beginTransaction()
+                    .replace(R.id.main_container, f, f.getTag())
+                    .commit();
+
+        }
     }
 
     public void restoreActionBar() {
@@ -142,6 +153,23 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     @Override
     public void nextFragment(Bundle bundle) {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment currentFragment = fm.findFragmentById(R.id.main_container);
+
+        if(currentFragment != null){
+            Fragment newFragment;
+            switch (currentFragment.getTag()){
+                case "departure":
+                    newFragment = new DestinationFragment();
+                    break;
+                case "destination":
+                    newFragment = new InfoFragment();
+                    break;
+                default: throw new RuntimeException("MOTHERFUCKING SHIT WTF IS HAPPENING");
+            }
+            newFragment.setArguments(bundle);
+            changeFragment(newFragment, true);
+        }
 
     }
 
