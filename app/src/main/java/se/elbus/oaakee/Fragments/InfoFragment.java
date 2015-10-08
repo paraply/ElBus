@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
@@ -48,13 +50,14 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
 
     // To create a new instance of this fragment
     // TODO: These arguments will probably change...
-    public static InfoFragment newInstance(String origin_stop_ID, String line_ref_URL, String destination_name){
+    public static InfoFragment newInstance(String origin_stop_ID, String line_ref_URL, String line_short_name, String destination_name){
         InfoFragment infoFragment = new InfoFragment();
 
         Bundle fragment_args = new Bundle();                // Save the arguments in a bundle in case the state is destroyed and needs to be recreated (like screen rotation)
         fragment_args.putString("origin_stop_ID", origin_stop_ID);
         fragment_args.putString("line_ID", line_ref_URL);
         fragment_args.putString("destination_name", destination_name);
+        fragment_args.putString("line_short_name", line_short_name);
         infoFragment.setArguments(fragment_args);
 
         return infoFragment;
@@ -100,23 +103,36 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_info, container, false);
+        TextView textview_line_short_name = (TextView) view.findViewById(R.id.infoBusName);
+        Bundle bundle = getArguments();
 
-        onBus = savedInstanceState.getBoolean("onBus",false); // If has saved instance restore state. Otherwise assume we are not on the bus.
-        arrived_at_destination = savedInstanceState.getBoolean("arrived_at_destination", false); // True if we already are at the destination
+        if (savedInstanceState != null) {
+            onBus = savedInstanceState.getBoolean("onBus", false); // If has saved instance restore state. Otherwise assume we are not on the bus.
+            arrived_at_destination = savedInstanceState.getBoolean("arrived_at_destination", false); // True if we already are at the destination
+        }
+
+        textview_line_short_name.setText(parent.getString(R.string.info_bus_name_prefix) + bundle.getString("line_short_name") + parent.getString(R.string.info_bus_name_suffix));
+        current_journey_ref = new JourneyDetailRef(bundle.getString("line_ID")); // Create a new journey object since it's easier to handle strings in bundle..
+
         ec_client = new EC_Client(this); // TODO: Remove when get reference from parent
         vt_client = new VT_Client(this); // TODO: Remove when get reference from parent
-        current_journey_ref = new JourneyDetailRef(savedInstanceState.getString("line_ID")); // Create a new journey object since it's easier to handle strings in bundle..
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
+        if (!arrived_at_destination) { // has not arrived at destination yet. Create a timer that will update the status
 
-            }
-        }, 0, UPDATE_TIMER_INTERVAL);
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+
+                }
+            }, 0, UPDATE_TIMER_INTERVAL);
+
+        }else{
+
+        }
 
         if (!onBus) {
-            wifiFinder = new WifiFinder(parent, "Electricity") {
+            wifiFinder = new WifiFinder(parent, parent.getString(R.string.buswifiname)) {
                 @Override
                 // Found an Dgw close to us. We assume we are on this bus
 
