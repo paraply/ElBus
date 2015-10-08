@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
     private HamburgerFragment mHamburgerFragment;
 
     private ArrayList<Fragment> mFragments;
+    private ArrayList<Fragment> mTravelFragments;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -39,19 +40,24 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFragments = new ArrayList<>();
+        mTravelFragments = new ArrayList<>();
 
         setTitle(getString(R.string.title_section1));
 
         /*
           Here is where we add the fragments in order.
          */
-        mFragments.add(new TravelFragment());
+        mTravelFragments.add(new TravelFragment());
+        mTravelFragments.add(new DestinationFragment());
+        mTravelFragments.add(new InfoFragment());
+
+        mFragments.add(mTravelFragments.get(0));
         mFragments.add(new PaymentFragment());
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Konto"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Inställningar"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Historik"
 
-        changeFragment(mFragments.get(0), false);
+        changeFragment(mFragments.get(0));
 
         /*
         This will find and save the hamburger menu fragment.
@@ -91,25 +97,19 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         if(mFragments != null){
             Fragment newFragment = mFragments.get(position);
             if(newFragment != null){
-                changeFragment(newFragment, false);
+                changeFragment(newFragment);
             }
         }
     }
 
-    private void changeFragment(Fragment f, boolean backstack){
+    private void changeFragment(Fragment f){
         FragmentManager fm = getSupportFragmentManager();
-        if(backstack){
 
-            fm.beginTransaction()
-                    .replace(R.id.main_container, f, f.getTag())
-                    .addToBackStack(null)
-                    .commit();
-        }else{
-            fm.beginTransaction()
-                    .replace(R.id.main_container, f, f.getTag())
-                    .commit();
+        fm.beginTransaction()
+                .replace(R.id.main_container, f)
+                .commit();
 
-        }
+
     }
 
     public void restoreActionBar() {
@@ -152,24 +152,18 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
     }
 
     @Override
-    public void nextFragment(Bundle bundle) {
+    public void nextFragment(Bundle args) {
         FragmentManager fm = getSupportFragmentManager();
         Fragment currentFragment = fm.findFragmentById(R.id.main_container);
 
-        if(currentFragment != null){
-            Fragment newFragment;
-            switch (currentFragment.getTag()){
-                case "departure":
-                    newFragment = new DestinationFragment();
-                    break;
-                case "destination":
-                    newFragment = new InfoFragment();
-                    break;
-                default: throw new RuntimeException("MOTHERFUCKING SHIT WTF IS HAPPENING");
-            }
-            newFragment.setArguments(bundle);
-            changeFragment(newFragment, true);
-        }
+        Fragment newFragment;
+        int i = mTravelFragments.indexOf(currentFragment);
+        newFragment = mTravelFragments.get(i+1);
+        newFragment.setArguments(args);
+
+        mFragments.set(i,newFragment);
+        changeFragment(newFragment);
+        return;
 
     }
 
