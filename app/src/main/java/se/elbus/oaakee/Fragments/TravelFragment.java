@@ -1,5 +1,6 @@
 package se.elbus.oaakee.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import se.elbus.oaakee.R;
 public class TravelFragment extends Fragment {
 
     private static Spinner mBusStopSpinner;
+
+    private FragmentSwitchCallbacks mFragmentSwitcher;
 
 
     @Override
@@ -68,5 +71,11 @@ public class TravelFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mFragmentSwitcher = (FragmentSwitchCallbacks) context;
     }
 }
