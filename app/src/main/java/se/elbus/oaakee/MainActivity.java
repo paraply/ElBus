@@ -13,10 +13,11 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+import se.elbus.oaakee.Fragments.FragmentSwitchCallbacks;
 import se.elbus.oaakee.Fragments.HamburgerFragment;
 import se.elbus.oaakee.Fragments.TravelFragment;
 
-public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks, FragmentSwitchCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -136,5 +137,15 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
     //For notifications etc.
     public static Intent newIntent(Context context) {
         return new Intent(context, MainActivity.class);
+    }
+
+    @Override
+    public void nextFragment(Bundle bundle) {
+
+    }
+
+    @Override
+    public void previousFragment(Bundle bundle) {
+
     }
 }

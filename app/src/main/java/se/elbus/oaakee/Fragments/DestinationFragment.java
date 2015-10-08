@@ -1,5 +1,6 @@
 package se.elbus.oaakee.Fragments;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,8 @@ import se.elbus.oaakee.R;
  * Created by Tobias on 15-09-30.
  */
 public class DestinationFragment extends Fragment {
+
+    private FragmentSwitchCallbacks mFragmentSwithcer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,5 +46,11 @@ public class DestinationFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,destinations);
         ListView destinationsListView = (ListView) destinationView.findViewById(R.id.destinationsListView);
         destinationsListView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mFragmentSwithcer = (FragmentSwitchCallbacks) context;
     }
 }
