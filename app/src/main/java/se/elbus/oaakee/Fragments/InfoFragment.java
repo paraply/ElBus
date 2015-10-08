@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import se.elbus.oaakee.AlarmService;
 import se.elbus.oaakee.Buses.WifiFinder;
@@ -40,6 +42,7 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
     private VT_Client vt_client; // TODO: Will get reference from parent
     private JourneyDetailRef current_journey_ref;
 
+    private final int UPDATE_TIMER_INTERVAL = 5000;
 
     public InfoFragment(){}
 
@@ -59,38 +62,25 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
 
 
     private void update_gui(){
-//        vt_client.get_journey_details();
-        if (onBus){
+        if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
 
         }else{
+//        vt_client.get_journey_details();
+            if (onBus){
 
-        }
-    }
+            }else{
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        onBus = savedInstanceState.getBoolean("onBus",false); // If has saved instance restore state. Otherwise assume we are not on the bus.
-        arrived_at_destination = savedInstanceState.getBoolean("arrived_at_destination", false); // True if we already are at the destination
-        ec_client = new EC_Client(this); // TODO: Remove when get reference from parent
-        vt_client = new VT_Client(this); // TODO: Remove when get reference from parent
-        current_journey_ref = new JourneyDetailRef(savedInstanceState.getString("line_ID")); // Create a new journey object since it's easier to handle strings in bundle..
-
-
-        if (!onBus){
-            wifiFinder = new WifiFinder(parent, "Electricity") {
-                @Override
-                // Found an Dgw close to us. We assume we are on this bus
-
-                public void receiveDgw(String dgw) {
-                    current_dgw = dgw;
-                    onBus = true;
-                }
-            };
+            }
         }
 
 
-        super.onCreate(savedInstanceState);
     }
+
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//
+//        super.onCreate(savedInstanceState);
+//    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){ // Save the state in case the fragment gets destroyed
@@ -109,30 +99,60 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_info, container, false);
 
-        onBus = false;
+        onBus = savedInstanceState.getBoolean("onBus",false); // If has saved instance restore state. Otherwise assume we are not on the bus.
+        arrived_at_destination = savedInstanceState.getBoolean("arrived_at_destination", false); // True if we already are at the destination
+        ec_client = new EC_Client(this); // TODO: Remove when get reference from parent
+        vt_client = new VT_Client(this); // TODO: Remove when get reference from parent
+        current_journey_ref = new JourneyDetailRef(savedInstanceState.getString("line_ID")); // Create a new journey object since it's easier to handle strings in bundle..
 
-        Random ran = new Random();
-
-        mTV = (TextView) v.findViewById(R.id.timeTilArrival);
-        mTV.setText(Integer.toString(ran.nextInt(13) + 2));
-        mTV.setOnClickListener(new View.OnClickListener() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
-            public void onClick(View vClick) {
-                int minLeft = Integer.parseInt(mTV.getText().toString());
-                if (minLeft <= 0) {
-                    onBus = !onBus;
-                    Random ran = new Random();
-                    mTV.setText(Integer.toString(ran.nextInt(13) + 2));
-                    modifyView();
-                } else {
-                    mTV.setText(Integer.toString(minLeft - 1));
-                }
-            }
-        });
+            public void run() {
 
-        return v;
+            }
+        }, 0, UPDATE_TIMER_INTERVAL);
+
+        if (!onBus) {
+            wifiFinder = new WifiFinder(parent, "Electricity") {
+                @Override
+                // Found an Dgw close to us. We assume we are on this bus
+
+                public void receiveDgw(String dgw) {
+                    current_dgw = dgw;
+                    onBus = true;
+                }
+            };
+        }
+
+
+
+
+
+//        onBus = false;
+
+//        Random ran = new Random();
+//
+//        mTV = (TextView) v.findViewById(R.id.timeTilArrival);
+//        mTV.setText(Integer.toString(ran.nextInt(13) + 2));
+//        mTV.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View vClick) {
+//                int minLeft = Integer.parseInt(mTV.getText().toString());
+//                if (minLeft <= 0) {
+//                    onBus = !onBus;
+//                    Random ran = new Random();
+//                    mTV.setText(Integer.toString(ran.nextInt(13) + 2));
+//                    modifyView();
+//                } else {
+//                    mTV.setText(Integer.toString(minLeft - 1));
+//                }
+//            }
+//        });
+
+        return view;
     }
 
     private void modifyView() {
