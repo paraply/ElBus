@@ -20,47 +20,83 @@ import se.elbus.oaakee.R;
 import se.elbus.oaakee.REST_API.EC_Callback;
 import se.elbus.oaakee.REST_API.EC_Client;
 import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
+import se.elbus.oaakee.REST_API.VT_Callback;
+import se.elbus.oaakee.REST_API.VT_Client;
+import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
+import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
+import se.elbus.oaakee.REST_API.VT_Model.JourneyDetailRef;
+import se.elbus.oaakee.REST_API.VT_Model.LocationList;
 
-public class InfoFragment extends Fragment implements EC_Callback{
+public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
 
     private TextView mTV;
     private boolean onBus;
+    private boolean arrived_at_destination;
 
     private MainActivity parent;
     private WifiFinder wifiFinder;
     private EC_Client ec_client; // TODO: Maybe will get reference from parent
     private String current_dgw;
+    private VT_Client vt_client; // TODO: Will get reference from parent
+    private JourneyDetailRef current_journey_ref;
+
 
     public InfoFragment(){}
 
     // To create a new instance of this fragment
     // TODO: These arguments will probably change...
-    // TODO: Maybe use JourneyRefURL from VT_API...
-    public static InfoFragment newInstance(String stop_ID, String line_ID, String destination_ID){
+    public static InfoFragment newInstance(String origin_stop_ID, String line_ref_URL, String destination_name){
         InfoFragment infoFragment = new InfoFragment();
 
         Bundle fragment_args = new Bundle();                // Save the arguments in a bundle in case the state is destroyed and needs to be recreated (like screen rotation)
-        fragment_args.putString("stop_ID", stop_ID);
-        fragment_args.putString("line_ID", line_ID);
-        fragment_args.putString("destination_ID", destination_ID);
+        fragment_args.putString("origin_stop_ID", origin_stop_ID);
+        fragment_args.putString("line_ID", line_ref_URL);
+        fragment_args.putString("destination_name", destination_name);
         infoFragment.setArguments(fragment_args);
 
         return infoFragment;
     }
 
+
+    private void update_gui(){
+//        vt_client.get_journey_details();
+        if (onBus){
+
+        }else{
+
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ec_client = new EC_Client(this);
+        onBus = savedInstanceState.getBoolean("onBus",false); // If has saved instance restore state. Otherwise assume we are not on the bus.
+        arrived_at_destination = savedInstanceState.getBoolean("arrived_at_destination", false); // True if we already are at the destination
+        ec_client = new EC_Client(this); // TODO: Remove when get reference from parent
+        vt_client = new VT_Client(this); // TODO: Remove when get reference from parent
+        current_journey_ref = new JourneyDetailRef(savedInstanceState.getString("line_ID")); // Create a new journey object since it's easier to handle strings in bundle..
 
-        wifiFinder = new WifiFinder(parent, "Electricity") {
-            @Override
-            // Found an Dgw close to us. We assume we are on this bus
-            public void receiveDgw(String dgw) {
-                current_dgw = dgw;
-            }
-        };
+
+        if (!onBus){
+            wifiFinder = new WifiFinder(parent, "Electricity") {
+                @Override
+                // Found an Dgw close to us. We assume we are on this bus
+
+                public void receiveDgw(String dgw) {
+                    current_dgw = dgw;
+                    onBus = true;
+                }
+            };
+        }
+
 
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){ // Save the state in case the fragment gets destroyed
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putBoolean("onBus", onBus);
+        savedInstanceState.putBoolean("arrived_at_destination", arrived_at_destination);
     }
 
     // Called when a fragment is first attached to its context
@@ -131,6 +167,21 @@ public class InfoFragment extends Fragment implements EC_Callback{
 
     @Override
     public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
+
+    }
+
+    @Override
+    public void got_journey_details(JourneyDetail journeyDetail) {
+
+    }
+
+    @Override
+    public void got_nearby_stops(LocationList locationList) {
+
+    }
+
+    @Override
+    public void got_departure_board(DepartureBoard departureBoard) {
 
     }
 
