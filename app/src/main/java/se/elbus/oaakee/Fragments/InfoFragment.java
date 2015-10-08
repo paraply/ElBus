@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
+import se.elbus.oaakee.AlarmService;
 import se.elbus.oaakee.Buses.WifiFinder;
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
@@ -137,4 +138,7 @@ public class InfoFragment extends Fragment implements EC_Callback{
     public void got_error(String during_method, String error_msg) {
 
     }
+    
+    //For alarm functionality, add this
+    //AlarmService.setServiceAlarm(getActivity(), true);
 }
