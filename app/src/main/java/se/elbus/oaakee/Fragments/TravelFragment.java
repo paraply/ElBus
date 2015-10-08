@@ -16,11 +16,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.Manifest;
 
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.REST_API.VT_Callback;
 import se.elbus.oaakee.REST_API.VT_Client;
+import se.elbus.oaakee.REST_API.VT_Model.Departure;
 import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
 import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
 import se.elbus.oaakee.REST_API.VT_Model.LocationList;
@@ -42,8 +45,8 @@ public class TravelFragment extends Fragment implements VT_Callback {
         super.onCreate(savedInstanceState);
 
         vtClient = new VT_Client(this);
-        vtClient.get_nearby_stops(latitude+"", longitude+"", "30", "1000");
-        Log.i(TAG,"Get nearby stops");
+        vtClient.get_nearby_stops(latitude + "", longitude + "", "30", "1000");
+        Log.i(TAG, "Get nearby stops");
 
         try {
             Log.i(TAG,"Permission for GPS: " + checkGPSPermission());
@@ -101,9 +104,27 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Log.i(TAG,"Spinner nothing selected");
+                Log.i(TAG, "Spinner nothing selected");
             }
         });
+
+    }
+
+    private void updateBusStopList(List<StopLocation> stopLocations){
+
+        ArrayList<String> stops = new ArrayList<String>();
+
+        for (StopLocation s : stopLocations){
+            stops.add(s.name);
+        }
+
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, busStops);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),R.layout.spinner_item,stops);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mBusStopSpinner.setAdapter(adapter1);
+
+
 
     }
 
@@ -152,10 +173,20 @@ public class TravelFragment extends Fragment implements VT_Callback {
         StopLocation closest = locationList.stoplocation.get(0); // The closest stop is at the top of the list
         Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id + " TRACK:" +  closest.track );
         vtClient.get_departure_board(closest.id); // Get departures from this stop
+
+        updateBusStopList(locationList.stoplocation);
     }
 
     @Override
     public void got_departure_board(DepartureBoard departureBoard) {
+        Log.i(TAG,"Departure board");
+        for (Departure d : departureBoard.departure) { // List all the departures from this stop
+            Log.i(TAG,"### DEPARTURES: " + d.name  + " SHORT NAME: " + d.sname + " DIRECTION: " + d.direction);
+            if (d.sname.equals("11") && d.direction.equals("Bergsjön")){ // If spårvagn 11 mot Bergsjön
+                vtClient.get_journey_details(d.journeyDetailRef); // Get journey details from this journey
+                return;
+            }
+        }
 
     }
 
