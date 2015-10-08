@@ -31,6 +31,7 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 public class TravelFragment extends Fragment implements VT_Callback {
 
     private static Spinner mBusStopSpinner;
+    private static ListView mDeparturesListView;
     private VT_Client vtClient;
     private static final String TAG = "Travel";
 
@@ -40,6 +41,8 @@ public class TravelFragment extends Fragment implements VT_Callback {
     private double longitude = 11.972917;
 
     private List<StopLocation> busStops; //With removed duplicates
+    private List<Departure> allDepartures;
+    private List<List<Departure>> departuresList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,8 @@ public class TravelFragment extends Fragment implements VT_Callback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_travel, container, false);
 
+        allDepartures = new ArrayList<Departure>();
+
         createBusStopList(v);
         createDeparturesList(v);
 
@@ -88,11 +93,11 @@ public class TravelFragment extends Fragment implements VT_Callback {
      * Populates the bus stop spinner
      */
     private void createBusStopList(View v) {
-        String[] busStops = {};
+        String[] strBusStops = {};
 
         mBusStopSpinner = (Spinner) v.findViewById(R.id.busStopSpinner);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, busStops);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, strBusStops);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mBusStopSpinner.setAdapter(adapter);
@@ -101,7 +106,9 @@ public class TravelFragment extends Fragment implements VT_Callback {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString() + ", Position: " + mBusStopSpinner.getSelectedItemPosition());
-                updateDeparturesList(mBusStopSpinner.getSelectedItemPosition());
+                //updateDeparturesList(mBusStopSpinner.getSelectedItemPosition());
+                int i = mBusStopSpinner.getSelectedItemPosition();
+                vtClient.get_departure_board(busStops.get(i).id);
             }
 
             @Override
@@ -113,7 +120,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
     }
 
     private void updateBusStopList(){
-        Log.i(TAG, "Updating bus stop list");
+        Log.i(TAG, "--- Updating bus stop list ---");
 
         ArrayList<String> stops = new ArrayList<String>();
 
@@ -129,26 +136,41 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     }
 
-    private void updateDeparturesList(int index){
-        Log.i(TAG, "Updating departure list");
+    private void sortDeparturesAndUpdateDepartureList(){
+        
+        updateDeparturesList();
 
-        Log.i(TAG, "Stop chosen: " + busStops.get(index).name);
+    }
+
+    private void updateDeparturesList(){
+        Log.i(TAG, "--- Updating departure list ---");
+
+        //Log.i(TAG, "Stop chosen: " + busStops.get(index).name);
 
 
+        List<List<Departure>> list = new ArrayList<List<Departure>>();
+        list.add(allDepartures);
 
+        ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), list);
+        mDeparturesListView.setAdapter(adapter);
 
 
     }
 
     /**
-     * Creates a list of departures from an array of strings
+     * Creates a list of allDepartures from an array of strings
      */
     private void createDeparturesList(View v) {
-        String[] departures = {"Lindholmen", "Tynnered", "Bergsjön", "Majorna"};
 
-        ArrayAdapter<String> adapter = new DeparturesAdapter(getContext(), departures);
-        ListView departuresListView = (ListView) v.findViewById(R.id.departuresListView);
-        departuresListView.setAdapter(adapter);
+        mDeparturesListView = (ListView) v.findViewById(R.id.departuresListView);
+
+        //String[] allDepartures = {"Lindholmen", "Tynnered", "Bergsjön", "Majorna"};
+
+        List<List<Departure>> list = new ArrayList<List<Departure>>();
+        list.add(allDepartures);
+
+        ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), list);
+        mDeparturesListView.setAdapter(adapter);
 
     }
 
@@ -225,13 +247,16 @@ public class TravelFragment extends Fragment implements VT_Callback {
     @Override
     public void got_departure_board(DepartureBoard departureBoard) {
         Log.i(TAG,"Departure board ");
-        for (Departure d : departureBoard.departure) { // List all the departures from this stop
-            Log.i(TAG,"### DEPARTURES: " + d.name  + " SHORT NAME: " + d.sname + " DIRECTION: " + d.direction + " TIME: " + d.time);
+        for (Departure d : departureBoard.departure) { // List all the allDepartures from this stop
+            Log.i(TAG,"### DEPARTURES - SHORT NAME: " + d.sname + " TIME: " + d.time + " TRACK: " + d.track + " bgColor: " + d.bgColor + " JOURNEYID " + d.journeyid + " DIRECTION: " + d.direction );
             if (d.sname.equals("11") && d.direction.equals("Bergsjön")){ // If spårvagn 11 mot Bergsjön
                 vtClient.get_journey_details(d.journeyDetailRef); // Get journey details from this journey
                 return;
             }
         }
+        allDepartures = departureBoard.departure;
+
+        sortDeparturesAndUpdateDepartureList();
 
     }
 
