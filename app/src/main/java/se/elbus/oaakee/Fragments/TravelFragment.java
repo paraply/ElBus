@@ -18,7 +18,6 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Manifest;
 
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.REST_API.VT_Callback;
@@ -40,23 +39,27 @@ public class TravelFragment extends Fragment implements VT_Callback {
     private double latitude = 57.692395;
     private double longitude = 11.972917;
 
+    private List<StopLocation> busStops; //With removed duplicates
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         vtClient = new VT_Client(this);
-        vtClient.get_nearby_stops(latitude + "", longitude + "", "30", "1000");
-        Log.i(TAG, "Get nearby stops");
 
         try {
             Log.i(TAG,"Permission for GPS: " + checkGPSPermission());
             Location location = getCurrentLocation();
             Log.i(TAG,"Latitude: " + location.getLatitude());
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
 
         } catch (SecurityException e){
             Log.e(TAG,"Couldn't get location from gps. Please check GPS permission");
             e.printStackTrace();
         }
+
+        vtClient.get_nearby_stops(latitude + "", longitude + "", "30", "1000");
     }
 
     @Override
@@ -85,8 +88,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
      * Populates the bus stop spinner
      */
     private void createBusStopList(View v) {
-        String[] busStops = {"Chalmers", "Kapellplatsen", "Vasaplatsen", "Valand",
-                "Kungsportsplatsen", "Brunnsparken", "Centralstationen", "Långanamnhållplatsen abcdefgh"};
+        String[] busStops = {};
 
         mBusStopSpinner = (Spinner) v.findViewById(R.id.busStopSpinner);
 
@@ -98,8 +100,8 @@ public class TravelFragment extends Fragment implements VT_Callback {
         mBusStopSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString());
-                updateDeparturesList();
+                Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString() + ", Position: " + mBusStopSpinner.getSelectedItemPosition());
+                updateDeparturesList(mBusStopSpinner.getSelectedItemPosition());
             }
 
             @Override
@@ -110,12 +112,12 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     }
 
-    private void updateBusStopList(List<StopLocation> stopLocations){
+    private void updateBusStopList(){
         Log.i(TAG, "Updating bus stop list");
 
         ArrayList<String> stops = new ArrayList<String>();
 
-        for (StopLocation s : stopLocations){
+        for (StopLocation s : busStops){
             stops.add(s.name);
         }
 
@@ -127,8 +129,14 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     }
 
-    private void updateDeparturesList(){
+    private void updateDeparturesList(int index){
         Log.i(TAG, "Updating departure list");
+
+        Log.i(TAG, "Stop chosen: " + busStops.get(index).name);
+
+
+
+
 
     }
 
@@ -155,9 +163,11 @@ public class TravelFragment extends Fragment implements VT_Callback {
         StopLocation closest = stops.get(0); // The closest stop is at the top of the list
         Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id);
 
-        vtClient.get_departure_board(closest.id); // Get departures from this stop
+        //vtClient.get_departure_board(closest.id); // Get departures from this stop
 
-        updateBusStopList(stopLocations);
+        busStops = stops;
+
+        updateBusStopList();
     }
 
 
@@ -166,10 +176,12 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
         stops.add(stopLocations.get(0));
 
+        boolean contains;
+
         for (StopLocation s:stopLocations){
             String stopName = s.name;
 
-            boolean contains = false;
+            contains = false;
 
             for (StopLocation d:stops){
                 if ((stopName.equals(d.name))) {
