@@ -12,6 +12,9 @@ public class JourneyDetailRef {
     @Attribute()
     public String ref;
 
+    public JourneyDetailRef(){
+    }
+
     public JourneyDetailRef(String ref_url){
         ref = ref_url;
     }
