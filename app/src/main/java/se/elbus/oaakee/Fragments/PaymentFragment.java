@@ -19,7 +19,7 @@ import se.elbus.oaakee.R;
 public class PaymentFragment  extends Fragment {
 
     private Card mCard = new Card();
-    private Punch mCurrentPunch;
+    private Ticket mCurrentTicket;
     private TextView chargeView;
 
 
