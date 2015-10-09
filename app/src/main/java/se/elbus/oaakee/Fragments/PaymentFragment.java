@@ -1,7 +1,5 @@
 package se.elbus.oaakee.Fragments;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -9,12 +7,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.text.NumberFormat;
 
@@ -40,7 +35,7 @@ public class PaymentFragment  extends Fragment {
         Finds the view and updates the amount of currency.
          */
         final TextView mCurrencyView = (TextView) v.findViewById(R.id.chargeText);
-        updateCharge(mCurrencyView);
+        updateCharge(mCurrencyView, mCard.getCharge());
 
         /*
         Finds the progress bar.
@@ -54,12 +49,13 @@ public class PaymentFragment  extends Fragment {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrentTicket = getTicket();
-                hasTicket();
+                if(mCard.getCharge() > mCard.useCharge(10)){
+                    mCurrentTicket = new Ticket();
+                    hasTicket();
+                }
             }
         };
         mTicketButton.setOnClickListener(listener);
-
 
         return v;
     }
@@ -89,18 +85,15 @@ public class PaymentFragment  extends Fragment {
     }
 
     private void hasNotTicket() {
-mProgressbar.setProgress(mProgressbar.getMax());
+        mTicketButton.setVisibility(View.VISIBLE);
+
+        mProgressbar.setProgress(mProgressbar.getMax());
         mCurrentTicket = null;
-
     }
 
-    private Ticket getTicket() {
-        return new Ticket();
-    }
-
-    private void updateCharge(TextView v) {
+    private void updateCharge(TextView v, Double charge) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        v.setText(formatter.format(mCard.getCharge()));
+        v.setText(formatter.format(charge));
     }
 
 

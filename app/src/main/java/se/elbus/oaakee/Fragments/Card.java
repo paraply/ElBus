@@ -5,8 +5,23 @@ package se.elbus.oaakee.Fragments;
  */
 public class Card {
 
+    private double charge = 200;
 
+    /**
+     * @return the current charge
+     */
     public double getCharge() {
-        return 33.334545;
+        return charge;
+    }
+
+    /**
+     * @param amount is the amount we want to use
+     * @return the new charge on the card
+     */
+    public double useCharge(double amount) {
+        if(charge >= amount){
+            this.charge -= amount;
+        }
+        return charge;
     }
 }
