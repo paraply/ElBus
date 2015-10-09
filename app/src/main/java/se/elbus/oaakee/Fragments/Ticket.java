@@ -9,7 +9,15 @@ public class Ticket {
      */
     public final long mValidTo;
 
+    /**
+     * Amount of milliseconds the ticket will be valid for.
+     */
+    public final long VALID_TIME = 60000;
+
     public Ticket() {
-        mValidTo = System.currentTimeMillis() + (90 * 60 * 1000); // Always 90 minutes for now.
+        /*
+        TODO: Implement a better way of getting the current time.
+         */
+        mValidTo = System.currentTimeMillis() + VALID_TIME;
     }
 }
