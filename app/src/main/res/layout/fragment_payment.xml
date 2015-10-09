@@ -165,6 +165,7 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/ticket_last_gotten"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:text="@string/time_never"

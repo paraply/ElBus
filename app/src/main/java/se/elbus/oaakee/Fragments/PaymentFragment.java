@@ -12,7 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import se.elbus.oaakee.R;
 
@@ -28,6 +33,8 @@ public class PaymentFragment  extends Fragment {
     private ProgressBar mProgressbar;
     private TextView mTimeLeftText;
     private LinearLayout mTimeLeftViews;
+    private TextView mCurrencyView;
+    private TextView mHistoryView;
 
 
     @Override
@@ -35,10 +42,10 @@ public class PaymentFragment  extends Fragment {
         View v = inflater.inflate(R.layout.fragment_payment, container, false);
 
         /*
-        Finds the view and updates the amount of currency.
+        Finds the money view and updates the amount of currency.
          */
-        TextView mCurrencyView = (TextView) v.findViewById(R.id.chargeText);
-        updateCharge(mCurrencyView, mCard.getCharge());
+        mCurrencyView = (TextView) v.findViewById(R.id.chargeText);
+        updateCharge();
 
         /*
         Finds the progress bar.
@@ -50,6 +57,11 @@ public class PaymentFragment  extends Fragment {
          */
         mTimeLeftText = (TextView) v.findViewById(R.id.timeleft);
         mTimeLeftViews = (LinearLayout) v.findViewById(R.id.timeleft_all);
+
+        /*
+        Finds the "last time gotten ticket view"
+         */
+        mHistoryView = (TextView) v.findViewById(R.id.ticket_last_gotten);
 
         /*
         Finds the button and binds a listener to it.
@@ -70,6 +82,8 @@ public class PaymentFragment  extends Fragment {
     }
 
     private void hasTicket() {
+        this.updateLastTicket();
+        this.updateCharge();
         mTicketButton.setVisibility(View.INVISIBLE);
 
         long time = (mCurrentTicket.mValidTo - System.currentTimeMillis());
@@ -104,6 +118,7 @@ public class PaymentFragment  extends Fragment {
     }
 
     private void hasNotTicket() {
+        mTimeLeftText.setText(null);
         mTimeLeftViews.setVisibility(View.INVISIBLE);
         mTicketButton.setVisibility(View.VISIBLE);
 
@@ -111,9 +126,13 @@ public class PaymentFragment  extends Fragment {
         mCurrentTicket = null;
     }
 
-    private void updateCharge(TextView v, Double charge) {
+    private void updateCharge() {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        v.setText(formatter.format(charge));
+        mCurrencyView.setText(formatter.format(mCard.getCharge()));
+    }
+
+    private void updateLastTicket(){
+        mHistoryView.setText(DateFormat.getInstance().format(System.currentTimeMillis()));
     }
 
 
