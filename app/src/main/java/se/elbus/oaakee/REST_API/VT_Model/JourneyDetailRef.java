@@ -12,6 +12,13 @@ public class JourneyDetailRef {
     @Attribute()
     public String ref;
 
+    public JourneyDetailRef(){
+    }
+
+    public JourneyDetailRef(String ref_url){
+        ref = ref_url;
+    }
+
 
     public String getRef(){ //Use this to get real url without bad %25 and other stuff
         try {
