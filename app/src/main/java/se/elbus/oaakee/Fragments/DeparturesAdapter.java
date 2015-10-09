@@ -2,12 +2,14 @@ package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,47 +36,31 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
 
         List<Departure> departures = getItem(position);
 
-        final Button topButton = (Button) customView.findViewById(R.id.topDepartureButton);
-        final Button bottomButton = (Button) customView.findViewById(R.id.bottomDepartureButton);
 
-        Button thirdButton = new Button(getContext());
+        TextView lineNumber = (TextView)customView.findViewById(R.id.busNumberTextView);
+        if (departures.size()>0) {
+            lineNumber.setText(departures.get(0).sname);
+        }
+        //final Button topButton = (Button) customView.findViewById(R.id.topDepartureButton);
 
-        Log.i("Travel","departure size: " + departures.size());
+        for (Departure departure:departures){
 
-        switch (departures.size()){
-            case 1:
-                topButton.setText(departures.get(0).name);
-                break;
-            case 2:
-                topButton.setText(departures.get(0).name);
-                bottomButton.setText(departures.get(1).name);
-                break;
-            case 3:
-                topButton.setText(departures.get(0).name);
-                bottomButton.setText(departures.get(1).name);
-                thirdButton.setText(departures.get(2).name);
-                break;
-            case 4:
-                topButton.setText("4");
-                bottomButton.setText("4");
-                thirdButton.setText("4");
-                break;
-            default:
-                topButton.setText("size " + departures.size());
-                bottomButton.setText("default");
-                thirdButton.setText("default");
-                break;
+            Button button = new Button(getContext());
+
+            LinearLayout linearLayout = (LinearLayout)customView.findViewById(R.id.busLineButtonLayout);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            linearLayout.addView(button, layoutParams);
+            button.setGravity(Gravity.LEFT);
+
+            button.setText(departure.direction + " - " + departure.time);
+            setButtonAction(button);
         }
 
-        LinearLayout ll = (LinearLayout)customView.findViewById(R.id.busLineButtonLayout);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ll.addView(thirdButton, lp);
 
 
 
-        setButtonAction(topButton);
-        setButtonAction(bottomButton);
-        setButtonAction(thirdButton);
+
+        //setButtonAction(topButton);
 
         return customView;
     }
