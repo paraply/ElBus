@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,6 +26,8 @@ public class PaymentFragment  extends Fragment {
     private Ticket mCurrentTicket;
     private Button mTicketButton;
     private ProgressBar mProgressbar;
+    private TextView mTimeLeftText;
+    private LinearLayout mTimeLeftViews;
 
 
     @Override
@@ -34,13 +37,19 @@ public class PaymentFragment  extends Fragment {
         /*
         Finds the view and updates the amount of currency.
          */
-        final TextView mCurrencyView = (TextView) v.findViewById(R.id.chargeText);
+        TextView mCurrencyView = (TextView) v.findViewById(R.id.chargeText);
         updateCharge(mCurrencyView, mCard.getCharge());
 
         /*
         Finds the progress bar.
          */
         mProgressbar = (ProgressBar) v.findViewById(R.id.countdown_progressbar);
+
+        /*
+        Finds the countdown text.
+         */
+        mTimeLeftText = (TextView) v.findViewById(R.id.timeleft);
+        mTimeLeftViews = (LinearLayout) v.findViewById(R.id.timeleft_all);
 
         /*
         Finds the button and binds a listener to it.
@@ -74,6 +83,7 @@ public class PaymentFragment  extends Fragment {
             @Override
             public void onTick(long millisUntilFinished) {
                 mProgressbar.incrementProgressBy(-1);
+                mTimeLeftText.setText(millisToMinutes(millisUntilFinished));
             }
 
             @Override
@@ -82,9 +92,19 @@ public class PaymentFragment  extends Fragment {
             }
         };
         timer.start();
+        mTimeLeftViews.setVisibility(View.VISIBLE);
+    }
+
+    private String millisToMinutes(long millisUntilFinished) {
+        String min;
+        double time = millisUntilFinished;
+        time /= 1000 * 60;
+        min = Integer.toString((int) Math.ceil(time));
+        return min;
     }
 
     private void hasNotTicket() {
+        mTimeLeftViews.setVisibility(View.INVISIBLE);
         mTicketButton.setVisibility(View.VISIBLE);
 
         mProgressbar.setProgress(mProgressbar.getMax());

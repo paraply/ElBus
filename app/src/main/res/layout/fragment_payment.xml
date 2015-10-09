@@ -62,7 +62,8 @@
         android:useDefaultMargins="false"
         android:gravity="center"
         android:layout_gravity="center"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        android:id="@+id/timeleft_all">
 
         <TextView
             android:layout_width="wrap_content"
