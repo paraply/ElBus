@@ -42,11 +42,14 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     private List<StopLocation> busStops; //With removed duplicates
     private List<Departure> allDepartures;
-    private List<List<Departure>> departuresList;
+    private List<List<Departure>> departuresSorted;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        allDepartures = new ArrayList<Departure>();
+        departuresSorted = new ArrayList<>();
 
         vtClient = new VT_Client(this);
 
@@ -69,7 +72,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_travel, container, false);
 
-        allDepartures = new ArrayList<Departure>();
+
 
         createBusStopList(v);
         createDeparturesList(v);
@@ -137,9 +140,46 @@ public class TravelFragment extends Fragment implements VT_Callback {
     }
 
     private void sortDeparturesAndUpdateDepartureList(){
-        
+
+        sortDepartures();
         updateDeparturesList();
 
+    }
+
+    private void sortDepartures(){
+        departuresSorted.clear();
+
+        List<String> shortName = new ArrayList<String>(); //list of unique short name sorted by departure time
+
+        for (Departure departure:allDepartures){
+            if (!(shortName.contains(departure.sname))){
+                shortName.add(departure.sname);
+            }
+        }
+
+        for (String s:shortName){ //go through all lines
+            Log.i(TAG,"Short: " + s);
+            List<Departure> departures = new ArrayList<Departure>();
+
+            for (Departure departure:allDepartures){ //loop through all departures
+                if (departure.sname.equals(s)){
+                    boolean alreadyInList = false;
+
+                    for (Departure d2:departures){
+                        if (departure.direction.equals(d2.direction)){
+                            alreadyInList=true;
+                            break;
+                        }
+                    }
+
+                    if (!alreadyInList){
+                        departures.add(departure);
+                        Log.d(TAG,"Added: " + departure.sname + ", Dir: " + departure.direction + ", time: " + departure.time);
+                    } else {Log.d(TAG,"NoAdd: " + departure.sname + ", Dir: " + departure.direction + ", time: " + departure.time);}
+                }
+            }
+            departuresSorted.add(departures);
+        }
     }
 
     private void updateDeparturesList(){
@@ -148,10 +188,10 @@ public class TravelFragment extends Fragment implements VT_Callback {
         //Log.i(TAG, "Stop chosen: " + busStops.get(index).name);
 
 
-        List<List<Departure>> list = new ArrayList<List<Departure>>();
-        list.add(allDepartures);
+        //List<List<Departure>> list = new ArrayList<List<Departure>>();
+        //list.add(allDepartures);
 
-        ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), list);
+        ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), departuresSorted);
         mDeparturesListView.setAdapter(adapter);
 
 
