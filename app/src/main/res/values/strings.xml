@@ -26,4 +26,5 @@
     <string name="charge">Saldo</string>
     <string name="minutes">min</string>
     <string name="font">sans-serif-thin</string>
+    <string name="press_for_ticket">tryck för att stämpla</string>
 </resources>

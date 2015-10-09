@@ -15,7 +15,6 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/chargeText"
         android:text="@string/your_ticket"
         android:layout_row="0"
         android:layout_rowSpan="1"
@@ -28,7 +27,7 @@
         android:inputType="none"
         android:gravity="center"
         android:minHeight="180sp"
-        android:textSize="23sp" />
+        android:textSize="23sp"/>
 
     <ProgressBar
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,8 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="false"
-        android:max="101"
-        android:progress="82"
+        android:max="100"
+        android:progress="100"
         android:secondaryProgress="100"
         android:progressDrawable="@drawable/countdown_ring"
         android:layout_row="0"
@@ -62,7 +61,8 @@
         android:rowOrderPreserved="false"
         android:useDefaultMargins="false"
         android:gravity="center"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:visibility="invisible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,6 +83,29 @@
             android:gravity="center"
             android:layout_gravity="bottom"
             android:paddingBottom="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_row="0"
+        android:layout_rowSpan="3"
+        android:layout_column="0"
+        android:layout_columnSpan="3"
+        android:orientation="horizontal"
+        android:columnCount="1"
+        android:rowCount="3"
+        android:rowOrderPreserved="false"
+        android:useDefaultMargins="false"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_get_ticket"
+            android:text="@string/press_for_ticket"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -112,6 +135,7 @@
             android:layout_height="fill_parent"
             android:text="125 kr"
             android:layout_gravity="start"
+            android:id="@+id/chargeText"
             android:singleLine="true"
             android:textColor="@android:color/black"
             android:fontFamily="@string/font"
