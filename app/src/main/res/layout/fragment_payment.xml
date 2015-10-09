@@ -70,7 +70,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/timeleft"
             android:textSize="90sp"
-            android:text="19"
             android:fontFamily="@string/font"
             android:textColor="@android:color/black" />
 
@@ -134,7 +133,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:text="125 kr"
+            android:text="@string/empty_charge"
             android:layout_gravity="start"
             android:id="@+id/chargeText"
             android:singleLine="true"
@@ -168,7 +167,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:text="Idag 10:04"
+            android:text="@string/time_never"
             android:layout_gravity="end"
             android:singleLine="true"
             android:textColor="@android:color/black"

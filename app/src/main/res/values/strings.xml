@@ -27,4 +27,6 @@
     <string name="minutes">min</string>
     <string name="font">sans-serif-thin</string>
     <string name="press_for_ticket">tryck för att stämpla</string>
+    <string name="time_never">Aldrig</string>
+    <string name="empty_charge">0 kr</string>
 </resources>
