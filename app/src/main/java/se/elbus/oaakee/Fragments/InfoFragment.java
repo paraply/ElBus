@@ -1,6 +1,7 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,10 +17,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-import se.elbus.oaakee.Buses.WifiFinder;
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.REST_API.EC_Client;
 import se.elbus.oaakee.REST_API.VT_Callback;
 import se.elbus.oaakee.REST_API.VT_Client;
 import se.elbus.oaakee.REST_API.VT_Model.Departure;
@@ -31,22 +30,19 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 
 public class InfoFragment extends Fragment implements VT_Callback{
 
-    private TextView mTV;
     private boolean onBus;
     private boolean arrived_at_destination;
 
     private MainActivity parent;
-    private WifiFinder wifiFinder;
-    private EC_Client ec_client; // TODO: Maybe will get reference from parent
-//    private String current_dgw;
     private VT_Client vt_client; // TODO: Will get reference from parent
 
     private TextView textView_choosen_trip;
     private TextView textView_arrives_or_departures;
     private TextView textView_counter;
+    private TextView textView_below_circle;
 
 
-    private final int UPDATE_TIMER_INTERVAL = 10000; // TODO: Maybe need to adjust
+    private final int UPDATE_TIMER_INTERVAL = 20000; // TODO: Maybe need to adjust
     private Timer vt_update_timer;
 
 
@@ -109,20 +105,24 @@ public class InfoFragment extends Fragment implements VT_Callback{
         }else{
             if (onBus){
                 textView_arrives_or_departures.setText(R.string.arrive_at_destination);
-                textView_counter.setText(vt_time_to_minutes( journey_destination.arrDate, journey_destination.rtArrTime));
+                long minutes_left = time_diff_minutes(journey_destination.arrDate, journey_destination.rtArrTime);
+                textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
+                textView_below_circle.setText("vid " + journey_destination.name);
             }else{
                 textView_arrives_or_departures.setText(R.string.arrives_in);
-                textView_counter.setText(vt_time_to_minutes(journey_source.arrDate,journey_source.rtArrTime));
+                long minutes_left = time_diff_minutes(journey_source.arrDate, journey_source.rtArrTime);
+                textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
+                textView_below_circle.setText("till " + journey_source.name + " (Läge " + journey_source.track + ")");
             }
         }
     }
 
 
-    private String vt_time_to_minutes(String vt_date, String vt_time){
+    private long time_diff_minutes(String date_1, String time_1){
         SimpleDateFormat input_format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         try {
-            Date input_date = input_format.parse(vt_date + " " + vt_time);
+            Date input_date = input_format.parse(date_1 + " " + time_1);
             Date vasttrafik_server_date = input_format.parse(journeyDetails.serverdate + " " + journeyDetails.servertime);
 
             long diffInMilliseconds = input_date.getTime() -  vasttrafik_server_date.getTime();
@@ -130,10 +130,10 @@ public class InfoFragment extends Fragment implements VT_Callback{
             if (diffInMinutes < 0){ // We don't want to show -1 and stuff to the user
                 diffInMinutes = 0;
             }
-            return Long.toString(diffInMinutes);
+            return diffInMinutes;
 
         } catch (ParseException e) {
-            return "?";
+            return -1;
         }
 
 
@@ -176,6 +176,13 @@ public class InfoFragment extends Fragment implements VT_Callback{
         textView_choosen_trip = (TextView) view.findViewById(R.id.info_from_to);
         textView_counter = (TextView) view.findViewById(R.id.timeTilArrival);
         textView_arrives_or_departures = (TextView) view.findViewById(R.id.infoArrivesIn);
+        textView_below_circle = (TextView) view.findViewById(R.id.below_circle);
+
+        View circle =  view.findViewById(R.id.infoCircleHolder);
+//        circle.setBackgroundColor(Color.parseColor(departure_from_board.bgColor) );
+//        textView_counter.setTextColor(Color.parseColor(journeyDetails.color.fgColor));
+
+//        Log.i("### COLOR", departure_from_board.bgColor);
 
         Bundle bundle = getArguments();
 
