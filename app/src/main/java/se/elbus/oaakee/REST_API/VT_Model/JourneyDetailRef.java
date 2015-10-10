@@ -12,11 +12,12 @@ import java.net.URLDecoder;
  * Created by paraply on 2015-10-04.
  */
 public class JourneyDetailRef implements Parcelable{
+
+    public JourneyDetailRef(){}
+
     @Attribute()
     public String ref;
 
-    public JourneyDetailRef(){
-    }
 
     public JourneyDetailRef(String ref_url){
         ref = ref_url;

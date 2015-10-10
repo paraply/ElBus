@@ -12,6 +12,8 @@ import java.util.List;
 @Root(name = "LocationList")
 public class LocationList {
 
+    public LocationList(){}
+
     @Attribute(name="noNamespaceSchemaLocation") // Mostly unnecessary information
     public String noNamespaceSchemaLocation;
 

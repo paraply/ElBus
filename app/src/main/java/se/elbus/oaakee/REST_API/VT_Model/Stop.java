@@ -9,6 +9,9 @@ import org.simpleframework.xml.Attribute;
  * Created by paraply on 2015-10-04.
  */
 public class Stop implements Parcelable {
+
+    public Stop(){}
+
     @Attribute(name="name")
     public String name;
 

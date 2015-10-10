@@ -11,6 +11,8 @@ import org.simpleframework.xml.Element;
  */
 public class Departure implements Parcelable {
 
+    public Departure(){}
+
     @Attribute(name="name") // Name of the bus - "Bus 100"
     public String name;
 
@@ -112,7 +114,8 @@ public class Departure implements Parcelable {
         dest.writeString(stroke);
         dest.writeString(accessibility);
 
-        dest.writeParcelable(journeyDetailRef, flags);
+//        dest.writeParcelable(journeyDetailRef, flags);
+        dest.writeValue(journeyDetailRef);
     }
 
     /** recreate object from parcel */
@@ -140,7 +143,8 @@ public class Departure implements Parcelable {
         stroke = in.readString();
         accessibility = in.readString();
 
-        journeyDetailRef = in.readParcelable(JourneyDetailRef.class.getClassLoader());
+        journeyDetailRef = (JourneyDetailRef) in.readValue(JourneyDetailRef.class.getClassLoader());
+//        journeyDetailRef = in.readParcelable(JourneyDetailRef.class.getClassLoader());
 
     }
 
