@@ -1,12 +1,15 @@
 package se.elbus.oaakee.REST_API.VT_Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
 /**
  * Created by paraply on 2015-10-04.
  */
-public class Departure {
+public class Departure implements Parcelable {
 
     @Attribute(name="name") // Name of the bus - "Bus 100"
     public String name;
@@ -67,5 +70,78 @@ public class Departure {
 
     @Element (name = "JourneyDetailRef", required = false)
     public JourneyDetailRef journeyDetailRef;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<Departure> CREATOR
+            = new Parcelable.Creator<Departure>() {
+        public Departure createFromParcel(Parcel in) {
+            return new Departure(in);
+        }
+
+        public Departure[] newArray(int size) {
+            return new Departure[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(type);
+        dest.writeString(sname);
+        dest.writeString(stopid);
+        dest.writeString(stop);
+
+        dest.writeString(time);
+        dest.writeString(date);
+        dest.writeString(journeyid);
+        dest.writeString(direction);
+        dest.writeString(booking);
+
+        dest.writeString(night);
+        dest.writeString(track);
+        dest.writeString(rtTrack);
+        dest.writeString(rtTime);
+        dest.writeString(rtDate);
+
+        dest.writeString(fgColor);
+        dest.writeString(bgColor);
+        dest.writeString(stroke);
+        dest.writeString(accessibility);
+
+        dest.writeParcelable(journeyDetailRef, flags);
+    }
+
+    /** recreate object from parcel */
+    private Departure(Parcel in) {
+        name = in.readString();
+        type = in.readString();
+        sname = in.readString();
+        stopid = in.readString();
+        stop = in.readString();
+
+        time = in.readString();
+        date = in.readString();
+        journeyid = in.readString();
+        direction = in.readString();
+        booking = in.readString();
+
+        night = in.readString();
+        track = in.readString();
+        rtTrack = in.readString();
+        rtTime = in.readString();
+        rtDate = in.readString();
+
+        fgColor = in.readString();
+        bgColor = in.readString();
+        stroke = in.readString();
+        accessibility = in.readString();
+
+        journeyDetailRef = in.readParcelable(JourneyDetailRef.class.getClassLoader());
+
+    }
 
 }
