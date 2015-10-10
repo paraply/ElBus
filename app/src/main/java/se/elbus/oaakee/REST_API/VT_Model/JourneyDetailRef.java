@@ -1,5 +1,8 @@
 package se.elbus.oaakee.REST_API.VT_Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.simpleframework.xml.Attribute;
 
 import java.io.UnsupportedEncodingException;
@@ -8,7 +11,7 @@ import java.net.URLDecoder;
 /**
  * Created by paraply on 2015-10-04.
  */
-public class JourneyDetailRef {
+public class JourneyDetailRef implements Parcelable{
     @Attribute()
     public String ref;
 
@@ -29,4 +32,29 @@ public class JourneyDetailRef {
         }
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<JourneyDetailRef> CREATOR
+            = new Parcelable.Creator<JourneyDetailRef>() {
+        public JourneyDetailRef createFromParcel(Parcel in) {
+            return new JourneyDetailRef(in);
+        }
+
+        public JourneyDetailRef[] newArray(int size) {
+            return new JourneyDetailRef[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(ref);
+    }
+
+    /** recreate object from parcel */
+    private JourneyDetailRef(Parcel in) {
+        ref = in.readString();
+    }
 }
