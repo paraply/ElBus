@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +36,14 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     private ListView mDestinationsListView;
     private VT_Client vtClient;
 
+    // Assumed data from TravelFragment
+    private StopLocation mCurrentStop;  // The stop the user is currently standing on
+    private JourneyDetail mLine;        // The line the user wants to ride
+
+    // Test data
+    private double latitude = 57.692395;
+    private double longitude = 11.972917;
+
     private String kapellplatsenIDA = "9022014003760001";
     private String kapellplatsenIDB = "9022014003760002";
 
@@ -50,21 +60,22 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         View v = inflater.inflate(R.layout.destination_chooser, container, false);
 
         mDestinationsListView = (ListView) v.findViewById(R.id.destinationsListView);
-
-        /*
-        double latitude = 57.692395;
-        double longitude = 11.972917;
+        mDestinationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object selected = parent.getItemAtPosition(position);
+                Log.i("TAG", selected.toString());
+            }
+        });
 
         vtClient.get_nearby_stops(latitude + "", longitude + "", "3", "1000");
-        */
-
         vtClient.get_departure_board(kapellplatsenIDA);
 
         return v;
     }
 
     /**
-     * Populates destination list
+     * Populates destination list view with example names of stops
      */
     private void populateDestinationsListExamples() {
         String destinations[] = {"Kapellplatsen", "Götaplatsen", "Valand", "Kungsportsplatsen", "Domkyrkan", "Lilla Bommen"};
@@ -72,6 +83,10 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         mDestinationsListView.setAdapter(adapter);
     }
 
+    /**
+     * Populates destination list view with names of stops
+     * @param destinations list of strings which will be added to the list view
+     */
     private void populateDestinationsList(List<String> destinations) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, destinations);
 
@@ -82,10 +97,21 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     public void got_journey_details(JourneyDetail journeyDetail) {
         ArrayList<String> destinations = new ArrayList<>();
 
+        boolean currentFound = false;
+
         for (Stop s : journeyDetail.stop) {
             Log.i("### LINE STOPS @", s.name + " WHEN: " + s.arrTime);
-            destinations.add(s.name.substring(0, s.name.indexOf(",")));
+
+            if (s.name.equals("Kapellplatsen, Göteborg")) {
+                currentFound = true;
+            }
+
+            if(currentFound) {
+                destinations.add(s.name.substring(0, s.name.indexOf(",")));
+            }
         }
+
+        destinations.remove(0);
 
         populateDestinationsList(destinations);
     }
