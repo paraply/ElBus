@@ -35,23 +35,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/linearLayout">
 
-            <TextView
-                android:id="@+id/timeTilArrival"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color_white"
-                android:textSize="50sp"
-                tools:text="16"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/info_min"
-                android:textColor="@color/text_color_grey"
-                android:textSize="20sp"/>
         </LinearLayout>
 
         <TextView
@@ -72,7 +58,8 @@
             android:layout_alignParentStart="true"
             android:clickable="false"
             android:layout_marginLeft="32dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:id="@+id/linearLayout2">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -89,6 +76,46 @@
                 android:id="@+id/info_from_to"/>
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/info_min"
+            android:textColor="@color/text_color_white"
+            android:textSize="20sp"
+            android:id="@+id/textView"
+            android:gravity="center"
+            android:layout_marginTop="60dp"
+            android:layout_alignLeft="@+id/infoCircleHolder"
+            android:layout_alignStart="@+id/infoCircleHolder"
+            android:layout_alignRight="@+id/infoCircleHolder"
+            android:layout_alignEnd="@+id/infoCircleHolder"
+            android:layout_below="@+id/infoArrivesIn"
+            android:layout_alignBottom="@+id/infoCircleHolder" />
+
+        <TextView
+            android:id="@+id/timeTilArrival"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_white"
+            android:textSize="70sp"
+            tools:text="16"
+            android:gravity="center"
+            android:layout_marginBottom="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/infoArrivesIn"
+            android:layout_alignBottom="@+id/infoCircleHolder" />
+
+        <TextView
+            android:id="@+id/below_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="bla bla"
+            android:layout_marginTop="20dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/infoCircleHolder"
+            android:layout_centerHorizontal="true" />
 
 
     </RelativeLayout>
