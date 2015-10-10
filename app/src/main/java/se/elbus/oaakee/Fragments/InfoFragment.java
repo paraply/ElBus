@@ -9,9 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import se.elbus.oaakee.Buses.WifiFinder;
 import se.elbus.oaakee.MainActivity;
@@ -38,15 +43,13 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
     private MainActivity parent;
     private WifiFinder wifiFinder;
     private EC_Client ec_client; // TODO: Maybe will get reference from parent
-    private String current_dgw;
+//    private String current_dgw;
     private VT_Client vt_client; // TODO: Will get reference from parent
-    private JourneyDetailRef current_journey_ref;
 
     private TextView textView_choosen_trip;
     private TextView textView_arrives_or_departures;
     private TextView textView_counter;
 
-    private String time_string_from_vt;
 
     private final int UPDATE_TIMER_INTERVAL = 10000; // TODO: Maybe need to adjust
     private Timer vt_update_timer;
@@ -83,7 +86,7 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
     private void update_gui(){
         Stop journey_source = null, journey_destination = null;
         for (Stop s : journeyDetails.stop){
-            if (s.id.substring(0,15).equals(source.id.substring(0,15))){
+            if (s.id.substring(0,15).equals(source.id.substring(0,15))){ //Using subystring on ID's since last number is different for different tracks and doesn't always match. Don't know why...
                 journey_source = s;
             }
             if (s.id.substring(0,15).equals(destination.id.substring(0,15))){
@@ -98,18 +101,49 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
             Log.i("### GUI DEST", destination.name + " RT ARRIVAL TIME " + journey_destination.rtArrTime);
         }
 
+        if (journey_source.rtArrTime == null){ // If bus has arrived VT will return null as real time data
+            onBus = true;
+        }
 
+        if (journey_destination.rtArrTime == null){
+            arrived_at_destination = true;
+        }
 
         if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
             textView_arrives_or_departures.setText(R.string.arrived_at_destination);
         }else{
-            textView_counter.setText(destination.arrTime);
             if (onBus){
                 textView_arrives_or_departures.setText(R.string.arrive_at_destination);
+                textView_counter.setText(vt_time_to_minutes( journey_destination.arrDate, journey_destination.rtArrTime));
             }else{
                 textView_arrives_or_departures.setText(R.string.arrives_in);
+                textView_counter.setText(vt_time_to_minutes(journey_source.arrDate,journey_source.rtArrTime));
             }
         }
+    }
+
+
+    private String vt_time_to_minutes(String vt_date, String vt_time){
+        SimpleDateFormat input_format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        try {
+            Date input_date = input_format.parse(vt_date + " " + vt_time);
+            Date vasttrafik_server_date = input_format.parse(journeyDetails.serverdate + " " + journeyDetails.servertime);
+
+            long diffInMilliseconds = input_date.getTime() -  vasttrafik_server_date.getTime();
+            long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMilliseconds);
+            if (diffInMinutes < 0){ // We don't want to show -1 and stuff to the user
+                diffInMinutes = 0;
+            }
+            return Long.toString(diffInMinutes);
+
+        } catch (ParseException e) {
+            return "?";
+        }
+
+
+
+
 
 
     }
@@ -164,11 +198,12 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
 
         }
 
-        textview_line_short_name.setText(parent.getString(R.string.info_bus_name_prefix) + departure_from_board.name + parent.getString(R.string.info_bus_name_suffix)); //TODO: Not beautiful...
-        current_journey_ref = new JourneyDetailRef(bundle.getString("line_ID")); // Create a new journey object since it's easier to handle strings in bundle..
+        textview_line_short_name.setText( departure_from_board.name );
 
         ec_client = new EC_Client(this); // TODO: Remove when get reference from parent
         vt_client = new VT_Client(this); // TODO: Remove when get reference from parent
+
+        update_gui(); // Update GUI once since the timer will wait a defined amount of seconds until it starts
 
         if (!arrived_at_destination) { // has not arrived at destination yet.
 
@@ -199,10 +234,10 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
                         @Override
                         public void run() {
                             // This code will always run on the UI thread, therefore is safe to modify UI elements.
-                            update_gui();
+
                         }
                     });
-//                    vt_client.get_journey_details(current_journey_ref);
+                    vt_client.get_journey_details(departure_from_board.journeyDetailRef);
 
                 }
             }, 0, UPDATE_TIMER_INTERVAL);
@@ -238,7 +273,9 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
 
     @Override
     public void got_journey_details(JourneyDetail journeyDetail) {
-
+        journeyDetails = journeyDetail;
+        Log.i("### INFO", "Got new journeydetails. Updating GUI. ServerTIME: " + journeyDetail.serverdate + " " + journeyDetail.servertime);
+        update_gui();
     }
 
     @Override
