@@ -11,9 +11,7 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -21,20 +19,17 @@ import java.util.concurrent.TimeUnit;
 import se.elbus.oaakee.Buses.WifiFinder;
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.REST_API.EC_Callback;
 import se.elbus.oaakee.REST_API.EC_Client;
-import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
 import se.elbus.oaakee.REST_API.VT_Callback;
 import se.elbus.oaakee.REST_API.VT_Client;
 import se.elbus.oaakee.REST_API.VT_Model.Departure;
 import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
 import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
-import se.elbus.oaakee.REST_API.VT_Model.JourneyDetailRef;
 import se.elbus.oaakee.REST_API.VT_Model.LocationList;
 import se.elbus.oaakee.REST_API.VT_Model.Stop;
 import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 
-public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
+public class InfoFragment extends Fragment implements VT_Callback{
 
     private TextView mTV;
     private boolean onBus;
@@ -68,7 +63,7 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
         fragment_args.putParcelable("source", source);
         fragment_args.putParcelable("destination", destination);
         fragment_args.putParcelable("departure_from_board", departure_from_board);
-        fragment_args.putParcelable("journeyDetails",journeyDetails);
+        fragment_args.putParcelable("journeyDetails", journeyDetails);
 
         infoFragment.setArguments(fragment_args);
 
@@ -200,8 +195,7 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
 
         textview_line_short_name.setText( departure_from_board.name );
 
-        ec_client = new EC_Client(this); // TODO: Remove when get reference from parent
-        vt_client = new VT_Client(this); // TODO: Remove when get reference from parent
+        vt_client = new VT_Client(this); // TODO: Remove when/if get reference from parent
 
         update_gui(); // Update GUI once since the timer will wait a defined amount of seconds until it starts
 
@@ -250,26 +244,6 @@ public class InfoFragment extends Fragment implements EC_Callback,VT_Callback{
         return view;
     }
 
-
-    @Override
-    public void got_sensor_data(List<Bus_info> bus_info) {
-
-    }
-
-    @Override
-    public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {
-
-    }
-
-    @Override
-    public void got_reource_data(List<Bus_info> bus_info) {
-
-    }
-
-    @Override
-    public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
-
-    }
 
     @Override
     public void got_journey_details(JourneyDetail journeyDetail) {
