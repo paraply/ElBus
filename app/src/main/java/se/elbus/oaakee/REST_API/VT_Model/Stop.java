@@ -1,11 +1,14 @@
 package se.elbus.oaakee.REST_API.VT_Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.simpleframework.xml.Attribute;
 
 /**
  * Created by paraply on 2015-10-04.
  */
-public class Stop {
+public class Stop implements Parcelable {
     @Attribute(name="name")
     public String name;
 
@@ -50,4 +53,61 @@ public class Stop {
 
     @Attribute(name="rtTrack", required = false)
     public String rtTrack;
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<Stop> CREATOR
+            = new Parcelable.Creator<Stop>() {
+        public Stop createFromParcel(Parcel in) {
+            return new Stop(in);
+        }
+
+        public Stop[] newArray(int size) {
+            return new Stop[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(id);
+        dest.writeString(lon);
+        dest.writeString(lat);
+        dest.writeString(routeIdx);
+
+        dest.writeString(arrTime);
+        dest.writeString(rtArrTime);
+        dest.writeString(arrDate);
+        dest.writeString(depTime);
+        dest.writeString(rtDepTime);
+
+        dest.writeString(depDate);
+        dest.writeString(rtDepDate);
+        dest.writeString(track);
+        dest.writeString(rtTrack);
+    }
+
+    /** recreate object from parcel */
+    private Stop(Parcel in) {
+        name = in.readString();
+        id = in.readString();
+        lon = in.readString();
+        lat = in.readString();
+        routeIdx = in.readString();
+
+        arrTime = in.readString();
+        rtArrTime = in.readString();
+        arrDate = in.readString();
+        depTime = in.readString();
+        rtDepTime = in.readString();
+
+        depDate = in.readString();
+        rtDepDate = in.readString();
+        track = in.readString();
+        rtTrack = in.readString();
+    }
 }
