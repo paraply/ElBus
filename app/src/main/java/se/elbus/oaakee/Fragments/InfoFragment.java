@@ -88,47 +88,53 @@ public class InfoFragment extends Fragment implements VT_Callback{
         }
 
         // ***** check if on bus OR get SOURCE time
-        if (journey_source != null){
-            Log.i("### INFO SRC",  journey_source.name + " RT ARRIVAL TIME: " + journey_source.rtArrTime + " TIMETABLE: " + journey_source.arrTime);
-        }
+        if (journey_source != null) {
+            Log.i("### INFO SRC", journey_source.name + " RT ARRIVAL TIME: " + journey_source.rtArrTime + " TIMETABLE: " + journey_source.arrTime);
 
-        if (journey_source.rtArrTime == null) { // If bus has arrived at source || no real time data is available
 
-            Log.i("### INFO SRC", "NO RT, checking timetable diff: " + vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime));
-            if (vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) <= 0) { // Check timetable so we know if real time data is unavailable  if we really are on the bus
-                onBus = true;
-                use_source_timetable = false;
-            } else { // Real time data is unavailable for source
-                use_source_timetable = true;
+            if (journey_source.rtArrTime == null) { // If bus has arrived at source || no real time data is available
+
+                Log.i("### INFO SRC", "NO RT, checking timetable diff: " + vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime));
+                if (vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) <= 0) { // Check timetable so we know if real time data is unavailable  if we really are on the bus
+                    onBus = true;
+                    use_source_timetable = false;
+                } else { // Real time data is unavailable for source
+                    use_source_timetable = true;
+                }
+
             }
-
+        }else{
+            Log.e("### INFO", "BAD SOURCE");
+            return;
         }
 
         // ***** check if arrived to our stop OR get DESTINATION time
-        if (journey_destination != null){
+        if (journey_destination != null) {
             Log.i("### INFO DEST", destination.name + " RT ARRIVAL TIME " + journey_destination.rtArrTime + " TIMETABLE: " + journey_destination.arrTime);
-        }
-        if (journey_destination.rtArrTime == null){
+            if (journey_destination.rtArrTime == null) {
 
-            Log.i("### INFO DEST", "NO RT, checking timetable diff: " + vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime));
-            if (vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) <= 0){ // Check timetable so we know if real time data is unavailable if we really have arrived at the destination
-                arrived_at_destination = true;
-                use_destination_timetable = false;
-            }else{ // Real time data is unavailable for destination
-                use_destination_timetable = true;
+                Log.i("### INFO DEST", "NO RT, checking timetable diff: " + vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime));
+                if (vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) <= 0) { // Check timetable so we know if real time data is unavailable if we really have arrived at the destination
+                    arrived_at_destination = true;
+                    use_destination_timetable = false;
+                } else { // Real time data is unavailable for destination
+                    use_destination_timetable = true;
+                }
             }
+        }else{
+            Log.e("### INFO", "BAD DESTINATION");
+            return;
         }
-
 
 
         if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
-            textView_arrives_or_departures.setText(R.string.arrived_at_destination + "\n" + journey_destination.name); // "Arrived at destination" string
+            textView_arrives_or_departures.setText(R.string.arrived_at_destination); // "Arrived at destination" string
             vt_update_timer.cancel(); // Stop the timer since we don't need it no more
             // Hide circle and its contents
             circle.setVisibility(View.INVISIBLE);
             textView_counter.setVisibility(View.INVISIBLE);
             textView_minutes_text.setVisibility(View.INVISIBLE);
-            textView_below_circle.setVisibility(View.INVISIBLE); // Only show name of destination this time. No text before.
+            textView_below_circle.setText(journey_destination.name); // Only show name of destination this time. No text before.
 
 
         }else{
@@ -137,18 +143,15 @@ public class InfoFragment extends Fragment implements VT_Callback{
             if (onBus){ // We are on the bus. Show time until we arrive at the destination
                 textView_arrives_or_departures.setText(R.string.arrive_at_destination); // "Arrive at destination" string
 
-
                 minutes_left = use_destination_timetable ? vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) :
                         vt_time_diff_minutes(journey_destination.rtArrDate, journey_destination.rtArrTime);
 
                 textView_below_circle.setText("vid " + journey_destination.name); //TODO STRING RSRC
 
-
             }else{ // We are not on the bus yet. Show time until it arrives to our stop
                 textView_arrives_or_departures.setText(R.string.arrives_in); // "Arrives in" string
                 minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) :
                         vt_time_diff_minutes(journey_source.rtArrDate, journey_source.rtArrTime);
-
 
                 textView_below_circle.setText("till " + journey_source.name + " (Läge " + journey_source.track + ")"); //TODO STRING RSRC
             }
