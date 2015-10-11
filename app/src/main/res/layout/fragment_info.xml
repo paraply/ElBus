@@ -44,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="32sp"
+            android:padding="10dp"
             android:text="@string/info_bus_name"
             android:id="@+id/infoBusName"
             android:layout_above="@+id/infoArrivesIn"
