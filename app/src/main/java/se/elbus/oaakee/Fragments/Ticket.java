@@ -12,7 +12,7 @@ public class Ticket {
     /**
      * Amount of milliseconds the ticket will be valid for.
      */
-    public final long VALID_TIME = 60000;
+    public final long VALID_TIME = 65000;
 
     public Ticket() {
         /*

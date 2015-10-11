@@ -1,12 +1,15 @@
 package se.elbus.oaakee.Fragments;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -86,17 +89,19 @@ public class PaymentFragment  extends Fragment {
         this.updateCharge();
         mTicketButton.setVisibility(View.INVISIBLE);
 
-        long time = (mCurrentTicket.mValidTo - System.currentTimeMillis());
+        final long time = (mCurrentTicket.mValidTo - System.currentTimeMillis());
 
         if (time < 0){
             hasNotTicket();
             return;
         }
 
-        CountDownTimer timer = new CountDownTimer(time,time/mProgressbar.getMax()) {
+        /*
+        This will update the minute text once every second.
+         */
+        CountDownTimer timer = new CountDownTimer(time,500) {
             @Override
             public void onTick(long millisUntilFinished) {
-                mProgressbar.incrementProgressBy(-1);
                 mTimeLeftText.setText(millisToMinutes(millisUntilFinished));
             }
 
@@ -106,6 +111,14 @@ public class PaymentFragment  extends Fragment {
             }
         };
         timer.start();
+
+        /*
+        Animate the progress bar smoothly.
+         */
+        ObjectAnimator anim = ObjectAnimator.ofInt(mProgressbar, "progress",  0);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.setDuration(time*2);
+        anim.start();
         mTimeLeftViews.setVisibility(View.VISIBLE);
     }
 

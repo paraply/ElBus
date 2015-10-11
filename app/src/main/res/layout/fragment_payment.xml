@@ -30,23 +30,23 @@
         android:textSize="23sp"/>
 
     <ProgressBar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/countdown_progressbar"
+        android:progressDrawable="@drawable/countdown_ring"
         style="?android:attr/progressBarStyleHorizontal"
+        android:id="@+id/countdown_progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="false"
-        android:max="10"
-        android:progress="10"
-        android:secondaryProgress="10"
-        android:progressDrawable="@drawable/countdown_ring"
+        android:max="1000"
+        android:progress="1000"
         android:layout_row="0"
         android:layout_rowSpan="3"
         android:layout_column="0"
         android:layout_columnSpan="3"
         android:minHeight="700sp"
         android:minWidth="700sp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+    />
+
 
     <LinearLayout
         android:layout_width="fill_parent"
