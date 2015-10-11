@@ -39,6 +39,9 @@ public class InfoFragment extends Fragment implements VT_Callback{
     private TextView textView_arrives_or_departures;
     private TextView textView_counter;
     private TextView textView_below_circle;
+    private TextView textView_minutes_text;
+
+    private View circle;
 
 
     private final int UPDATE_TIMER_INTERVAL = 20000; // TODO: Maybe need to adjust
@@ -67,7 +70,10 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
 
 
+
     private boolean use_source_timetable, use_destination_timetable;
+
+    // Update the GUI to show TIME and STOP information
     private void update_gui(){
         Stop journey_source = null, journey_destination = null;
 
@@ -116,32 +122,47 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
 
         if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
-            textView_arrives_or_departures.setText(R.string.arrived_at_destination);
+            textView_arrives_or_departures.setText(R.string.arrived_at_destination + "\n" + journey_destination.name); // "Arrived at destination" string
+            vt_update_timer.cancel(); // Stop the timer since we don't need it no more
+            // Hide circle and its contents
+            circle.setVisibility(View.INVISIBLE);
+            textView_counter.setVisibility(View.INVISIBLE);
+            textView_minutes_text.setVisibility(View.INVISIBLE);
+            textView_below_circle.setVisibility(View.INVISIBLE); // Only show name of destination this time. No text before.
+
+
         }else{
+            long minutes_left;
+
             if (onBus){ // We are on the bus. Show time until we arrive at the destination
                 textView_arrives_or_departures.setText(R.string.arrive_at_destination); // "Arrive at destination" string
 
 
-                long minutes_left = use_destination_timetable ? vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) :
+                minutes_left = use_destination_timetable ? vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) :
                         vt_time_diff_minutes(journey_destination.rtArrDate, journey_destination.rtArrTime);
 
-                if (minutes_left < 0){
-                    minutes_left = 0; // Don't show -1 to the user
-                }
-
-                textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
                 textView_below_circle.setText("vid " + journey_destination.name); //TODO STRING RSRC
+
+
             }else{ // We are not on the bus yet. Show time until it arrives to our stop
                 textView_arrives_or_departures.setText(R.string.arrives_in); // "Arrives in" string
-                long minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) :
+                minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) :
                         vt_time_diff_minutes(journey_source.rtArrDate, journey_source.rtArrTime);
-                if (minutes_left < 0){
-                    minutes_left = 0; // Don't show -1 to the user
-                }
 
-                textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
+
                 textView_below_circle.setText("till " + journey_source.name + " (Läge " + journey_source.track + ")"); //TODO STRING RSRC
             }
+
+            if (minutes_left < 0){
+                minutes_left = 0; // Don't show -1 to the user
+            }
+            textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
+            if (minutes_left == 1){
+                textView_minutes_text.setText(R.string.minute);
+            }else{
+                textView_minutes_text.setText(R.string.minutes);
+            }
+
         }
     }
 
@@ -163,12 +184,6 @@ public class InfoFragment extends Fragment implements VT_Callback{
         } catch (ParseException e) {
             return -1;
         }
-
-
-
-
-
-
     }
 
 
@@ -204,10 +219,11 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
         textView_choosen_trip = (TextView) view.findViewById(R.id.info_from_to);
         textView_counter = (TextView) view.findViewById(R.id.timeTilArrival);
+        textView_minutes_text = (TextView) view.findViewById(R.id.info_minutes_text);
         textView_arrives_or_departures = (TextView) view.findViewById(R.id.infoArrivesIn);
         textView_below_circle = (TextView) view.findViewById(R.id.below_circle);
 
-        View circle =  view.findViewById(R.id.infoCircleHolder);
+        circle =  view.findViewById(R.id.infoCircleHolder);
 //        circle.setBackgroundColor(Color.parseColor(departure_from_board.bgColor) );
 //        textView_counter.setTextColor(Color.parseColor(journeyDetails.color.fgColor));
 
@@ -274,7 +290,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
             }, 0, UPDATE_TIMER_INTERVAL);
 
         }else{
-            Log.i("### info_frag", "has arrived at destination");
+            Log.i("### INFO", "has arrived at destination");
 
         }
 
