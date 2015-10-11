@@ -22,9 +22,7 @@
 
     <string name="action_example">Example action</string>
 
-    <string name="info_bus_name_prefix"> </string>
-    <string name="info_bus_name_suffix">:an</string>
-    <string name="arrive_at_destination">Framme vid destinationen om</string>
-    <string name="bus_arrives_in">Bussen ankommer om</string>
+    <string name="arrive_at_destination">är framme om</string>
     <string name="arrived_at_destination">Framme vid destinationen</string>
+    <string name="arrives_in">ankommer om</string>
 </resources>
