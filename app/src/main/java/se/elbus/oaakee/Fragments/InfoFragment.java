@@ -1,6 +1,7 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -78,11 +79,11 @@ public class InfoFragment extends Fragment implements VT_Callback{
         Stop journey_source = null, journey_destination = null;
 
         // Check every stop for our SOURCE and DESTINATION
-        for (Stop s : journeyDetails.stop){
-            if (s.id.substring(0,15).equals(source.id.substring(0,15))){ //Using subystring on ID's since last number is different for different tracks and doesn't always match. Don't know why...
+        for (Stop s : journeyDetails.stop){ // TODO ****************************************************** SOMETHING IS WRONG. NO USE SUBSTRING
+            if (s.id.substring(0,14).equals(source.id.substring(0,14))){ //Using subystring on ID's since last number is different for different tracks and doesn't always match. Don't know why...
                 journey_source = s;
             }
-            if (s.id.substring(0,15).equals(destination.id.substring(0,15))){
+            if (s.id.substring(0,14).equals(destination.id.substring(0,14))){
                 journey_destination = s;
             }
         }
@@ -146,14 +147,14 @@ public class InfoFragment extends Fragment implements VT_Callback{
                 minutes_left = use_destination_timetable ? vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) :
                         vt_time_diff_minutes(journey_destination.rtArrDate, journey_destination.rtArrTime);
 
-                textView_below_circle.setText("vid " + journey_destination.name); //TODO STRING RSRC
+                textView_below_circle.setText(parent.getString(R.string.to) + " " + journey_destination.name);
 
             }else{ // We are not on the bus yet. Show time until it arrives to our stop
-                textView_arrives_or_departures.setText(R.string.arrives_in); // "Arrives in" string
-                minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) :
-                        vt_time_diff_minutes(journey_source.rtArrDate, journey_source.rtArrTime);
+                textView_arrives_or_departures.setText(R.string.departures_in); // "departures in" string
+                minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.depDate, journey_source.depTime) :
+                        vt_time_diff_minutes(journey_source.rtDepDate, journey_source.rtDepTime);
 
-                textView_below_circle.setText("till " + journey_source.name + " (Läge " + journey_source.track + ")"); //TODO STRING RSRC
+                textView_below_circle.setText(parent.getString(R.string.from) + " " + journey_source.name + " (" + parent.getString(R.string.track) + " " + journey_source.track + ")" );
             }
 
             if (minutes_left < 0){
@@ -251,6 +252,14 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
         textview_line_short_name.setText( departure_from_board.name );
 
+        if (journeyDetails.color != null){
+            textview_line_short_name.setTextColor(Color.parseColor(journeyDetails.color.fgColor));
+
+            if (!journeyDetails.color.bgColor.equals("#ffffff")){ // White looks ugly as background when fragment bakground is gray
+                textview_line_short_name.setBackgroundColor(Color.parseColor(journeyDetails.color.bgColor));
+            }
+        }
+
         vt_client = new VT_Client(this); // TODO: Remove when/if get reference from parent
 
         update_gui(); // Update GUI once since the timer will wait a defined amount of seconds until it starts
@@ -277,7 +286,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
             vt_update_timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Log.i("### info_frag", "TIMER EVENT, Checking Västtrafik API");
+                    Log.i("### INFO", "TIMER EVENT, Checking Västtrafik API");
 
                     // When you need to modify a UI element, do so on the UI thread.
                     parent.runOnUiThread(new Runnable() {
@@ -304,7 +313,10 @@ public class InfoFragment extends Fragment implements VT_Callback{
     @Override
     public void got_journey_details(JourneyDetail journeyDetail) {
         journeyDetails = journeyDetail;
-        Log.i("### INFO", "Got new journeydetails. Updating GUI. ServerTIME: " + journeyDetail.serverdate + " " + journeyDetail.servertime);
+        Log.i("### INFO", "Got new journeydetails. Updating GUI. ServerTIME: " + journeyDetail.serverdate + " " + journeyDetail.servertime );
+
+
+
         update_gui();
     }
 
