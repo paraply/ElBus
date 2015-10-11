@@ -17,7 +17,6 @@ public class InfoFragment extends Fragment {
 
     private TextView mTV;
     private boolean onBus;
-    private FragmentSwitchCallbacks mFragmentSwitcher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,12 +64,6 @@ public class InfoFragment extends Fragment {
             tView.setText("ankommer om");
         }
 
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mFragmentSwitcher = (FragmentSwitchCallbacks) context;
     }
 
     //For alarm functionality, add this

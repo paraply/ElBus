@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import se.elbus.oaakee.Fragments.DestinationFragment;
 import se.elbus.oaakee.Fragments.FragmentSwitchCallbacks;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
     private HamburgerFragment mHamburgerFragment;
 
     private ArrayList<Fragment> mFragments;
-    private ArrayList<Fragment> mTravelFragments;
+    private Stack<Fragment> mTravelFragments;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -40,18 +41,16 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFragments = new ArrayList<>();
-        mTravelFragments = new ArrayList<>();
+        mTravelFragments = new Stack<>();
 
         setTitle(getString(R.string.title_section1));
 
         /*
           Here is where we add the fragments in order.
          */
-        mTravelFragments.add(new TravelFragment());
-        mTravelFragments.add(new DestinationFragment());
-        mTravelFragments.add(new InfoFragment());
+        mTravelFragments.push(new TravelFragment());
 
-        mFragments.add(mTravelFragments.get(0));
+        mFragments.add(mTravelFragments.peek());
         mFragments.add(new PaymentFragment());
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Konto"
         mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Inställningar"
@@ -108,9 +107,8 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         fm.beginTransaction()
                 .replace(R.id.main_container, f)
                 .commit();
-
-
     }
+
     private void changeFragmentWithBackstack(Fragment f){
         FragmentManager fm = getSupportFragmentManager();
 
@@ -163,31 +161,27 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     @Override
     public void nextFragment(Bundle args) {
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment currentFragment = fm.findFragmentById(R.id.main_container);
-
         Fragment newFragment;
-        int i = mTravelFragments.indexOf(currentFragment);
-        newFragment = mTravelFragments.get(i+1);
+        newFragment = getNextFragment();
         newFragment.setArguments(args);
 
-        mFragments.set(i,newFragment);
-        changeFragmentWithBackstack(newFragment);
-        return;
+        mTravelFragments.push(newFragment);
+        mFragments.set(0,mTravelFragments.peek());
 
+        changeFragmentWithBackstack(newFragment);
+    }
+
+    private Fragment getNextFragment() {
+        switch (mTravelFragments.size()){
+            case 1: return new DestinationFragment();
+            case 2: return new InfoFragment();
+            default: throw new RuntimeException("You should not go to next fragment in the last one!");
+        }
     }
 
     @Override
     public void onBackPressed() {
-        Fragment currFrag = mFragments.get(0);
-        if(currFrag == mTravelFragments.get(1)){
-            mFragments.set(0,mTravelFragments.get(0));
-            super.onBackPressed();
-        }else if(currFrag == mTravelFragments.get(2)){
-            mFragments.set(0,mTravelFragments.get(1));
-            super.onBackPressed();
-        }else{
-            System.exit(0);
-        }
+        mTravelFragments.pop();
+        super.onBackPressed();
     }
 }
