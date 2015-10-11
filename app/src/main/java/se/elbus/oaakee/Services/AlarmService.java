@@ -1,4 +1,4 @@
-package se.elbus.oaakee;
+package se.elbus.oaakee.Services;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -16,6 +16,7 @@ import android.util.Log;
 import java.util.Calendar;
 import java.util.List;
 
+import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.REST_API.EC_Callback;
 import se.elbus.oaakee.REST_API.EC_Client;
 import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
