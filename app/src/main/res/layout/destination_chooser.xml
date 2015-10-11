@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:weightSum="1">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_weight="0.10"
         android:background="@color/material_grey_300"
-        android:layout_weight="0.10">
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Tynnered"
             android:id="@+id/fromTextView"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="från"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:text="Tynnered"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
             android:id="@+id/textView2"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Vasaplatsen"
-            android:id="@+id/toTextView"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical" />
+            android:text="från"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/toTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:text="Vasaplatsen"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Jag vill åka till:"
-        android:id="@+id/textView3"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:text="Jag vill åka till:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ListView
+        android:id="@+id/destinationsListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/destinationsListView" />
+        android:layout_height="match_parent" />
 </LinearLayout>
