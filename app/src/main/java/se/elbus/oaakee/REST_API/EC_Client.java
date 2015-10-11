@@ -19,12 +19,11 @@ import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
  * Created by paraply on 2015-10-05.
  */
 public class EC_Client {
-    private EC_Callback ec_callback;
-    private EC_API ec_api;
-
     private static final String EC_API_URL = "https://ece01.ericsson.net:4443/";
     private final String CREDENTIALS = "grp31:C7CVFDHO48";
-    private final String CREDENTIALS_BASE64 = "Basic " + Base64.encodeToString(CREDENTIALS.getBytes(), Base64.NO_WRAP);
+ private final String CREDENTIALS_BASE64 = "Basic " + Base64.encodeToString(CREDENTIALS.getBytes(), Base64.NO_WRAP);
+    private EC_Callback ec_callback;
+    private EC_API ec_api;
 
     public EC_Client(EC_Callback ec_callback){
         this.ec_callback = ec_callback;

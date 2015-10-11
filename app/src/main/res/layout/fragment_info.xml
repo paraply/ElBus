@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
             android:text="@string/info_arrives_in"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <View
             android:id="@+id/infoCircleHolder"
@@ -29,7 +29,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/info_circle"/>
+            android:background="@drawable/info_circle" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -43,50 +43,49 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color_white"
                 android:textSize="50sp"
-                tools:text="16"
-                />
+                tools:text="16" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/info_min"
                 android:textColor="@color/text_color_grey"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/infoBusName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="32sp"
-            android:text="@string/info_bus_name"
-            android:id="@+id/infoBusName"
             android:layout_above="@+id/infoArrivesIn"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:text="@string/info_bus_name"
+            android:textSize="32sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:clickable="false"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="32dp"
-            android:layout_marginBottom="16dp">
+            android:clickable="false"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/info_chosen_trip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Vald resa"
-                android:id="@+id/info_chosen_trip"/>
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
+                android:id="@+id/info_from_to"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Chalmers - Lindholmen"
-                android:id="@+id/info_from_to"/>
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </LinearLayout>
 
