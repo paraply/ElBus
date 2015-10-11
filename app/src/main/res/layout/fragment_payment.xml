@@ -37,7 +37,6 @@
         android:layout_height="wrap_content"
         android:indeterminate="false"
         android:max="1000"
-        android:progress="1000"
         android:layout_row="0"
         android:layout_rowSpan="3"
         android:layout_column="0"

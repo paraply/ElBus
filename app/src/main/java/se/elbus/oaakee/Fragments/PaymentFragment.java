@@ -115,7 +115,7 @@ public class PaymentFragment  extends Fragment {
         /*
         Animate the progress bar smoothly.
          */
-        ObjectAnimator anim = ObjectAnimator.ofInt(mProgressbar, "progress",  0);
+        ObjectAnimator anim = ObjectAnimator.ofInt(mProgressbar, "progress", mProgressbar.getMax() , 0);
         anim.setInterpolator(new LinearInterpolator());
         anim.setDuration(time*2);
         anim.start();
@@ -134,8 +134,6 @@ public class PaymentFragment  extends Fragment {
         mTimeLeftText.setText(null);
         mTimeLeftViews.setVisibility(View.INVISIBLE);
         mTicketButton.setVisibility(View.VISIBLE);
-
-        mProgressbar.setProgress(mProgressbar.getMax());
         mCurrentTicket = null;
     }
 
