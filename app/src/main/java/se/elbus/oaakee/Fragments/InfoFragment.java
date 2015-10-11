@@ -1,7 +1,6 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -68,8 +67,11 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
 
 
+    private boolean use_source_timetable, use_destination_timetable;
     private void update_gui(){
         Stop journey_source = null, journey_destination = null;
+
+        // Check every stop for our SOURCE and DESTINATION
         for (Stop s : journeyDetails.stop){
             if (s.id.substring(0,15).equals(source.id.substring(0,15))){ //Using subystring on ID's since last number is different for different tracks and doesn't always match. Don't know why...
                 journey_source = s;
@@ -79,32 +81,64 @@ public class InfoFragment extends Fragment implements VT_Callback{
             }
         }
 
+        // ***** check if on bus OR get SOURCE time
         if (journey_source != null){
-            Log.i("### GUI SRC",  journey_source.name + " RT ARRIVAL TIME: " + journey_source.rtArrTime);
+            Log.i("### INFO SRC",  journey_source.name + " RT ARRIVAL TIME: " + journey_source.rtArrTime + " TIMETABLE: " + journey_source.arrTime);
         }
+
+        if (journey_source.rtArrTime == null) { // If bus has arrived at source || no real time data is available
+
+            Log.i("### INFO SRC", "NO RT, checking timetable diff: " + vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime));
+            if (vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) <= 0) { // Check timetable so we know if real time data is unavailable  if we really are on the bus
+                onBus = true;
+                use_source_timetable = false;
+            } else { // Real time data is unavailable for source
+                use_source_timetable = true;
+            }
+
+        }
+
+        // ***** check if arrived to our stop OR get DESTINATION time
         if (journey_destination != null){
-            Log.i("### GUI DEST", destination.name + " RT ARRIVAL TIME " + journey_destination.rtArrTime);
+            Log.i("### INFO DEST", destination.name + " RT ARRIVAL TIME " + journey_destination.rtArrTime + " TIMETABLE: " + journey_destination.arrTime);
         }
-
-        if (journey_source.rtArrTime == null){ // If bus has arrived VT will return null as real time data
-            onBus = true;
-        }
-
         if (journey_destination.rtArrTime == null){
-            arrived_at_destination = true;
+
+            Log.i("### INFO DEST", "NO RT, checking timetable diff: " + vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime));
+            if (vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) <= 0){ // Check timetable so we know if real time data is unavailable if we really have arrived at the destination
+                arrived_at_destination = true;
+                use_destination_timetable = false;
+            }else{ // Real time data is unavailable for destination
+                use_destination_timetable = true;
+            }
         }
+
+
 
         if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
             textView_arrives_or_departures.setText(R.string.arrived_at_destination);
         }else{
-            if (onBus){
-                textView_arrives_or_departures.setText(R.string.arrive_at_destination);
-                long minutes_left = time_diff_minutes(journey_destination.arrDate, journey_destination.rtArrTime);
+            if (onBus){ // We are on the bus. Show time until we arrive at the destination
+                textView_arrives_or_departures.setText(R.string.arrive_at_destination); // "Arrive at destination" string
+
+
+                long minutes_left = use_destination_timetable ? vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) :
+                        vt_time_diff_minutes(journey_destination.rtArrDate, journey_destination.rtArrTime);
+
+                if (minutes_left < 0){
+                    minutes_left = 0; // Don't show -1 to the user
+                }
+
                 textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
                 textView_below_circle.setText("vid " + journey_destination.name); //TODO STRING RSRC
-            }else{
-                textView_arrives_or_departures.setText(R.string.arrives_in);
-                long minutes_left = time_diff_minutes(journey_source.arrDate, journey_source.rtArrTime);
+            }else{ // We are not on the bus yet. Show time until it arrives to our stop
+                textView_arrives_or_departures.setText(R.string.arrives_in); // "Arrives in" string
+                long minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) :
+                        vt_time_diff_minutes(journey_source.rtArrDate, journey_source.rtArrTime);
+                if (minutes_left < 0){
+                    minutes_left = 0; // Don't show -1 to the user
+                }
+
                 textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
                 textView_below_circle.setText("till " + journey_source.name + " (Läge " + journey_source.track + ")"); //TODO STRING RSRC
             }
@@ -112,7 +146,9 @@ public class InfoFragment extends Fragment implements VT_Callback{
     }
 
 
-    private long time_diff_minutes(String date_1, String time_1){
+    // Helper method to show de difference between a [date , time] compared to Vasttrafik server [date , time]
+    // We don't want to rely on that the local clock matches the servers, therefore we use the data that is always supplied from Vasttrafik
+    private long vt_time_diff_minutes(String date_1, String time_1){
         SimpleDateFormat input_format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         try {
@@ -121,9 +157,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
             long diffInMilliseconds = input_date.getTime() -  vasttrafik_server_date.getTime();
             long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMilliseconds);
-//            if (diffInMinutes < 0){ // We don't want to show -1 and stuff to the user
-//                diffInMinutes = 0;
-//            }
+
             return diffInMinutes;
 
         } catch (ParseException e) {
