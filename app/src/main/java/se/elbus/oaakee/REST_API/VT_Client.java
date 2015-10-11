@@ -154,8 +154,8 @@ public class VT_Client {
         @GET("/location.nearbystops?authKey="  + API_KEY ) //use "&format=json" to get json replies otherwise xml as default
         void api_get_LocationList(@Query("originCoordLat") String latitude, @Query("originCoordLong") String longitude, @Query("maxNo") String max_results, @Query("maxDist") String max_distance, Callback<LocationList> cb);
 
-        @GET("/departureBoard?authKey=" + API_KEY )
-        void api_get_departure_board(@Query("id") String station_ID, Callback<DepartureBoard> cb);
+        @GET("/departureBoard?authKey=" + API_KEY + "&excludeDR=1&timeSpan=60"  )
+        void api_get_departure_board(@Query("id") String station_ID,  Callback<DepartureBoard> cb);
 
         @GET("/journeyDetail")
         void api_get_journey_detail(@Query("ref") String path, Callback<JourneyDetail> cb);
