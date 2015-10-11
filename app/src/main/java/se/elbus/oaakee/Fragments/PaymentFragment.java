@@ -1,6 +1,7 @@
 package se.elbus.oaakee.Fragments;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,12 +34,14 @@ public class PaymentFragment  extends Fragment {
 
     private Card mCard = new Card();
     private Ticket mCurrentTicket;
-    private Button mTicketButton;
+    private ImageButton mTicketButton;
     private ProgressBar mProgressbar;
     private TextView mTimeLeftText;
     private LinearLayout mTimeLeftViews;
     private TextView mCurrencyView;
     private TextView mHistoryView;
+
+    private ObjectAnimator mAnim;
 
 
     @Override
@@ -69,7 +73,7 @@ public class PaymentFragment  extends Fragment {
         /*
         Finds the button and binds a listener to it.
          */
-        mTicketButton = (Button) v.findViewById(R.id.button_get_ticket);
+        mTicketButton = (ImageButton) v.findViewById(R.id.button_get_ticket);
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,10 +119,10 @@ public class PaymentFragment  extends Fragment {
         /*
         Animate the progress bar smoothly.
          */
-        ObjectAnimator anim = ObjectAnimator.ofInt(mProgressbar, "progress", mProgressbar.getMax() , 0);
-        anim.setInterpolator(new LinearInterpolator());
-        anim.setDuration(time*2);
-        anim.start();
+        mAnim = ObjectAnimator.ofInt(mProgressbar, "progress", mProgressbar.getMax() , 0);
+        mAnim.setInterpolator(new LinearInterpolator());
+        mAnim.setDuration(time * 2);
+        mAnim.start();
         mTimeLeftViews.setVisibility(View.VISIBLE);
     }
 
@@ -161,8 +165,4 @@ public class PaymentFragment  extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
 }

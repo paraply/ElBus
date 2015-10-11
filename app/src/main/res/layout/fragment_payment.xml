@@ -99,11 +99,12 @@
         android:gravity="center"
         android:layout_gravity="center">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:layout_width="250sp"
+            android:layout_height="250sp"
             android:id="@+id/button_get_ticket"
-            android:text="@string/press_for_ticket"
+            android:src="@drawable/ic_card_travel_black_48dp"
+            android:background="@drawable/ticket_button"
             />
     </LinearLayout>
 
