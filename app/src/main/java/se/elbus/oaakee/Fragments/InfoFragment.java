@@ -131,7 +131,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
             textView_arrives_or_departures.setText(R.string.arrived_at_destination); // "Arrived at destination" string
             vt_update_timer.cancel(); // Stop the timer since we don't need it no more
             // Hide circle and its contents
-            circle.setVisibility(View.INVISIBLE);
+//            circle.setVisibility(View.INVISIBLE);
             textView_counter.setVisibility(View.INVISIBLE);
             textView_minutes_text.setVisibility(View.INVISIBLE);
             textView_below_circle.setText(journey_destination.name); // Only show name of destination this time. No text before.
