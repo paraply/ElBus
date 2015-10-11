@@ -34,7 +34,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
     private boolean arrived_at_destination;
 
     private MainActivity parent;
-    private VT_Client vt_client; // TODO: Will get reference from parent
+    private VT_Client vt_client; // TODO: Will maybe get reference from parent
 
     private TextView textView_choosen_trip;
     private TextView textView_arrives_or_departures;
@@ -66,12 +66,6 @@ public class InfoFragment extends Fragment implements VT_Callback{
         return infoFragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-
-        super.onCreate(savedInstanceState);
-    }
 
 
     private void update_gui(){
@@ -107,12 +101,12 @@ public class InfoFragment extends Fragment implements VT_Callback{
                 textView_arrives_or_departures.setText(R.string.arrive_at_destination);
                 long minutes_left = time_diff_minutes(journey_destination.arrDate, journey_destination.rtArrTime);
                 textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
-                textView_below_circle.setText("vid " + journey_destination.name);
+                textView_below_circle.setText("vid " + journey_destination.name); //TODO STRING RSRC
             }else{
                 textView_arrives_or_departures.setText(R.string.arrives_in);
                 long minutes_left = time_diff_minutes(journey_source.arrDate, journey_source.rtArrTime);
                 textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
-                textView_below_circle.setText("till " + journey_source.name + " (Läge " + journey_source.track + ")");
+                textView_below_circle.setText("till " + journey_source.name + " (Läge " + journey_source.track + ")"); //TODO STRING RSRC
             }
         }
     }
@@ -127,9 +121,9 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
             long diffInMilliseconds = input_date.getTime() -  vasttrafik_server_date.getTime();
             long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMilliseconds);
-            if (diffInMinutes < 0){ // We don't want to show -1 and stuff to the user
-                diffInMinutes = 0;
-            }
+//            if (diffInMinutes < 0){ // We don't want to show -1 and stuff to the user
+//                diffInMinutes = 0;
+//            }
             return diffInMinutes;
 
         } catch (ParseException e) {
@@ -150,6 +144,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putBoolean("onBus", onBus);
         savedInstanceState.putBoolean("arrived_at_destination", arrived_at_destination);
+        savedInstanceState.putParcelable("journeyDetails_updated", journeyDetails);
     }
 
     // Called when a fragment is first attached to its context
@@ -184,12 +179,13 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
 //        Log.i("### COLOR", departure_from_board.bgColor);
 
-        Bundle bundle = getArguments();
 
+        // Load the arguements from newInstance
+        Bundle bundle = getArguments();
         source = bundle.getParcelable("source");
         destination = bundle.getParcelable("destination");
         departure_from_board = bundle.getParcelable("departure_from_board");
-        journeyDetails = bundle.getParcelable("journeyDetails");
+        journeyDetails = bundle.getParcelable("journeyDetails"); // Use this if no newer is stored in savedState
 
         textView_choosen_trip.setText(source.name + " - " + destination.name);
 
@@ -197,7 +193,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
             Log.i("### info_frag", "has saved instance");
             onBus = savedState.getBoolean("onBus", false); // If has saved instance restore state. Otherwise assume we are not on the bus.
             arrived_at_destination = savedState.getBoolean("arrived_at_destination", false); // True if we already are at the destination
-
+            journeyDetails = savedState.getParcelable("journeyDetails_updated");
         }
 
         textview_line_short_name.setText( departure_from_board.name );
