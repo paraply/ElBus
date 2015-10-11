@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -46,6 +47,12 @@ public class DestinationFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,destinations);
         ListView destinationsListView = (ListView) destinationView.findViewById(R.id.destinationsListView);
         destinationsListView.setAdapter(adapter);
+        destinationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mFragmentSwithcer.nextFragment(null);
+            }
+        });
     }
 
     @Override
