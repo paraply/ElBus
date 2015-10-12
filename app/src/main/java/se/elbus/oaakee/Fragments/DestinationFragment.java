@@ -1,5 +1,6 @@
 package se.elbus.oaakee.Fragments;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -63,6 +64,8 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     private String testDirection = "Tynnered";
     private String testStop = "Kapellplatsen";
 
+    private FragmentSwitchCallbacks mFragmentSwithcer;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +89,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
                 Object selected = parent.getItemAtPosition(position);
                 Log.i("TAG", selected.toString());
                 getItemFromDestinationList(position);
+                mFragmentSwithcer.nextFragment(null);
             }
         });
 
@@ -177,5 +181,12 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     @Override
     public void got_error(String during_method, String error_msg) {
 
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mFragmentSwithcer = (FragmentSwitchCallbacks) context;
     }
 }
