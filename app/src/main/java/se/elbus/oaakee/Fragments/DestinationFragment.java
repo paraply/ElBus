@@ -43,22 +43,30 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     private Stop mPressedStop;
 
     private FragmentSwitchCallbacks mFragmentSwitcher;
+    private Bundle mSavedInformation; // This is to hold the information from previous fragment.
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         vtClient = new VT_Client(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        if (savedInstanceState != null){
+            mSavedInformation.putAll(savedInstanceState);
+        }
+
         View v = inflater.inflate(R.layout.fragment_destination, container, false);
 
         TextView mTransportLineName = (TextView) v.findViewById(R.id.transportLineName);
         TextView mTransportLineDirection = (TextView) v.findViewById(R.id.transportLineDirection);
         TextView mTransportFrom = (TextView) v.findViewById(R.id.transportFromStop);
+
+        mStopLocation = mSavedInformation.getParcelable("source");
+        mDeparture = mSavedInformation.getParcelable("trip");
 
         mTransportLineName.setText(mDeparture.name);
         mTransportLineDirection.setText(mDeparture.direction);
@@ -70,18 +78,14 @@ public class DestinationFragment extends Fragment implements VT_Callback {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mPressedStop = mStops.get(position);
 
-                StopLocation source = mStopLocation;
                 Stop destination = mPressedStop;
-                Departure departure = mDeparture;
                 JourneyDetail journeyDetails = mJourneyDetail;
 
-                Bundle fragment_args = new Bundle();
-                fragment_args.putParcelable("source", source);
-                fragment_args.putParcelable("destination", destination);
-                fragment_args.putParcelable("trip", departure);
-                fragment_args.putParcelable("journey", journeyDetails);
+                mSavedInformation.putParcelable("destination", destination);
+                mSavedInformation.putParcelable("journey", journeyDetails);
 
-                mFragmentSwitcher.nextFragment(fragment_args);
+                mFragmentSwitcher.nextFragment((Bundle) mSavedInformation.clone());
+
             }
         });
 
@@ -90,6 +94,16 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         return v;
     }
 
+    /**
+     * This will save the information gotten from the previous fragment.
+     *
+     * @param outState is the bundle we get in onCreate and onCreateView.
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putAll(mSavedInformation);
+        super.onSaveInstanceState(outState);
+    }
 
     /**
      * Populates destination list view with names of stops
@@ -159,7 +173,6 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
-        mStopLocation = args.getParcelable("source");
-        mDeparture = args.getParcelable("trip");
+        mSavedInformation = (Bundle) args.clone();
     }
 }
