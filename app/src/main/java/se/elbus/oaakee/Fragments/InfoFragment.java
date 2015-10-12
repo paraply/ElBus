@@ -27,6 +27,8 @@ import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
 import se.elbus.oaakee.REST_API.VT_Model.LocationList;
 import se.elbus.oaakee.REST_API.VT_Model.Stop;
 import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
+import se.elbus.oaakee.Services.AlarmService;
+import se.elbus.oaakee.Services.DetectBusService;
 
 public class InfoFragment extends Fragment implements VT_Callback{
 
@@ -65,6 +67,8 @@ public class InfoFragment extends Fragment implements VT_Callback{
         fragment_args.putParcelable("journeyDetails", journeyDetails);
 
         infoFragment.setArguments(fragment_args);
+
+        DetectBusService.setServiceAlarm(infoFragment.getActivity(), true);
 
         return infoFragment;
     }
@@ -298,6 +302,13 @@ public class InfoFragment extends Fragment implements VT_Callback{
                     });
                     vt_client.get_journey_details(departure_from_board.journeyDetailRef);
 
+                    //Check DetectBusService to see if we're on the bus
+                    if(!onBus) {
+                        if(DetectBusService.onBus){
+                            AlarmService.setServiceAlarm(getActivity(), true, DetectBusService.dgwFound, destination.name);
+                            onBus = true;
+                        }
+                    }
                 }
             }, 0, UPDATE_TIMER_INTERVAL);
 

@@ -37,8 +37,8 @@ public class AlarmService extends IntentService implements EC_Callback{
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up
     private static final int POLL_INTERVAL = 1000 * 30;
 
-    private String busID = "Ericsson$Vin_Num_001";
-    private String destination = "Lindholmen";
+    private static String busID = "Ericsson$Vin_Num_001";
+    private static String destination = "Lindholmen";
 
     EC_Client client = new EC_Client(this);
 
@@ -51,7 +51,7 @@ public class AlarmService extends IntentService implements EC_Callback{
         super(TAG);
     }
 
-    public static void setServiceAlarm(Context context, boolean isOn) {
+    public static void setServiceAlarm(Context context, boolean isOn, String bus, String dest) {
         Intent i = AlarmService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
 
@@ -63,6 +63,9 @@ public class AlarmService extends IntentService implements EC_Callback{
             alarmManager.cancel(pi);
             pi.cancel();
         }
+
+        busID = bus;
+        destination = dest;
     }
 
     private void SendNotification() {

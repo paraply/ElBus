@@ -24,7 +24,7 @@ public class DetectBusService extends IntentService {
     private static final int POLL_INTERVAL = 1000 * 30;
 
     public static String dgwFound;
-    public static boolean onBus;
+    public static boolean onBus = false;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, AlarmService.class);
