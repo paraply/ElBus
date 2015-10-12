@@ -32,8 +32,8 @@
     <string name="from">från</string>
     <string name="track">Läge</string>
 
-    <string name="text_want_to_go_to">Jag vill åka till:</string>
-    <string name="text_from">från</string>
+    <string name="text_want_to_go_from">Jag vill åka från</string>
+    <string name="text_to">till:</string>
 
     <string name="your_ticket">Din Biljett</string>
     <string name="latest">Senaste</string>
