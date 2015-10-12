@@ -32,7 +32,6 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.i("Travel", "--- DeparturesAdapter getView ---");
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View customView = layoutInflater.inflate(R.layout.busline_row, parent, false);
 
