@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.i("Travel","--- DeparturesAdapter getView ---");
+        Log.i("Travel", "--- DeparturesAdapter getView ---");
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View customView = layoutInflater.inflate(R.layout.busline_row, parent, false);
 
@@ -41,37 +43,46 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
         if (departures.size()>0) {
             lineNumber.setText(departures.get(0).sname);
         }
-        //final Button topButton = (Button) customView.findViewById(R.id.topDepartureButton);
 
         for (Departure departure:departures){
 
-            Button button = new Button(getContext());
+            View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, departure.time);
+            setButtonClick(busLineButtonView);
 
-            LinearLayout linearLayout = (LinearLayout)customView.findViewById(R.id.busLineButtonLayout);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            linearLayout.addView(button, layoutParams);
-            button.setGravity(Gravity.LEFT);
-
-            button.setText(departure.direction + " - " + departure.time);
-            setButtonAction(button);
         }
-
-
-
-
-
-        //setButtonAction(topButton);
 
         return customView;
     }
 
-    private void setButtonAction(final Button button) {
-        button.setOnClickListener(new View.OnClickListener() {
+
+    private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time){
+        View busLineButtonView = layoutInflater.inflate(R.layout.busline_button,parent,false);
+
+        LinearLayout linearLayout = (LinearLayout)parentView.findViewById(R.id.busLineButtonLayout);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        linearLayout.addView(busLineButtonView, layoutParams);
+
+        TextView buslineText = (TextView)busLineButtonView.findViewById(R.id.stationTextView);
+        buslineText.setText(direction);
+
+        TextView minutesText = (TextView)busLineButtonView.findViewById(R.id.minutesTextView);
+        minutesText.setText(time);
+
+        return busLineButtonView;
+    }
+
+    /**
+     * Sets button click
+     * @param view
+     */
+    private void setButtonClick(final View view){
+        view.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String toastMessage = "You clicked: " + button.getText();
+                String toastMessage = "You clicked: " + ((TextView)view.findViewById(R.id.stationTextView)).getText();
                 Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }
