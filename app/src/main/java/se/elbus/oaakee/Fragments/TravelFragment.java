@@ -72,8 +72,6 @@ public class TravelFragment extends Fragment implements VT_Callback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_travel, container, false);
 
-
-
         createBusStopList(v);
         createDeparturesList(v);
 
@@ -109,7 +107,6 @@ public class TravelFragment extends Fragment implements VT_Callback {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString() + ", Position: " + mBusStopSpinner.getSelectedItemPosition());
-                //updateDeparturesList(mBusStopSpinner.getSelectedItemPosition());
                 int i = mBusStopSpinner.getSelectedItemPosition();
                 vtClient.get_departure_board(busStops.get(i).id);
             }
@@ -122,30 +119,33 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     }
 
+    /**
+     * Updates bus stop list (gui)
+     */
     private void updateBusStopList(){
-        Log.i(TAG, "--- Updating bus stop list ---");
-
         ArrayList<String> stops = new ArrayList<String>();
 
         for (StopLocation s : busStops){
             stops.add(s.name);
         }
 
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, busStops);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),R.layout.spinner_item,stops);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mBusStopSpinner.setAdapter(adapter1);
-
     }
 
+    /**
+     * Sorts departures list, then updates gui
+     */
     private void sortDeparturesAndUpdateDepartureList(){
-
         sortDepartures();
         updateDeparturesList();
-
     }
 
+    /**
+     * Sorts departures, puts them in listes of bus line number
+     */
     private void sortDepartures(){
         departuresSorted.clear();
 
@@ -158,14 +158,14 @@ public class TravelFragment extends Fragment implements VT_Callback {
         }
 
         for (String s:shortName){ //go through all lines
-            Log.i(TAG,"Short: " + s);
+            //Log.i(TAG,"Short: " + s);
             List<Departure> departures = new ArrayList<Departure>();
 
             for (Departure departure:allDepartures){ //loop through all departures
                 if (departure.sname.equals(s)){
                     boolean alreadyInList = false;
 
-                    for (Departure d2:departures){
+                    for (Departure d2:departures){ //Checks if direction of this departure is already in list
                         if (departure.direction.equals(d2.direction)){
                             alreadyInList=true;
                             break;
@@ -174,27 +174,20 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
                     if (!alreadyInList){
                         departures.add(departure);
-                        Log.d(TAG,"Added: " + departure.sname + ", Dir: " + departure.direction + ", time: " + departure.time);
-                    } else {Log.d(TAG,"NoAdd: " + departure.sname + ", Dir: " + departure.direction + ", time: " + departure.time);}
+                        //Log.d(TAG,"Added: " + departure.sname + ", Dir: " + departure.direction + ", time: " + departure.time);
+                    }
                 }
             }
-            departuresSorted.add(departures);
+            departuresSorted.add(departures); //Adds list of departures for one single bus line number
         }
     }
 
+    /**
+     * Updates departures list, giving it the sorted departures list
+     */
     private void updateDeparturesList(){
-        Log.i(TAG, "--- Updating departure list ---");
-
-        //Log.i(TAG, "Stop chosen: " + busStops.get(index).name);
-
-
-        //List<List<Departure>> list = new ArrayList<List<Departure>>();
-        //list.add(allDepartures);
-
         ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), departuresSorted);
         mDeparturesListView.setAdapter(adapter);
-
-
     }
 
     /**
@@ -214,29 +207,31 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     }
 
-
+    /**
+     * Removes duplicate bus stops (tracks!) and updates gui.
+     * @param stopLocations List of bus stops
+     */
     private void removeDuplicatesAndUpdateStopList(List<StopLocation> stopLocations){
         List<StopLocation> stops = removeDuplicateStops(stopLocations);
 
-        for (StopLocation s : stops) { // List all nearby stops
+/*        for (StopLocation s : stops) { // List all nearby stops
             Log.i(TAG, "### NEAR STOP" + " ID:" + s.id + " TRACK:" + s.track + " NAME: " + s.name);
         }
 
         StopLocation closest = stops.get(0); // The closest stop is at the top of the list
-        Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id);
-
-        //vtClient.get_departure_board(closest.id); // Get departures from this stop
+        Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id);*/
 
         busStops = stops;
-
         updateBusStopList();
     }
 
-
+    /**
+     * Removes duplicate bus stops (tracks)
+     * @param stopLocations Unsorted list of busstops
+     * @return List of bus stops without duplicates
+     */
     private List<StopLocation> removeDuplicateStops(List<StopLocation> stopLocations){
         List<StopLocation> stops = new ArrayList<>();
-
-        stops.add(stopLocations.get(0));
 
         boolean contains;
 
@@ -286,18 +281,16 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     @Override
     public void got_departure_board(DepartureBoard departureBoard) {
-        Log.i(TAG,"Departure board ");
+       /* Log.i(TAG,"Departure board ");
         for (Departure d : departureBoard.departure) { // List all the allDepartures from this stop
             Log.i(TAG,"### DEPARTURES - SHORT NAME: " + d.sname + " TIME: " + d.time + " TRACK: " + d.track + " bgColor: " + d.bgColor + " JOURNEYID " + d.journeyid + " DIRECTION: " + d.direction );
             if (d.sname.equals("11") && d.direction.equals("Bergsjön")){ // If spårvagn 11 mot Bergsjön
                 vtClient.get_journey_details(d.journeyDetailRef); // Get journey details from this journey
                 return;
             }
-        }
+        }*/
         allDepartures = departureBoard.departure;
-
         sortDeparturesAndUpdateDepartureList();
-
     }
 
     @Override
