@@ -223,8 +223,8 @@ public class InfoFragment extends Fragment implements VT_Callback{
         Bundle bundle = getArguments();
         source = bundle.getParcelable("source");
         destination = bundle.getParcelable("destination");
-        departure_from_board = bundle.getParcelable("departure_from_board");
-        journeyDetails = bundle.getParcelable("journeyDetails"); // Use this if no newer is stored in savedState
+        departure_from_board = bundle.getParcelable("trip");
+        journeyDetails = bundle.getParcelable("journey"); // Use this if no newer is stored in savedState
 
         textView_choosen_trip.setText(source.name + " - " + destination.name);
 
