@@ -16,6 +16,11 @@ import se.elbus.oaakee.R;
 /**
  * Created by Anton on 2015-10-11.
  */
+
+
+// To start, use DetectBusService.setServiceAlarm(getActivity(), true);
+// The activity using the service must have a method equivalent to the newIntent method in this class (for the callback from the notification)
+
 public class DetectBusService extends IntentService {
 
     private static final String TAG = "DetectBusService";
@@ -47,7 +52,6 @@ public class DetectBusService extends IntentService {
             pi.cancel();
         }
     }
-
 
     @Override
     protected void onHandleIntent(Intent intent) {
