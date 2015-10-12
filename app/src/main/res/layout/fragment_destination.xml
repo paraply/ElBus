@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -16,25 +17,28 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/spacing_normal"
-            android:text="99"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="99"/>
 
         <TextView
             android:id="@+id/transportLineDirection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="Riktning"
             android:layout_marginLeft="@dimen/spacing_small"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:layout_marginStart="@dimen/spacing_small"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Riktning"/>
 
         <TextView
             android:id="@+id/textFrom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="16dp"
-            android:text="@string/from"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:text="@string/text_from"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
@@ -42,9 +46,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="16dp"
-            android:text="Hållplats"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Hållplats"/>
     </LinearLayout>
 
     <TextView
@@ -52,6 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginStart="@dimen/spacing_normal"
         android:layout_marginTop="@dimen/spacing_normal"
         android:text="@string/text_want_to_go_to"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
