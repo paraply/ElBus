@@ -82,8 +82,8 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
      * @param text
      */
     private void setTextViewText(int id, View parent, String text){
-        TextView minutesText = (TextView)parent.findViewById(id);
-        minutesText.setText(text);
+        TextView textView = (TextView)parent.findViewById(id);
+        textView.setText(text);
     }
 
     /**
