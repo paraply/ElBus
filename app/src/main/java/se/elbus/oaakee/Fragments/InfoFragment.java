@@ -57,25 +57,6 @@ public class InfoFragment extends Fragment implements VT_Callback{
     private JourneyDetail journeyDetails;
 
 
-
-    public static InfoFragment newInstance(StopLocation source, Stop destination, Departure departure_from_board, JourneyDetail journeyDetails){
-        InfoFragment infoFragment = new InfoFragment();
-        Bundle fragment_args = new Bundle();                // Save the arguments in a bundle in case the state is destroyed and needs to be recreated (like screen rotation)
-        fragment_args.putParcelable("source", source);
-        fragment_args.putParcelable("destination", destination);
-        fragment_args.putParcelable("departure_from_board", departure_from_board);
-        fragment_args.putParcelable("journeyDetails", journeyDetails);
-
-        infoFragment.setArguments(fragment_args);
-
-        DetectBusService.setServiceAlarm(infoFragment.getActivity(), true);
-
-        return infoFragment;
-    }
-
-
-
-
     private boolean use_source_timetable, use_destination_timetable;
 
     // Update the GUI to show TIME and STOP information
@@ -316,6 +297,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
             Log.i("### INFO", "has arrived at destination");
 
         }
+        DetectBusService.setServiceAlarm(getActivity(), true);
 
         return view;
     }

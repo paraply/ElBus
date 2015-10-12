@@ -26,38 +26,48 @@ import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
  * Service to repeatedly check the next stop for the current bus.
  * Check if stop matches the chosen destination.
  * If so, send push notification.
+<<<<<<< HEAD:app/src/main/java/se/elbus/oaakee/Services/AlarmService.java
+=======
+ * =======
+ * <p>
+ * /**
+ * Created by Anton on 2015-09-30.
+ * ToDo:
+ * Service to repeatedly check the next stop for the current bus.
+ * Check if stop matches the chosen destination.
+ * If so, send push notification.
+ * >>>>>>> a10002b8f901f733f46d8ba89ab66c3e8a40a373
+>>>>>>> master:app/src/main/java/se/elbus/oaakee/AlarmService.java
  */
 
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
 // The activity using the service must have a method equivalent to the newIntent method in this class (for the callback from the notification)
 
-public class AlarmService extends IntentService implements EC_Callback{
+public class AlarmService extends IntentService implements EC_Callback {
 
     private static final String TAG = "AlarmService";
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up
     private static final int POLL_INTERVAL = 1000 * 30;
-
+    EC_Client client = new EC_Client(this);
     private static String busID = "Ericsson$Vin_Num_001";
     private static String destination = "Lindholmen";
 
-    EC_Client client = new EC_Client(this);
+    public AlarmService() {
+        super(TAG);
+    }
 
     //Equivalent method must be in activity using this service
     public static Intent newIntent(Context context) {
         return new Intent(context, AlarmService.class);
     }
 
-    public AlarmService() {
-        super(TAG);
-    }
-
     public static void setServiceAlarm(Context context, boolean isOn, String bus, String dest) {
         Intent i = AlarmService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
 
-        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        if(isOn) {
+        if (isOn) {
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), POLL_INTERVAL, pi);
         } else {
             alarmManager.cancel(pi);
@@ -98,7 +108,7 @@ public class AlarmService extends IntentService implements EC_Callback{
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if(!isNetworkAvailableAndConnected()) {
+        if (!isNetworkAvailableAndConnected()) {
             return;
         }
 
@@ -112,20 +122,20 @@ public class AlarmService extends IntentService implements EC_Callback{
 
     @Override
     public void got_sensor_data(List<Bus_info> bus_info) {
-        if(bus_info == null) return;
+        if (bus_info == null) return;
 
-        if(bus_info.get(bus_info.size()-1).value.equals(destination)) {
+        if (bus_info.get(bus_info.size() - 1).value.equals(destination)) {
             SendNotification();
         }
 
-        for(Bus_info b : bus_info) {
+        for (Bus_info b : bus_info) {
             Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
     public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {
-        if(bus_info == null) return;
+        if (bus_info == null) return;
         for (Bus_info b : bus_info) {
             Log.i("### SENSOR RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
@@ -133,7 +143,7 @@ public class AlarmService extends IntentService implements EC_Callback{
 
     @Override
     public void got_reource_data(List<Bus_info> bus_info) {
-        if(bus_info == null) return;
+        if (bus_info == null) return;
         for (Bus_info b : bus_info) {
             Log.i("### RSRC RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
@@ -141,7 +151,7 @@ public class AlarmService extends IntentService implements EC_Callback{
 
     @Override
     public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
-        if(bus_info == null) return;
+        if (bus_info == null) return;
         for (Bus_info b : bus_info) {
             Log.i("### RSRC RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }

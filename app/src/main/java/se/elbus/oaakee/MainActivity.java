@@ -12,11 +12,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
+import se.elbus.oaakee.Fragments.DestinationFragment;
+import se.elbus.oaakee.Fragments.FragmentSwitchCallbacks;
 import se.elbus.oaakee.Fragments.HamburgerFragment;
+import se.elbus.oaakee.Fragments.InfoFragment;
+import se.elbus.oaakee.Fragments.PaymentFragment;
+import se.elbus.oaakee.Fragments.SettingsFragment;
+import se.elbus.oaakee.Fragments.SettingsWrapper;
 import se.elbus.oaakee.Fragments.TravelFragment;
 
-public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks, FragmentSwitchCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -24,28 +31,37 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
     private HamburgerFragment mHamburgerFragment;
 
     private ArrayList<Fragment> mFragments;
+    private Stack<Fragment> mTravelFragments;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
 
+    //For notifications etc.
+    public static Intent newIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFragments = new ArrayList<>();
+        mTravelFragments = new Stack<>();
 
         setTitle(getString(R.string.title_section1));
 
         /*
           Here is where we add the fragments in order.
          */
-        mFragments.add(new TravelFragment());
-        mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Stämpla"
-        mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Konto"
-        mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Inställningar"
-        mFragments.add(new TravelFragment()); // TODO: Change this to fragment for "Historik"
+        mTravelFragments.push(new TravelFragment());
+
+        mFragments.add(mTravelFragments.peek());
+        mFragments.add(new PaymentFragment());
+        mFragments.add(null); // TODO: Change this to fragment for "Konto"
+        mFragments.add(new SettingsWrapper());
+        mFragments.add(null); // TODO: Change this to fragment for "Historik"
 
         changeFragment(mFragments.get(0));
 
@@ -66,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
      */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        switch (position+1) {
+        switch (position + 1) {
             case 1:
                 mTitle = getString(R.string.title_section1);
                 break;
@@ -84,19 +100,31 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
                 break;
         }
 
-        if(mFragments != null){
+        if (mFragments != null) {
             Fragment newFragment = mFragments.get(position);
-            if(newFragment != null){
+            if (newFragment != null) {
                 changeFragment(newFragment);
             }
         }
     }
 
-    private void changeFragment(Fragment f){
+    private void changeFragment(Fragment f) {
         FragmentManager fm = getSupportFragmentManager();
+
         fm.beginTransaction()
                 .replace(R.id.main_container, f)
                 .commit();
+    }
+
+    private void changeFragmentWithBackstack(Fragment f) {
+        FragmentManager fm = getSupportFragmentManager();
+
+        fm.beginTransaction()
+                .replace(R.id.main_container, f)
+                .addToBackStack(null)
+                .commit();
+
+
     }
 
     public void restoreActionBar() {
@@ -104,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,8 +160,32 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         return super.onOptionsItemSelected(item);
     }
 
-    //For notifications etc.
-    public static Intent newIntent(Context context) {
-        return new Intent(context, MainActivity.class);
+    @Override
+    public void nextFragment(Bundle args) {
+        Fragment newFragment;
+        newFragment = getNextFragment();
+        newFragment.setArguments(args);
+
+        mTravelFragments.push(newFragment);
+        mFragments.set(0, mTravelFragments.peek());
+
+        changeFragmentWithBackstack(newFragment);
+    }
+
+    private Fragment getNextFragment() {
+        switch (mTravelFragments.size()) {
+            case 1:
+                return new DestinationFragment();
+            case 2:
+                return new InfoFragment();
+            default:
+                throw new RuntimeException("You should not go to next fragment in the last one!");
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        mTravelFragments.pop();
+        super.onBackPressed();
     }
 }

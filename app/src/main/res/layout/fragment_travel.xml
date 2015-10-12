@@ -7,8 +7,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/material_grey_300"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/bg_grey_300"
         android:orientation="horizontal">
 
         <TextView
@@ -16,18 +16,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
             android:clickable="false"
             android:singleLine="false"
             android:text="@string/current_bus_stop"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/text_color_black" />
+            android:textColor="@color/text_color_black"
+            android:layout_marginLeft="@dimen/spacing_normal"/>
 
         <Spinner
             android:id="@+id/busStopSpinner"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp" />
+            android:layout_marginRight="@dimen/spacing_normal"
+            />
     </LinearLayout>
 
 

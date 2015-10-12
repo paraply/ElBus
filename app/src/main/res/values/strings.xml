@@ -31,4 +31,18 @@
     <string name="to">till</string>
     <string name="from">från</string>
     <string name="track">Läge</string>
+
+    <string name="text_want_to_go_to">Jag vill åka till:</string>
+    <string name="text_from">från</string>
+
+    <string name="your_ticket">Din Biljett</string>
+    <string name="latest">Senaste</string>
+    <string name="charge">Saldo</string>
+    <string name="payment_minutes">min</string>
+    <string name="font">sans-serif-thin</string>
+    <string name="press_for_ticket">tryck för att stämpla</string>
+    <string name="time_never">Aldrig</string>
+    <string name="empty_charge">0 kr</string>
+
+>>>>>>> master
 </resources>
