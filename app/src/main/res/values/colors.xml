@@ -8,6 +8,12 @@
     <!-- Accent colors -->
     <color name="accent_color">#FF9800</color>
 
+    <!-- Background colors -->
+    <color name="bg_grey_300">#E0E0E0</color>
+    <color name="bg_grey_100">#F5F5F5</color>
+    <color name="bg_grey_50">#FAFAFA</color>
+    <color name="bg_white">#FFFFFF</color>
+
     <!-- Other colors -->
     <color name="text_color_black">#212121</color>
     <color name="text_color_grey">#727272</color>
