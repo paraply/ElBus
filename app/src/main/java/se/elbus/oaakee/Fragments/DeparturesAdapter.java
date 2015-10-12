@@ -39,7 +39,7 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
         List<Departure> departures = getItem(position);
 
         TextView lineNumber = (TextView)customView.findViewById(R.id.busNumberTextView);
-        
+
         if (departures.size()>0) {
             lineNumber.setText(departures.get(0).sname);
         }
@@ -54,7 +54,15 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
         return customView;
     }
 
-
+    /**
+     * Created button for bus line departure
+     * @param parentView
+     * @param layoutInflater
+     * @param parent
+     * @param direction
+     * @param time
+     * @return
+     */
     private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time){
         View busLineButtonView = layoutInflater.inflate(R.layout.busline_button,parent,false);
 
@@ -68,7 +76,12 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
         return busLineButtonView;
     }
 
-
+    /**
+     * Sets text of TextView
+     * @param id
+     * @param parent
+     * @param text
+     */
     private void setTextViewText(int id, View parent, String text){
         TextView minutesText = (TextView)parent.findViewById(id);
         minutesText.setText(text);
