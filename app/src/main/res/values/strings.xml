@@ -21,4 +21,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
+    <string name="your_ticket">Din Biljett</string>
+    <string name="latest">Senaste</string>
+    <string name="charge">Saldo</string>
+    <string name="minutes">min</string>
+    <string name="font">sans-serif-thin</string>
+    <string name="press_for_ticket">tryck för att stämpla</string>
+    <string name="time_never">Aldrig</string>
+    <string name="empty_charge">0 kr</string>
 </resources>

@@ -68,8 +68,8 @@ import se.elbus.oaakee.REST_API.VT_Model.LocationList;
 public class VT_Client {
     private static final String API_KEY = "47befa35-9616-4ee0-af17-b82dd53e8e1c";
     private static final String VT_API_URL = "http://api.vasttrafik.se/bin/rest.exe/v1";
-    private VT_API vt_api;
     VT_Callback vt_callback;
+    private VT_API vt_api;
 
     public VT_Client(VT_Callback vt_callback){
         this.vt_callback = vt_callback;

@@ -13,8 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +38,6 @@ public class TravelFragment extends Fragment implements VT_Callback {
     private VT_Client vtClient;
     private static final String TAG = "Travel";
 
-    private Location location;
-
     private double latitude = 57.692395;
     private double longitude = 11.972917;
 
@@ -44,11 +45,14 @@ public class TravelFragment extends Fragment implements VT_Callback {
     private List<Departure> allDepartures;
     private List<List<Departure>> departuresSorted;
 
+    private FragmentSwitchCallbacks mFragmentSwitcher;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        allDepartures = new ArrayList<Departure>();
+        allDepartures = new ArrayList<>();
         departuresSorted = new ArrayList<>();
 
         vtClient = new VT_Client(this);
@@ -68,6 +72,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
         vtClient.get_nearby_stops(latitude + "", longitude + "", "30", "1000");
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_travel, container, false);
@@ -81,8 +86,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     private Location getCurrentLocation() throws SecurityException{
         LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        return location;
+        return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
 
     private boolean checkGPSPermission(){
@@ -123,13 +127,13 @@ public class TravelFragment extends Fragment implements VT_Callback {
      * Updates bus stop list (gui)
      */
     private void updateBusStopList(){
-        ArrayList<String> stops = new ArrayList<String>();
+        ArrayList<String> stops = new ArrayList<>();
 
         for (StopLocation s : busStops){
             stops.add(s.name);
         }
 
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),R.layout.spinner_item,stops);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, stops);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mBusStopSpinner.setAdapter(adapter1);
@@ -149,7 +153,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
     private void sortDepartures(){
         departuresSorted.clear();
 
-        List<String> shortName = new ArrayList<String>(); //list of unique short name sorted by departure time
+        List<String> shortName = new ArrayList<>(); //list of unique short name sorted by departure time
 
         for (Departure departure:allDepartures){
             if (!(shortName.contains(departure.sname))){
@@ -159,7 +163,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
         for (String s:shortName){ //go through all lines
             //Log.i(TAG,"Short: " + s);
-            List<Departure> departures = new ArrayList<Departure>();
+            List<Departure> departures = new ArrayList<>();
 
             for (Departure departure:allDepartures){ //loop through all departures
                 if (departure.sname.equals(s)){
@@ -199,7 +203,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
         //String[] allDepartures = {"Lindholmen", "Tynnered", "Bergsjön", "Majorna"};
 
-        List<List<Departure>> list = new ArrayList<List<Departure>>();
+        List<List<Departure>> list = new ArrayList<>();
         list.add(allDepartures);
 
         ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), list);
@@ -294,7 +298,93 @@ public class TravelFragment extends Fragment implements VT_Callback {
     }
 
     @Override
-    public void got_error(String during_method, String error_msg) {
+    public void got_error(String during_method, String error_msg) {}
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mFragmentSwitcher = (FragmentSwitchCallbacks) context;
+    }
+    /**
+     * Custom adapter for departures ListView.
+     *
+     * Created by Tobias on 15-09-27.
+     */
+    public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
+        public DeparturesAdapter(Context context, List<List<Departure>> departures) {
+            super(context, R.layout.busline_row, departures);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            View customView = layoutInflater.inflate(R.layout.busline_row, parent, false);
+
+            List<Departure> departures = getItem(position);
+
+            TextView lineNumber = (TextView)customView.findViewById(R.id.busNumberTextView);
+
+            if (departures.size()>0) {
+                lineNumber.setText(departures.get(0).sname);
+            }
+
+            for (Departure departure:departures){
+
+                View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, departure.time);
+                setButtonClick(busLineButtonView);
+
+            }
+
+            return customView;
+        }
+
+        /**
+         * Created button for bus line departure
+         * @param parentView
+         * @param layoutInflater
+         * @param parent
+         * @param direction
+         * @param time
+         * @return
+         */
+        private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time){
+            View busLineButtonView = layoutInflater.inflate(R.layout.busline_button,parent,false);
+
+            LinearLayout linearLayout = (LinearLayout)parentView.findViewById(R.id.busLineButtonLayout);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            linearLayout.addView(busLineButtonView, layoutParams);
+
+            setTextViewText(R.id.stationTextView,busLineButtonView,direction);
+            setTextViewText(R.id.minutesTextView,busLineButtonView,time);
+
+            return busLineButtonView;
+        }
+
+        /**
+         * Sets text of TextView
+         * @param id
+         * @param parent
+         * @param text
+         */
+        private void setTextViewText(int id, View parent, String text){
+            TextView textView = (TextView)parent.findViewById(id);
+            textView.setText(text);
+        }
+
+        /**
+         * Sets button click
+         * @param view
+         */
+        private void setButtonClick(final View view){
+            view.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    String toastMessage = "You clicked: " + ((TextView)view.findViewById(R.id.stationTextView)).getText();
+                    mFragmentSwitcher.nextFragment(null);
+                    Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
     }
 }
