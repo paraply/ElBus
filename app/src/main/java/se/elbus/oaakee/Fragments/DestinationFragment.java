@@ -28,7 +28,6 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 
 /**
  * Fragment for the "Choose destination"-layout
- * <p/>
  * Created by Tobias on 15-09-30.
  */
 public class DestinationFragment extends Fragment implements VT_Callback {
@@ -119,7 +118,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         for (Stop s : mJourneyDetail.stop) {
             Log.i("### LINE STOPS @", s.name + " WHEN: " + s.arrTime);
 
-            if (s.name.equals("Kapellplatsen, Göteborg")) {
+            if (s.name.equals(mStopLocation.name)) {
                 currentFound = true;
             }
 
