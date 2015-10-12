@@ -13,8 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,9 +45,11 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     private JourneyDetail mLine;        // The line the user wants to ride
 
     private DepartureBoard mDepartureBoard;
+    private Departure mDeparture;
     private LocationList mLocationList;
     private JourneyDetailRef mJourneyDetailRef;
     private JourneyDetail mJourneyDetail;
+    private StopLocation mStopLocation;
 
     private List<Stop> mStops;
     private Stop mPressedStop;
@@ -64,7 +64,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     private String testDirection = "Tynnered";
     private String testStop = "Kapellplatsen";
 
-    private FragmentSwitchCallbacks mFragmentSwithcer;
+    private FragmentSwitchCallbacks mFragmentSwitcher;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,17 +91,17 @@ public class DestinationFragment extends Fragment implements VT_Callback {
                 getItemFromDestinationList(position);
 
 
-                StopLocation source = null;
-                Stop destination = null;
+                StopLocation source = mStopLocation;
+                Stop destination = mPressedStop;
                 Departure departure_from_board = null;
-                JourneyDetail journeyDetails = null;
+                JourneyDetail journeyDetails = mJourneyDetail;
 
                 Bundle fragment_args = new Bundle();
                 fragment_args.putParcelable("source", source);
                 fragment_args.putParcelable("destination", destination);
                 fragment_args.putParcelable("departure_from_board", departure_from_board);
                 fragment_args.putParcelable("journeyDetails", journeyDetails);
-                mFragmentSwithcer.nextFragment(fragment_args);
+                mFragmentSwitcher.nextFragment(fragment_args);
             }
         });
 
@@ -199,6 +199,13 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mFragmentSwithcer = (FragmentSwitchCallbacks) context;
+        mFragmentSwitcher = (FragmentSwitchCallbacks) context;
+    }
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        mStopLocation = args.getParcelable("stop_location");
+        mDeparture = args.getParcelable("departure");
     }
 }
