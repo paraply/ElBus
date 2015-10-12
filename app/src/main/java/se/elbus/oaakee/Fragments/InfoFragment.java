@@ -34,12 +34,15 @@ public class InfoFragment extends Fragment implements VT_Callback{
     private boolean arrived_at_destination;
 
     private MainActivity parent;
-    private VT_Client vt_client; // TODO: Will get reference from parent
+    private VT_Client vt_client; // TODO: Will maybe get reference from parent
 
     private TextView textView_choosen_trip;
     private TextView textView_arrives_or_departures;
     private TextView textView_counter;
     private TextView textView_below_circle;
+    private TextView textView_minutes_text;
+
+    private View circle;
 
 
     private final int UPDATE_TIMER_INTERVAL = 20000; // TODO: Maybe need to adjust
@@ -66,59 +69,111 @@ public class InfoFragment extends Fragment implements VT_Callback{
         return infoFragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
 
 
-        super.onCreate(savedInstanceState);
-    }
 
+    private boolean use_source_timetable, use_destination_timetable;
 
+    // Update the GUI to show TIME and STOP information
     private void update_gui(){
         Stop journey_source = null, journey_destination = null;
-        for (Stop s : journeyDetails.stop){
-            if (s.id.substring(0,15).equals(source.id.substring(0,15))){ //Using subystring on ID's since last number is different for different tracks and doesn't always match. Don't know why...
+
+        // Check every stop for our SOURCE and DESTINATION
+        for (Stop s : journeyDetails.stop){ // TODO ****************************************************** SOMETHING IS WRONG. NO USE SUBSTRING
+            if (s.id.substring(0,14).equals(source.id.substring(0,14))){ //Using subystring on ID's since last number is different for different tracks and doesn't always match. Don't know why...
                 journey_source = s;
             }
-            if (s.id.substring(0,15).equals(destination.id.substring(0,15))){
+            if (s.id.substring(0,14).equals(destination.id.substring(0,14))){
                 journey_destination = s;
             }
         }
 
-        if (journey_source != null){
-            Log.i("### GUI SRC",  journey_source.name + " RT ARRIVAL TIME: " + journey_source.rtArrTime);
-        }
-        if (journey_destination != null){
-            Log.i("### GUI DEST", destination.name + " RT ARRIVAL TIME " + journey_destination.rtArrTime);
+        // ***** check if on bus OR get SOURCE time
+        if (journey_source != null) {
+            Log.i("### INFO SRC", journey_source.name + " RT ARRIVAL TIME: " + journey_source.rtArrTime + " TIMETABLE: " + journey_source.arrTime);
+
+
+            if (journey_source.rtArrTime == null) { // If bus has arrived at source || no real time data is available
+
+                Log.i("### INFO SRC", "NO RT, checking timetable diff: " + vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime));
+                if (vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) <= 0) { // Check timetable so we know if real time data is unavailable  if we really are on the bus
+                    onBus = true;
+                    use_source_timetable = false;
+                } else { // Real time data is unavailable for source
+                    use_source_timetable = true;
+                }
+
+            }
+        }else{
+            Log.e("### INFO", "BAD SOURCE");
+            return;
         }
 
-        if (journey_source.rtArrTime == null){ // If bus has arrived VT will return null as real time data
-            onBus = true;
+        // ***** check if arrived to our stop OR get DESTINATION time
+        if (journey_destination != null) {
+            Log.i("### INFO DEST", destination.name + " RT ARRIVAL TIME " + journey_destination.rtArrTime + " TIMETABLE: " + journey_destination.arrTime);
+            if (journey_destination.rtArrTime == null) {
+
+                Log.i("### INFO DEST", "NO RT, checking timetable diff: " + vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime));
+                if (vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) <= 0) { // Check timetable so we know if real time data is unavailable if we really have arrived at the destination
+                    arrived_at_destination = true;
+                    use_destination_timetable = false;
+                } else { // Real time data is unavailable for destination
+                    use_destination_timetable = true;
+                }
+            }
+        }else{
+            Log.e("### INFO", "BAD DESTINATION");
+            return;
         }
 
-        if (journey_destination.rtArrTime == null){
-            arrived_at_destination = true;
-        }
 
         if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
-            textView_arrives_or_departures.setText(R.string.arrived_at_destination);
+            textView_arrives_or_departures.setText(R.string.arrived_at_destination); // "Arrived at destination" string
+            vt_update_timer.cancel(); // Stop the timer since we don't need it no more
+            // Hide circle and its contents
+//            circle.setVisibility(View.INVISIBLE);
+            textView_counter.setVisibility(View.INVISIBLE);
+            textView_minutes_text.setVisibility(View.INVISIBLE);
+            textView_below_circle.setText(journey_destination.name); // Only show name of destination this time. No text before.
+
+
         }else{
-            if (onBus){
-                textView_arrives_or_departures.setText(R.string.arrive_at_destination);
-                long minutes_left = time_diff_minutes(journey_destination.arrDate, journey_destination.rtArrTime);
-                textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
-                textView_below_circle.setText("vid " + journey_destination.name);
-            }else{
-                textView_arrives_or_departures.setText(R.string.arrives_in);
-                long minutes_left = time_diff_minutes(journey_source.arrDate, journey_source.rtArrTime);
-                textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
-                textView_below_circle.setText("till " + journey_source.name + " (Läge " + journey_source.track + ")");
+            long minutes_left;
+
+            if (onBus){ // We are on the bus. Show time until we arrive at the destination
+                textView_arrives_or_departures.setText(R.string.arrive_at_destination); // "Arrive at destination" string
+
+                minutes_left = use_destination_timetable ? vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) :
+                        vt_time_diff_minutes(journey_destination.rtArrDate, journey_destination.rtArrTime);
+
+                textView_below_circle.setText(parent.getString(R.string.to) + " " + journey_destination.name);
+
+            }else{ // We are not on the bus yet. Show time until it arrives to our stop
+                textView_arrives_or_departures.setText(R.string.departures_in); // "departures in" string
+                minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.depDate, journey_source.depTime) :
+                        vt_time_diff_minutes(journey_source.rtDepDate, journey_source.rtDepTime);
+
+                textView_below_circle.setText(parent.getString(R.string.from) + " " + journey_source.name + " (" + parent.getString(R.string.track) + " " + journey_source.track + ")" );
             }
+
+            if (minutes_left < 0){
+                minutes_left = 0; // Don't show -1 to the user
+            }
+            textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
+            if (minutes_left == 1){
+                textView_minutes_text.setText(R.string.minute);
+            }else{
+                textView_minutes_text.setText(R.string.minutes);
+            }
+
         }
     }
 
 
-    private long time_diff_minutes(String date_1, String time_1){
+    // Helper method to show de difference between a [date , time] compared to Vasttrafik server [date , time]
+    // We don't want to rely on that the local clock matches the servers, therefore we use the data that is always supplied from Vasttrafik
+    private long vt_time_diff_minutes(String date_1, String time_1){
         SimpleDateFormat input_format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         try {
@@ -127,20 +182,12 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
             long diffInMilliseconds = input_date.getTime() -  vasttrafik_server_date.getTime();
             long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMilliseconds);
-            if (diffInMinutes < 0){ // We don't want to show -1 and stuff to the user
-                diffInMinutes = 0;
-            }
+
             return diffInMinutes;
 
         } catch (ParseException e) {
             return -1;
         }
-
-
-
-
-
-
     }
 
 
@@ -150,6 +197,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putBoolean("onBus", onBus);
         savedInstanceState.putBoolean("arrived_at_destination", arrived_at_destination);
+        savedInstanceState.putParcelable("journeyDetails_updated", journeyDetails);
     }
 
     // Called when a fragment is first attached to its context
@@ -175,21 +223,23 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
         textView_choosen_trip = (TextView) view.findViewById(R.id.info_from_to);
         textView_counter = (TextView) view.findViewById(R.id.timeTilArrival);
+        textView_minutes_text = (TextView) view.findViewById(R.id.info_minutes_text);
         textView_arrives_or_departures = (TextView) view.findViewById(R.id.infoArrivesIn);
         textView_below_circle = (TextView) view.findViewById(R.id.below_circle);
 
-        View circle =  view.findViewById(R.id.infoCircleHolder);
+        circle =  view.findViewById(R.id.infoCircleHolder);
 //        circle.setBackgroundColor(Color.parseColor(departure_from_board.bgColor) );
 //        textView_counter.setTextColor(Color.parseColor(journeyDetails.color.fgColor));
 
 //        Log.i("### COLOR", departure_from_board.bgColor);
 
-        Bundle bundle = getArguments();
 
+        // Load the arguements from newInstance
+        Bundle bundle = getArguments();
         source = bundle.getParcelable("source");
         destination = bundle.getParcelable("destination");
         departure_from_board = bundle.getParcelable("departure_from_board");
-        journeyDetails = bundle.getParcelable("journeyDetails");
+        journeyDetails = bundle.getParcelable("journeyDetails"); // Use this if no newer is stored in savedState
 
         textView_choosen_trip.setText(source.name + " - " + destination.name);
 
@@ -197,10 +247,18 @@ public class InfoFragment extends Fragment implements VT_Callback{
             Log.i("### info_frag", "has saved instance");
             onBus = savedState.getBoolean("onBus", false); // If has saved instance restore state. Otherwise assume we are not on the bus.
             arrived_at_destination = savedState.getBoolean("arrived_at_destination", false); // True if we already are at the destination
-
+            journeyDetails = savedState.getParcelable("journeyDetails_updated");
         }
 
         textview_line_short_name.setText( departure_from_board.name );
+
+        if (journeyDetails.color != null){
+            textview_line_short_name.setTextColor(Color.parseColor(journeyDetails.color.fgColor));
+
+            if (!journeyDetails.color.bgColor.equals("#ffffff")){ // White looks ugly as background when fragment bakground is gray
+                textview_line_short_name.setBackgroundColor(Color.parseColor(journeyDetails.color.bgColor));
+            }
+        }
 
         vt_client = new VT_Client(this); // TODO: Remove when/if get reference from parent
 
@@ -228,7 +286,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
             vt_update_timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Log.i("### info_frag", "TIMER EVENT, Checking Västtrafik API");
+                    Log.i("### INFO", "TIMER EVENT, Checking Västtrafik API");
 
                     // When you need to modify a UI element, do so on the UI thread.
                     parent.runOnUiThread(new Runnable() {
@@ -244,7 +302,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
             }, 0, UPDATE_TIMER_INTERVAL);
 
         }else{
-            Log.i("### info_frag", "has arrived at destination");
+            Log.i("### INFO", "has arrived at destination");
 
         }
 
@@ -255,7 +313,10 @@ public class InfoFragment extends Fragment implements VT_Callback{
     @Override
     public void got_journey_details(JourneyDetail journeyDetail) {
         journeyDetails = journeyDetail;
-        Log.i("### INFO", "Got new journeydetails. Updating GUI. ServerTIME: " + journeyDetail.serverdate + " " + journeyDetail.servertime);
+        Log.i("### INFO", "Got new journeydetails. Updating GUI. ServerTIME: " + journeyDetail.serverdate + " " + journeyDetail.servertime );
+
+
+
         update_gui();
     }
 

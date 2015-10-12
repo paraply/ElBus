@@ -7,7 +7,7 @@
     <string name="buswifiname">ElectriCity</string>
     <string name="info_bus_name">7:an</string>
     <string name="info_arrives_in">ankommer om</string>
-    <string name="info_min">min</string>
+    <string name="info_min">minuter</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_hamburger">Hamburger</string>
 
@@ -22,7 +22,13 @@
 
     <string name="action_example">Example action</string>
 
-    <string name="arrive_at_destination">är framme om</string>
+    <string name="arrive_at_destination">anländer om</string>
     <string name="arrived_at_destination">Framme vid destinationen</string>
     <string name="arrives_in">ankommer om</string>
+    <string name="minutes">minuter</string>
+    <string name="minute">minut</string>
+    <string name="departures_in">avgår om</string>
+    <string name="to">till</string>
+    <string name="from">från</string>
+    <string name="track">Läge</string>
 </resources>
