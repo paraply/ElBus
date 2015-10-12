@@ -2,6 +2,7 @@ package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -60,9 +61,9 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         TextView mTransportLineDirection = (TextView) v.findViewById(R.id.transportLineDirection);
         TextView mTransportFrom = (TextView) v.findViewById(R.id.transportFromStop);
 
-        mTransportLineName.setText(mDeparture.name);
+        mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name)));
         mTransportLineDirection.setText(mDeparture.direction);
-        mTransportFrom.setText(mStopLocation.name);
+        mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(",")));
 
         mDestinationsListView = (ListView) v.findViewById(R.id.destinationsListView);
         mDestinationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -70,17 +71,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mPressedStop = mStops.get(position);
 
-                StopLocation source = mStopLocation;
-                Stop destination = mPressedStop;
-                Departure departure = mDeparture;
-                JourneyDetail journeyDetails = mJourneyDetail;
-
-                Bundle fragment_args = new Bundle();
-                fragment_args.putParcelable("source", source);
-                fragment_args.putParcelable("destination", destination);
-                fragment_args.putParcelable("trip", departure);
-                fragment_args.putParcelable("journey", journeyDetails);
-
+                Bundle fragment_args = generateBundle();
                 mFragmentSwitcher.nextFragment(fragment_args);
             }
         });
@@ -88,6 +79,24 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         vtClient.get_journey_details(mDeparture.journeyDetailRef);
 
         return v;
+    }
+
+    @NonNull
+    private Bundle generateBundle() {
+        Bundle fragment_args = new Bundle();
+        fragment_args.putParcelable("source", mStopLocation);
+        fragment_args.putParcelable("destination", mPressedStop);
+        fragment_args.putParcelable("trip", mDeparture);
+        fragment_args.putParcelable("journey", mJourneyDetail);
+        return fragment_args;
+    }
+
+    private int getIndexOfFirstDigit(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i)))
+                return i;
+        }
+        return -1;
     }
 
 
