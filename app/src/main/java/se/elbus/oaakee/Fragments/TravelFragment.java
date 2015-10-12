@@ -52,12 +52,18 @@ public class TravelFragment extends Fragment implements VT_Callback {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
         allDepartures = new ArrayList<>();
         departuresSorted = new ArrayList<>();
 
         vtClient = new VT_Client(this);
+        
+        super.onCreate(savedInstanceState);
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         try {
             Log.i(TAG,"Permission for GPS: " + checkGPSPermission());
@@ -72,11 +78,8 @@ public class TravelFragment extends Fragment implements VT_Callback {
         }
 
         vtClient.get_nearby_stops(latitude + "", longitude + "", "30", "1000");
-    }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_travel, container, false);
 
         createBusStopList(v);
