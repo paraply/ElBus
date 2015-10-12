@@ -38,8 +38,8 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
 
         List<Departure> departures = getItem(position);
 
-
         TextView lineNumber = (TextView)customView.findViewById(R.id.busNumberTextView);
+        
         if (departures.size()>0) {
             lineNumber.setText(departures.get(0).sname);
         }
@@ -62,13 +62,16 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         linearLayout.addView(busLineButtonView, layoutParams);
 
-        TextView buslineText = (TextView)busLineButtonView.findViewById(R.id.stationTextView);
-        buslineText.setText(direction);
-
-        TextView minutesText = (TextView)busLineButtonView.findViewById(R.id.minutesTextView);
-        minutesText.setText(time);
+        setTextViewText(R.id.stationTextView,busLineButtonView,direction);
+        setTextViewText(R.id.minutesTextView,busLineButtonView,time);
 
         return busLineButtonView;
+    }
+
+
+    private void setTextViewText(int id, View parent, String text){
+        TextView minutesText = (TextView)parent.findViewById(id);
+        minutesText.setText(text);
     }
 
     /**
