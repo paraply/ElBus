@@ -1,7 +1,6 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,8 +27,6 @@ import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
 import se.elbus.oaakee.REST_API.VT_Model.LocationList;
 import se.elbus.oaakee.REST_API.VT_Model.Stop;
 import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
-import se.elbus.oaakee.Services.AlarmService;
-import se.elbus.oaakee.Services.DetectBusService;
 
 public class InfoFragment extends Fragment implements VT_Callback{
 
@@ -72,7 +69,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        DetectBusService.setServiceAlarm(getActivity(), true);
+
         super.onCreate(savedInstanceState);
     }
 
@@ -277,7 +274,6 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
     }
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, AlarmService.class);
-    }
+    //For alarm functionality, add this
+    //AlarmService.setServiceAlarm(getActivity(), true);
 }
