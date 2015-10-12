@@ -78,7 +78,7 @@
             android:fontFamily="@string/font"
             android:gravity="center"
             android:paddingBottom="14sp"
-            android:text="@string/minutes"
+            android:text="@string/payment_minutes"
             android:textColor="@android:color/black"
             android:textSize="30sp" />
     </LinearLayout>

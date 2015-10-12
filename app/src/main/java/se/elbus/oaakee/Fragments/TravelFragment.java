@@ -45,6 +45,8 @@ public class TravelFragment extends Fragment implements VT_Callback {
     private List<Departure> allDepartures;
     private List<List<Departure>> departuresSorted;
 
+    private StopLocation chosenStopLocation;
+
     private FragmentSwitchCallbacks mFragmentSwitcher;
 
 
@@ -64,7 +66,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
 
-        } catch (SecurityException e){
+        } catch (Exception e){
             Log.e(TAG,"Couldn't get location from gps. Please check GPS permission");
             e.printStackTrace();
         }
@@ -112,7 +114,8 @@ public class TravelFragment extends Fragment implements VT_Callback {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString() + ", Position: " + mBusStopSpinner.getSelectedItemPosition());
                 int i = mBusStopSpinner.getSelectedItemPosition();
-                vtClient.get_departure_board(busStops.get(i).id);
+                chosenStopLocation = busStops.get(i);
+                vtClient.get_departure_board(chosenStopLocation.id);
             }
 
             @Override
@@ -331,7 +334,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
             for (Departure departure:departures){
 
                 View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, departure.time);
-                setButtonClick(busLineButtonView);
+                setButtonClick(busLineButtonView,departure);
 
             }
 
@@ -375,12 +378,15 @@ public class TravelFragment extends Fragment implements VT_Callback {
          * Sets button click
          * @param view
          */
-        private void setButtonClick(final View view){
+        private void setButtonClick(final View view, final Departure departure){
             view.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     String toastMessage = "You clicked: " + ((TextView)view.findViewById(R.id.stationTextView)).getText();
-                    mFragmentSwitcher.nextFragment(null);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("source", chosenStopLocation);
+                    bundle.putParcelable("trip",departure);
+                    mFragmentSwitcher.nextFragment(bundle);
                     Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
                 }
             });

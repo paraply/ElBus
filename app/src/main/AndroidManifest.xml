@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".AlarmService" />
+        <service android:name=".Services.AlarmService" />
     </application>
 
 </manifest>

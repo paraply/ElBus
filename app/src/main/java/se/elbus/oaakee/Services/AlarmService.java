@@ -1,4 +1,4 @@
-package se.elbus.oaakee;
+package se.elbus.oaakee.Services;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -16,6 +16,7 @@ import android.util.Log;
 import java.util.Calendar;
 import java.util.List;
 
+import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.REST_API.EC_Callback;
 import se.elbus.oaakee.REST_API.EC_Client;
 import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
@@ -25,6 +26,8 @@ import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
  * Service to repeatedly check the next stop for the current bus.
  * Check if stop matches the chosen destination.
  * If so, send push notification.
+<<<<<<< HEAD:app/src/main/java/se/elbus/oaakee/Services/AlarmService.java
+=======
  * =======
  * <p>
  * /**
@@ -34,6 +37,7 @@ import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
  * Check if stop matches the chosen destination.
  * If so, send push notification.
  * >>>>>>> a10002b8f901f733f46d8ba89ab66c3e8a40a373
+>>>>>>> master:app/src/main/java/se/elbus/oaakee/AlarmService.java
  */
 
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
@@ -45,8 +49,8 @@ public class AlarmService extends IntentService implements EC_Callback {
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up
     private static final int POLL_INTERVAL = 1000 * 30;
     EC_Client client = new EC_Client(this);
-    private String busID = "Ericsson$Vin_Num_001";
-    private String destination = "Lindholmen";
+    private static String busID = "Ericsson$Vin_Num_001";
+    private static String destination = "Lindholmen";
 
     public AlarmService() {
         super(TAG);
@@ -57,7 +61,7 @@ public class AlarmService extends IntentService implements EC_Callback {
         return new Intent(context, AlarmService.class);
     }
 
-    public static void setServiceAlarm(Context context, boolean isOn) {
+    public static void setServiceAlarm(Context context, boolean isOn, String bus, String dest) {
         Intent i = AlarmService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
 
@@ -69,6 +73,9 @@ public class AlarmService extends IntentService implements EC_Callback {
             alarmManager.cancel(pi);
             pi.cancel();
         }
+
+        busID = bus;
+        destination = dest;
     }
 
     private void SendNotification() {

@@ -58,6 +58,7 @@ public class EXAMPLE implements VT_Callback, EC_Callback {
         for (Departure d : departureBoard.departure) { // List all the departures from this stop
             Log.i("### DEPARTURES: ", d.name  + " SHORT NAME: " + d.sname + " DIRECTION: " + d.direction);
             if (d.sname.equals("11") && d.direction.equals("Bergsjön")){ // If spårvagn 11 mot Bergsjön
+
                 vast.get_journey_details(d.journeyDetailRef); // Get journey details from this journey
                 return;
             }

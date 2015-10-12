@@ -7,7 +7,7 @@
     <string name="buswifiname">ElectriCity</string>
     <string name="info_bus_name">7:an</string>
     <string name="info_arrives_in">ankommer om</string>
-    <string name="info_min">min</string>
+    <string name="info_min">minuter</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_hamburger">Hamburger</string>
 
@@ -22,16 +22,27 @@
 
     <string name="action_example">Example action</string>
 
+    <string name="arrive_at_destination">anländer om</string>
+    <string name="arrived_at_destination">Framme vid destinationen</string>
+    <string name="arrives_in">ankommer om</string>
+    <string name="minutes">minuter</string>
+    <string name="minute">minut</string>
+    <string name="departures_in">avgår om</string>
+    <string name="to">till</string>
+    <string name="from">från</string>
+    <string name="track">Läge</string>
+
     <string name="text_want_to_go_to">Jag vill åka till:</string>
     <string name="text_from">från</string>
 
     <string name="your_ticket">Din Biljett</string>
     <string name="latest">Senaste</string>
     <string name="charge">Saldo</string>
-    <string name="minutes">min</string>
+    <string name="payment_minutes">min</string>
     <string name="font">sans-serif-thin</string>
     <string name="press_for_ticket">tryck för att stämpla</string>
     <string name="time_never">Aldrig</string>
     <string name="empty_charge">0 kr</string>
 
+>>>>>>> master
 </resources>
