@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import se.elbus.oaakee.R;
@@ -295,19 +298,56 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
             for (Departure departure:departures){
                 String time;
+                String date;
 
                 if (departure.rtTime!=null){
                     time = departure.rtTime;
+                    date = departure.rtDate;
                 } else {
                     time = departure.time;
+                    date = departure.date;
                 }
 
-                View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, departure.rtTime);
-                setButtonClick(busLineButtonView,departure);
+                String minutesToDeparture;
+                try {
+                    long minutes = minutesToDeparture(date, time);
+                    minutesToDeparture = ""+minutes;
+                } catch (NumberFormatException e){
+                    e.printStackTrace();
+                    minutesToDeparture = "x"; //shows "x" if something goes wrong...
+                }
 
+                View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, minutesToDeparture);
+                setButtonClick(busLineButtonView,departure);
             }
 
             return customView;
+        }
+
+        /**
+         * Calculates minutes to departure from current time
+         *
+         * @param date Date in format "YYYY-MM-DD"
+         * @param time Time in format "HH-MM"
+         * @return difference from current time in minutes
+         * @throws NumberFormatException If date or time is in wrong format.
+         */
+        private long minutesToDeparture(String date, String time) throws NumberFormatException{
+            int year = Integer.valueOf(date.substring(0, 4));
+            int month = Integer.valueOf(date.substring(5, 7));
+            int day = Integer.valueOf(date.substring(8, 10));
+            int hour = Integer.valueOf(time.substring(0, 2));
+            int minute = Integer.valueOf(time.substring(3, 5));
+
+            Calendar temp = Calendar.getInstance();
+            temp.set(year,month-1,day,hour,minute); //departure time. Month starts at 0
+
+            Calendar today = Calendar.getInstance();
+
+            long difference = temp.getTime().getTime() - today.getTime().getTime();
+            difference /= 1000*60; //time in minutes
+
+            return difference;
         }
 
         /**
