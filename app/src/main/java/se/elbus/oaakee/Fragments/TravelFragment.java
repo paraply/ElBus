@@ -294,8 +294,15 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
             }
 
             for (Departure departure:departures){
+                String time;
 
-                View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, departure.time);
+                if (departure.rtTime!=null){
+                    time = departure.rtTime;
+                } else {
+                    time = departure.time;
+                }
+
+                View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, departure.rtTime);
                 setButtonClick(busLineButtonView,departure);
 
             }
