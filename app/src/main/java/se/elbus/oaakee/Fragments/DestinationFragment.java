@@ -78,6 +78,10 @@ public class DestinationFragment extends Fragment implements VT_Callback {
 
         vtClient.get_journey_details(mDeparture.journeyDetailRef);
 
+        mTransportLineDirection.setFocusable(true);
+        mTransportLineDirection.setFocusableInTouchMode(true);
+        mTransportLineDirection.requestFocus();
+
         return v;
     }
 
