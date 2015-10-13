@@ -1,6 +1,7 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -78,8 +79,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
 
         vtClient.get_journey_details(mDeparture.journeyDetailRef);
 
-        mTransportLineDirection.setFocusable(true);
-        mTransportLineDirection.setFocusableInTouchMode(true);
+        mTransportLineName.setTextColor(Color.parseColor(mDeparture.fgColor));
         mTransportLineDirection.requestFocus();
 
         return v;
