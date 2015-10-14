@@ -26,18 +26,6 @@ import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
  * Service to repeatedly check the next stop for the current bus.
  * Check if stop matches the chosen destination.
  * If so, send push notification.
-<<<<<<< HEAD:app/src/main/java/se/elbus/oaakee/Services/AlarmService.java
-=======
- * =======
- * <p>
- * /**
- * Created by Anton on 2015-09-30.
- * ToDo:
- * Service to repeatedly check the next stop for the current bus.
- * Check if stop matches the chosen destination.
- * If so, send push notification.
- * >>>>>>> a10002b8f901f733f46d8ba89ab66c3e8a40a373
->>>>>>> master:app/src/main/java/se/elbus/oaakee/AlarmService.java
  */
 
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);

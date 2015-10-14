@@ -26,15 +26,29 @@ public class DetectBusService extends IntentService {
     public static String dgwFound;
     public static boolean onBus = false;
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, AlarmService.class);
-    }
+    private static String source;
+    private static String destination;
+    private static String time;
+    private static String line;
 
     public DetectBusService() {
         super(TAG);
     }
 
-    public static void setServiceAlarm(Context context, boolean isOn) {
+    public static Intent newIntent(Context context) {
+        return new Intent(context, AlarmService.class);
+    }
+
+    public static void setServiceAlarm(Context context, boolean isOn, String s, String d, String t, String l) {
+        //Check if nothing differs from last time setServiceAlarm was called
+        if(s.equals(source) && d.equals(destination) && t.equals(time) && l.equals(line)){
+            return;
+        }
+
+        source = s;
+        destination = d;
+        time = t;
+        line = l;
         Intent i = AlarmService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
 

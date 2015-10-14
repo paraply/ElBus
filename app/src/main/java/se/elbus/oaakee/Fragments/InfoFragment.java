@@ -297,7 +297,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
             Log.i("### INFO", "has arrived at destination");
 
         }
-        DetectBusService.setServiceAlarm(getActivity(), true);
+        DetectBusService.setServiceAlarm(getActivity(), true, source.name, destination.name, departure_from_board.time, departure_from_board.name);
 
         return view;
     }
