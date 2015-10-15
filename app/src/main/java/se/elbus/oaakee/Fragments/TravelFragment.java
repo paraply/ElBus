@@ -98,11 +98,12 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         String bestProvider = manager.getBestProvider(locationCriteria, true);
 
-        if(!manager.isProviderEnabled(bestProvider)) {
+        Location fastLocation = manager.getLastKnownLocation(bestProvider);
+
+        if(fastLocation == null) {
             warnGpsOff();
         }
 
-        Location fastLocation = manager.getLastKnownLocation(bestProvider);
 
         /*
          If a long time has passed since the last scan.
@@ -116,6 +117,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
     private void warnGpsOff() {
         // TODO: Send warning to user, the GPS is off and the location might be bad.
+        Toast.makeText(getContext(), R.string.gps_off_warning_text, Toast.LENGTH_LONG).show();
     }
 
 
