@@ -1,7 +1,11 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -71,11 +75,9 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         mDeparture = mSavedInformation.getParcelable("trip");
 
         mTransportLineName.setText(mDeparture.name);
-        mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name)));
-
-        mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name)));
+        mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name))); // Remove "Buss", "Spårvagn", etc..
         mTransportLineDirection.setText(mDeparture.direction);
-        mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(",")));
+        mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(","))); // Remove ", Göteborg"
 
         mDestinationsListView = (ListView) v.findViewById(R.id.destinationsListView);
         mDestinationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -97,9 +99,9 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         });
 
         vtClient.get_journey_details(mDeparture.journeyDetailRef);
-
-        mTransportLineName.setTextColor(Color.parseColor(mDeparture.fgColor));
+        mTransportLineName.getBackground().setColorFilter(Color.parseColor(mDeparture.fgColor), PorterDuff.Mode.MULTIPLY);
         mTransportLineDirection.requestFocus();
+//        mTransportLineName.setText("999");
 
         return v;
     }

@@ -9,23 +9,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/spacing_tiny"
-        android:paddingEnd="@dimen/spacing_normal"
-        android:paddingLeft="@dimen/spacing_normal"
-        android:paddingRight="@dimen/spacing_normal"
-        android:paddingStart="@dimen/spacing_normal"
-        android:paddingTop="@dimen/spacing_normal">
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginRight="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/transportLineName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            tools:text="99"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:gravity="center_horizontal|center_vertical"
             android:background="@drawable/bus_number_circle"
-            android:textColor="@color/text_color_white"/>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/text_color_white"
+            tools:text="99"/>
 
         <TextView
             android:id="@+id/transportLineDirection"
@@ -50,11 +47,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal"
-        android:paddingEnd="@dimen/spacing_normal"
-        android:paddingLeft="@dimen/spacing_normal"
-        android:paddingRight="@dimen/spacing_normal"
-        android:paddingStart="@dimen/spacing_normal"
-        android:paddingBottom="@dimen/spacing_small">
+        android:layout_marginBottom="@dimen/spacing_normal"
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginRight="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_normal">
 
         <TextView
             android:id="@+id/textFrom"
@@ -71,8 +68,8 @@
             android:layout_gravity="center"
             android:ellipsize="end"
             android:maxLines="1"
-            android:paddingRight="@dimen/spacing_tiny"
             android:paddingLeft="@dimen/spacing_tiny"
+            android:paddingRight="@dimen/spacing_tiny"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
             tools:text="Hållplats"/>
