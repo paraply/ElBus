@@ -1,47 +1,39 @@
 <resources>
-    <string name="app_name">Oaakee</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Åke</string>
     <string name="action_settings">Settings</string>
-    <string name="current_bus_stop">Min hållplats:</string>
-    <!--<string name="scan">Start Scanning!</string>-->
+    <string name="current_bus_stop">My stop:</string>
     <string name="buswifiname">ElectriCity</string>
-    <!--<string name="info_bus_name">7:an</string>-->
-    <!--<string name="info_arrives_in">ankommer om</string>-->
-    <!--<string name="info_min">minuter</string>-->
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_hamburger">Hamburger</string>
 
-    <string name="title_section1">Min Resa</string>
-    <string name="title_section2">Stämpla</string>
-    <string name="title_section3">Konto</string>
-    <string name="title_section4">Inställningar</string>
-    <string name="title_section5">Historik</string>
+    <string name="title_section1">My trip</string>
+    <string name="title_section2">Pay</string>
+    <string name="title_section3">Account</string>
+    <string name="title_section4">Settings</string>
+    <string name="title_section5">History</string>
 
-    <string name="navigation_drawer_open">Öppna menyn</string>
-    <string name="navigation_drawer_close">Stäng menyn</string>
+    <string name="navigation_drawer_open">Open menu</string>
+    <string name="navigation_drawer_close">Close menu</string>
 
 
-    <string name="arrive_at_destination">anländer om</string>
+    <string name="arrive_at_destination">arrives at the destination in</string>
     <string name="arrived_at_destination">Framme vid destinationen</string>
-    <string name="arrives_in">ankommer om</string>
-    <string name="minutes">minuter</string>
-    <string name="minute">minut</string>
-    <string name="departures_in">avgår om</string>
-    <string name="to">till</string>
-    <string name="from">från</string>
-    <string name="track">Läge</string>
+    <string name="arrives_in">arrives in</string>
+    <string name="minutes">minutes</string>
+    <string name="minute">minute</string>
+    <string name="departures_in">departures in</string>
+    <string name="to">to</string>
+    <string name="from">from</string>
+    <string name="track">Track</string>
 
-    <string name="text_want_to_go_to">Jag vill åka till:</string>
-    <string name="text_from">från</string>
+    <string name="text_want_to_go_to">I want to travel to:</string>
 
-    <string name="your_ticket">Din Biljett</string>
-    <string name="latest">Senaste</string>
-    <string name="charge">Saldo</string>
+    <string name="your_ticket">My ticket</string>
+    <string name="latest">Latest</string>
+    <string name="charge">Balance</string>
     <string name="payment_minutes">min</string>
     <string name="font">sans-serif-thin</string>
-    <string name="press_for_ticket">tryck för att stämpla</string>
-    <string name="time_never">Aldrig</string>
+    <string name="press_for_ticket">press to pay</string>
+    <string name="time_never">Never</string>
     <string name="empty_charge">0 kr</string>
 
->>>>>>> master
+<!--&gt;>>>>>> master-->
 </resources>
