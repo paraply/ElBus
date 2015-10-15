@@ -38,10 +38,8 @@ public class InfoFragment extends Fragment implements VT_Callback{
     private MainActivity parent;
     private VT_Client vt_client; // TODO: Will maybe get reference from parent
 
-    private TextView textView_choosen_trip;
     private TextView textView_arrives_or_departures;
     private TextView textView_counter;
-    private TextView textView_below_circle;
     private TextView textView_minutes_text;
 
     private View circle;
@@ -120,7 +118,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
 //            circle.setVisibility(View.INVISIBLE);
             textView_counter.setVisibility(View.INVISIBLE);
             textView_minutes_text.setVisibility(View.INVISIBLE);
-            textView_below_circle.setText(journey_destination.name); // Only show name of destination this time. No text before.
+//            textView_below_circle.setText(journey_destination.name); // Only show name of destination this time. No text before.
 
 
         }else{
@@ -132,14 +130,14 @@ public class InfoFragment extends Fragment implements VT_Callback{
                 minutes_left = use_destination_timetable ? vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) :
                         vt_time_diff_minutes(journey_destination.rtArrDate, journey_destination.rtArrTime);
 
-                textView_below_circle.setText(parent.getString(R.string.to) + " " + journey_destination.name);
+//                textView_below_circle.setText(parent.getString(R.string.to) + " " + journey_destination.name);
 
             }else{ // We are not on the bus yet. Show time until it arrives to our stop
                 textView_arrives_or_departures.setText(R.string.departures_in); // "departures in" string
                 minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.depDate, journey_source.depTime) :
                         vt_time_diff_minutes(journey_source.rtDepDate, journey_source.rtDepTime);
 
-                textView_below_circle.setText(parent.getString(R.string.from) + " " + journey_source.name + " (" + parent.getString(R.string.track) + " " + journey_source.track + ")" );
+//                textView_below_circle.setText(parent.getString(R.string.from) + " " + journey_source.name + " (" + parent.getString(R.string.track) + " " + journey_source.track + ")" );
             }
 
             if (minutes_left < 0){
@@ -206,11 +204,11 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
         TextView textview_line_short_name = (TextView) view.findViewById(R.id.infoBusName);
 
-        textView_choosen_trip = (TextView) view.findViewById(R.id.info_from_to);
+        TextView textView_source = (TextView) view.findViewById(R.id.info_source);
+        TextView textView_destination = (TextView) view.findViewById(R.id.info_destination);
         textView_counter = (TextView) view.findViewById(R.id.timeTilArrival);
         textView_minutes_text = (TextView) view.findViewById(R.id.info_minutes_text);
         textView_arrives_or_departures = (TextView) view.findViewById(R.id.infoArrivesIn);
-        textView_below_circle = (TextView) view.findViewById(R.id.below_circle);
 
         circle =  view.findViewById(R.id.infoCircleHolder);
 //        circle.setBackgroundColor(Color.parseColor(departure_from_board.bgColor) );
@@ -226,7 +224,8 @@ public class InfoFragment extends Fragment implements VT_Callback{
         departure_from_board = bundle.getParcelable("trip");
         journeyDetails = bundle.getParcelable("journey"); // Use this if no newer is stored in savedState
 
-        textView_choosen_trip.setText(source.name + " - " + destination.name);
+        textView_source.setText(source.getNameWithoutCity());
+        textView_destination.setText(destination.getNameWithoutCity());
 
         if (savedState != null) {
             Log.i("### info_frag", "has saved instance");
@@ -240,7 +239,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
         if (journeyDetails.color != null){
             textview_line_short_name.setTextColor(Color.parseColor(journeyDetails.color.fgColor));
 
-            if (!journeyDetails.color.bgColor.equals("#ffffff")){ // White looks ugly as background when fragment bakground is gray
+            if (!journeyDetails.color.bgColor.equals("#ffffff")){ // White looks ugly as background when fragment background is gray
                 textview_line_short_name.setBackgroundColor(Color.parseColor(journeyDetails.color.bgColor));
             }
         }
@@ -325,7 +324,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
     @Override
     public void got_error(String during_method, String error_msg) {
-
+        Log.i("### INFO ERR", error_msg);
     }
 
     //For alarm functionality, add this

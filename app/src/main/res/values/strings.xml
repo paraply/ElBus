@@ -3,11 +3,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="current_bus_stop">Min hållplats:</string>
-    <string name="scan">Start Scanning!</string>
+    <!--<string name="scan">Start Scanning!</string>-->
     <string name="buswifiname">ElectriCity</string>
-    <string name="info_bus_name">7:an</string>
-    <string name="info_arrives_in">ankommer om</string>
-    <string name="info_min">minuter</string>
+    <!--<string name="info_bus_name">7:an</string>-->
+    <!--<string name="info_arrives_in">ankommer om</string>-->
+    <!--<string name="info_min">minuter</string>-->
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_hamburger">Hamburger</string>
 
@@ -17,10 +17,9 @@
     <string name="title_section4">Inställningar</string>
     <string name="title_section5">Historik</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Öppna menyn</string>
+    <string name="navigation_drawer_close">Stäng menyn</string>
 
-    <string name="action_example">Example action</string>
 
     <string name="arrive_at_destination">anländer om</string>
     <string name="arrived_at_destination">Framme vid destinationen</string>
