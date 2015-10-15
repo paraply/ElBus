@@ -20,7 +20,6 @@ import se.elbus.oaakee.Fragments.HamburgerFragment;
 import se.elbus.oaakee.Fragments.InfoFragment;
 import se.elbus.oaakee.Fragments.PaymentFragment;
 import se.elbus.oaakee.Fragments.SettingsFragment;
-import se.elbus.oaakee.Fragments.SettingsWrapper;
 import se.elbus.oaakee.Fragments.TravelFragment;
 
 public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks, FragmentSwitchCallbacks {
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         mFragments.add(mTravelFragments.peek());
         mFragments.add(new PaymentFragment());
         mFragments.add(null); // TODO: Change this to fragment for "Konto"
-        mFragments.add(new SettingsWrapper());
+        mFragments.add(new SettingsFragment());
         mFragments.add(null); // TODO: Change this to fragment for "Historik"
 
         changeFragment(mFragments.get(0));
