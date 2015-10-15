@@ -29,7 +29,8 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/timeLeftLinearLayout">
+        android:id="@+id/timeLeftLinearLayout"
+        android:layout_marginLeft="@dimen/spacing_tiny">
 
         <TextView
             android:layout_width="wrap_content"
