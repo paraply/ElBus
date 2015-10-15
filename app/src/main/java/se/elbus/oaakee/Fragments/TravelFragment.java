@@ -146,7 +146,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
                 warnGpsOff();
             }
             manager.requestSingleUpdate(locationCriteria, this, Looper.myLooper());
-        }else{
+        }else {
             onLocationChanged(fastLocation);
         }
     }
@@ -198,7 +198,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         busStops = stops;
 
         for (StopLocation s : busStops){
-            mDepartureListAdapter.add(s.name);
+            mDepartureListAdapter.add(s.name.substring(0,s.name.length()-10));
         }
         mBusStops.setAdapter(mDepartureListAdapter);
     }
