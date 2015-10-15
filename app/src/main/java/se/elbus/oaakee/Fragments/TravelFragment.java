@@ -96,19 +96,17 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         locationCriteria.setAccuracy(locationAccuracy);
 
         LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        String bestProvider = manager.getBestProvider(locationCriteria, true);
+        String bestProvider = manager.getBestProvider(locationCriteria, false);
 
         Location fastLocation = manager.getLastKnownLocation(bestProvider);
-
-        if(fastLocation == null) {
-            warnGpsOff();
-        }
-
 
         /*
          If a long time has passed since the last scan.
          */
         if(fastLocation == null || fastLocation.getTime() + maxLocationAgeMillis < System.currentTimeMillis()){
+            if(!manager.isProviderEnabled(bestProvider)){
+                warnGpsOff();
+            }
             manager.requestSingleUpdate(locationCriteria, this, Looper.myLooper());
         }else{
             onLocationChanged(fastLocation);
