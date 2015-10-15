@@ -12,7 +12,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/stationTextView"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical"
+        android:textSize="18sp" />
 
     <View
         android:layout_width="0dp"
