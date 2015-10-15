@@ -77,7 +77,13 @@ public class DetectBusService extends IntentService {
             public void receiveDgw(String dgw) {
                 Log.i(TAG, "Found Wifi, dgw: " + dgw);
                 dgwFound = dgw;
-                onBus = true;
+                if(!onBus) {
+                    AlarmService.setServiceAlarm(DetectBusService.this, true, dgwFound, destination);
+                    onBus = true;
+                }
+
+                //Check DetectBusService to see if we're on the bus
+
             }
         };
     }
