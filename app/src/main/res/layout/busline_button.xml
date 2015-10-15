@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:paddingRight="10dp"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp">
+    android:paddingRight="@dimen/spacing_normal"
+    android:paddingTop="@dimen/spacing_tiny"
+    android:paddingBottom="@dimen/spacing_tiny">
 
     <TextView
         android:layout_width="wrap_content"
@@ -13,7 +13,7 @@
         android:text="Large Text"
         android:id="@+id/stationTextView"
         android:layout_gravity="center_vertical"
-        android:textSize="18sp" />
+        android:textSize="19.71sp" />
 
     <View
         android:layout_width="0dp"
@@ -24,21 +24,24 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:measureWithLargestChild="false">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
-            android:id="@+id/minutesTextView"/>
+            android:id="@+id/minutesTextView"
+            android:layout_gravity="center_horizontal" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="min"
             android:id="@+id/textView"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 </LinearLayout>
