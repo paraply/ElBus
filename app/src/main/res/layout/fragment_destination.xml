@@ -23,7 +23,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            tools:text="99"/>
+            tools:text="99"
+            android:background="@drawable/bus_number_circle"
+            android:textColor="@color/text_color_white"/>
 
         <TextView
             android:id="@+id/transportLineDirection"
