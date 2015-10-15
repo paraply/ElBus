@@ -62,13 +62,13 @@ public class DetectBusService extends IntentService {
         }
     }
 
-
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.i(TAG, "DetectBusService intent received");
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MILLISECOND, POLL_INTERVAL);
+
 
         //Check wififinder for connection
         WifiFinder wifiFinder = new WifiFinder(this, this.getString(R.string.buswifiname)) {
@@ -77,13 +77,15 @@ public class DetectBusService extends IntentService {
             public void receiveDgw(String dgw) {
                 Log.i(TAG, "Found Wifi, dgw: " + dgw);
                 dgwFound = dgw;
+                /**
+                 *  This should probably be done somewhere else.
+                 *  Should also check if bus we think we're on matches the choice made.
+                 *  Does not matter for prototype since we only target line 55.
+                */
                 if(!onBus) {
                     AlarmService.setServiceAlarm(DetectBusService.this, true, dgwFound, destination);
                     onBus = true;
                 }
-
-                //Check DetectBusService to see if we're on the bus
-
             }
         };
     }
