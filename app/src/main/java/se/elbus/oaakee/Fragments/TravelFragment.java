@@ -2,9 +2,12 @@ package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.security.Provider;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,15 +35,15 @@ import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
 import se.elbus.oaakee.REST_API.VT_Model.LocationList;
 import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 
-public class TravelFragment extends Fragment implements VT_Callback {
+public class TravelFragment extends Fragment implements VT_Callback, LocationListener {
 
     private static Spinner mBusStopSpinner;
     private static ListView mDeparturesListView;
     private VT_Client vtClient;
     private static final String TAG = "Travel";
 
-    private double latitude = 57.692395;
-    private double longitude = 11.972917;
+    private final long LATEST_LOCATION_TIME_MILLIS = 4 * 60 * 1000;
+    private final int LOCATION_ACCURACY = Criteria.ACCURACY_LOW; // "For horizontal and vertical position this corresponds roughly to an accuracy of greater than 500 meters."
 
     private List<StopLocation> busStops; //With removed duplicates
     private List<Departure> allDepartures;
@@ -57,7 +61,7 @@ public class TravelFragment extends Fragment implements VT_Callback {
         departuresSorted = new ArrayList<>();
 
         vtClient = new VT_Client(this);
-        
+
         super.onCreate(savedInstanceState);
     }
 
@@ -65,19 +69,11 @@ public class TravelFragment extends Fragment implements VT_Callback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        try {
-            Log.i(TAG,"Permission for GPS: " + checkGPSPermission());
-            Location location = getCurrentLocation();
-            Log.i(TAG,"Latitude: " + location.getLatitude());
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-
-        } catch (Exception e){
-            Log.e(TAG,"Couldn't get location from gps. Please check GPS permission");
-            e.printStackTrace();
+        try{
+            getLocation(LATEST_LOCATION_TIME_MILLIS, LOCATION_ACCURACY);
+        }catch (SecurityException e){
+            Log.e(TAG, e.getLocalizedMessage());
         }
-
-        vtClient.get_nearby_stops(latitude + "", longitude + "", "30", "1000");
 
 
         View v = inflater.inflate(R.layout.fragment_travel, container, false);
@@ -88,16 +84,40 @@ public class TravelFragment extends Fragment implements VT_Callback {
         return v;
     }
 
+    /**
+     * This will register this as a listener if it can't find an acceptably old location.
+     * It will call the listener method if it found an "old", acceptable location.
+     * @param maxLocationAgeMillis is the maximum age of the location in milliseconds.
+     * @param locationAccuracy is the acceptable accuracy to have when getting the position.
+     * @throws SecurityException
+     */
+    private void getLocation(long maxLocationAgeMillis, int locationAccuracy) throws SecurityException{
+        Criteria locationCriteria = new Criteria();
+        locationCriteria.setAccuracy(locationAccuracy);
 
-    private Location getCurrentLocation() throws SecurityException{
-        LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        String bestProvider = manager.getBestProvider(locationCriteria, false);
+
+        Location fastLocation = manager.getLastKnownLocation(bestProvider);
+
+        /*
+         If a long time has passed since the last scan.
+         */
+        if(fastLocation == null || fastLocation.getTime() + maxLocationAgeMillis < System.currentTimeMillis()){
+            if(!manager.isProviderEnabled(bestProvider)){
+                warnGpsOff();
+            }
+            manager.requestSingleUpdate(locationCriteria, this, Looper.myLooper());
+        }else{
+            onLocationChanged(fastLocation);
+        }
     }
 
-    private boolean checkGPSPermission(){
-        int permission = getContext().checkCallingOrSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION);
-        return permission == PackageManager.PERMISSION_GRANTED;
+    private void warnGpsOff() {
+        // TODO: Send warning to user, the GPS is off and the location might be bad.
+        Toast.makeText(getContext(), R.string.gps_off_warning_text, Toast.LENGTH_LONG).show();
     }
+
 
     /**
      * Populates the bus stop spinner
@@ -307,6 +327,29 @@ public class TravelFragment extends Fragment implements VT_Callback {
         super.onAttach(context);
         mFragmentSwitcher = (FragmentSwitchCallbacks) context;
     }
+
+    /**
+     * Called when the location has changed.
+     */
+    @Override
+    public void onLocationChanged(Location location) {
+        // TODO: Change location in GUI
+        vtClient.get_nearby_stops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
+
+    }
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
     /**
      * Custom adapter for departures ListView.
      *
