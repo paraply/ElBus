@@ -1,7 +1,9 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -69,8 +71,11 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         mDeparture = mSavedInformation.getParcelable("trip");
 
         mTransportLineName.setText(mDeparture.name);
+        mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name)));
+
+        mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name)));
         mTransportLineDirection.setText(mDeparture.direction);
-        mTransportFrom.setText(mStopLocation.name);
+        mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(",")));
 
         mDestinationsListView = (ListView) v.findViewById(R.id.destinationsListView);
         mDestinationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,10 +91,15 @@ public class DestinationFragment extends Fragment implements VT_Callback {
 
                 mFragmentSwitcher.nextFragment((Bundle) mSavedInformation.clone());
 
+                Bundle fragment_args = generateBundle();
+                mFragmentSwitcher.nextFragment(fragment_args);
             }
         });
 
         vtClient.get_journey_details(mDeparture.journeyDetailRef);
+
+        mTransportLineName.setTextColor(Color.parseColor(mDeparture.fgColor));
+        mTransportLineDirection.requestFocus();
 
         return v;
     }
@@ -104,6 +114,24 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         outState.putAll(mSavedInformation);
         super.onSaveInstanceState(outState);
     }
+    @NonNull
+    private Bundle generateBundle() {
+        Bundle fragment_args = new Bundle();
+        fragment_args.putParcelable("source", mStopLocation);
+        fragment_args.putParcelable("destination", mPressedStop);
+        fragment_args.putParcelable("trip", mDeparture);
+        fragment_args.putParcelable("journey", mJourneyDetail);
+        return fragment_args;
+    }
+
+    private int getIndexOfFirstDigit(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i)))
+                return i;
+        }
+        return -1;
+    }
+
 
     /**
      * Populates destination list view with names of stops
