@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
-            android:text="@string/text_from"
+            android:text="@string/from"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
