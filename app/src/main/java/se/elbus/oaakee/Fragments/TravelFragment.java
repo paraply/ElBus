@@ -6,6 +6,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
@@ -45,11 +46,14 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     private final long LATEST_LOCATION_TIME_MILLIS = 4 * 60 * 1000;
     private final int LOCATION_ACCURACY = Criteria.ACCURACY_LOW; // "For horizontal and vertical position this corresponds roughly to an accuracy of greater than 500 meters."
 
+    double mSimulatorLongitude = 11.970462;
+    double mSimulatorLatitude = 57.710259;
+
     private List<StopLocation> busStops; //With removed duplicates
     private List<Departure> allDepartures;
     private List<List<Departure>> departuresSorted;
 
-    private StopLocation chosenStopLocation;
+    private StopLocation chosenStopLocation;    
 
     private FragmentSwitchCallbacks mFragmentSwitcher;
 
@@ -97,8 +101,15 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
         LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         String bestProvider = manager.getBestProvider(locationCriteria, false);
-
-        Location fastLocation = manager.getLastKnownLocation(bestProvider);
+        Location fastLocation;
+        if(Build.FINGERPRINT.startsWith("generic")){
+            fastLocation = new Location(bestProvider);
+            fastLocation.setLatitude(mSimulatorLatitude);
+            fastLocation.setLongitude(mSimulatorLongitude);
+            fastLocation.setTime(System.currentTimeMillis());
+        }else{
+            fastLocation = manager.getLastKnownLocation(bestProvider);
+        }
 
         /*
          If a long time has passed since the last scan.
