@@ -90,9 +90,6 @@ public class DestinationFragment extends Fragment implements VT_Callback {
                 mSavedInformation.putParcelable("journey", journeyDetails);
 
                 mFragmentSwitcher.nextFragment((Bundle) mSavedInformation.clone());
-
-                Bundle fragment_args = generateBundle();
-                mFragmentSwitcher.nextFragment(fragment_args);
             }
         });
 
@@ -113,15 +110,6 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     public void onSaveInstanceState(Bundle outState) {
         outState.putAll(mSavedInformation);
         super.onSaveInstanceState(outState);
-    }
-    @NonNull
-    private Bundle generateBundle() {
-        Bundle fragment_args = new Bundle();
-        fragment_args.putParcelable("source", mStopLocation);
-        fragment_args.putParcelable("destination", mPressedStop);
-        fragment_args.putParcelable("trip", mDeparture);
-        fragment_args.putParcelable("journey", mJourneyDetail);
-        return fragment_args;
     }
 
     private int getIndexOfFirstDigit(String s) {
