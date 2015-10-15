@@ -2,6 +2,10 @@ package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
 import android.location.Criteria;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -9,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,7 +29,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import se.elbus.oaakee.R;
@@ -294,6 +296,13 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
             if (departures.size()>0) {
                 lineNumber.setText(departures.get(0).sname);
+                Drawable circle = lineNumber.getBackground();
+                try {
+                    circle.setColorFilter(Color.parseColor(((departures.get(0)).fgColor)), PorterDuff.Mode.MULTIPLY);
+                } catch (IllegalArgumentException e){
+                    Log.e(TAG, "Failed parsing color, set to a default colour");
+                    circle.setColorFilter(Color.parseColor("#CCCCCC"), PorterDuff.Mode.MULTIPLY);
+                }
             }
 
             for (Departure departure:departures){
