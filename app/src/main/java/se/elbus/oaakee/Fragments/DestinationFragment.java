@@ -73,6 +73,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         mTransportLineName.setText(mDeparture.name);
         mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name)));
 
+        mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name)));
         mTransportLineDirection.setText(mDeparture.direction);
         mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(",")));
 
