@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.hamburger, menu);
             restoreActionBar();
             return true;
         }
@@ -153,9 +152,6 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

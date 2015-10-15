@@ -19,7 +19,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
-            android:text="@string/info_arrives_in"
+            android:text="arrives/departures"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <View
@@ -31,6 +31,9 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/info_circle" />
 
+
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +41,7 @@
             android:id="@+id/infoBusName"
             android:layout_above="@+id/infoArrivesIn"
             android:layout_centerHorizontal="true"
-            android:text="@string/info_bus_name"
+            android:text="name"
             android:textSize="32sp" />
 
         <LinearLayout
@@ -50,26 +53,13 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="32dp"
             android:id="@+id/linearLayout2">
-            <TextView
-                android:id="@+id/info_chosen_trip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vald resa"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/info_from_to"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chalmers - Lindholmen"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/info_min"
+            android:text="min"
             android:textColor="@color/text_color_white"
             android:textSize="20sp"
             android:id="@+id/info_minutes_text"
@@ -96,15 +86,63 @@
             android:layout_alignBottom="@+id/infoCircleHolder" />
 
         <TextView
-            android:id="@+id/below_circle"
+            android:id="@+id/info_txt_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="bla bla"
-            android:layout_marginTop="20dp"
+            android:text="From:"
+            android:paddingBottom="3dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="21dp"
+            android:gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_below="@+id/infoCircleHolder"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+  />
+
+        <TextView
+            android:id="@+id/info_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chalmers"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignBottom="@+id/info_txt_from"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:layout_toEndOf="@+id/info_txt_from"
+            android:layout_toRightOf="@+id/info_txt_from" />
+
+
+
+        <TextView
+            android:id="@+id/info_txt_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To:"
+            android:layout_marginTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@+id/info_source"
+            android:layout_alignRight="@+id/info_txt_from"
+            android:layout_alignEnd="@+id/info_txt_from"
+            android:layout_alignLeft="@+id/info_txt_from"
+            android:layout_alignStart="@+id/info_txt_from" />
+
+
+        <TextView
+            android:id="@+id/info_destination"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lindholmen"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignBottom="@+id/info_txt_to"
+            android:layout_alignLeft="@+id/info_source"
+            android:layout_alignStart="@+id/info_source"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/info_delayed"
@@ -112,15 +150,27 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="[Fordonstyp] är ?? minuter sen"
+            android:visibility="invisible"
             android:gravity="center"
             android:textColor="#FF0000"
+            android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_below="@id/below_circle"
+            android:layout_below="@+id/info_txt_to"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
+
+        <Button
+            android:id="@+id/info_stop"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/info_stop_selector"
+            android:layout_above="@+id/info_source"
+            android:layout_toRightOf="@+id/timeTilArrival"
+            android:layout_toEndOf="@+id/timeTilArrival" />
 
     </RelativeLayout>
 
