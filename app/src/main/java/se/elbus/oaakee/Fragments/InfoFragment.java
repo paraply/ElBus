@@ -2,12 +2,15 @@ package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -43,6 +46,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
     private TextView textView_minutes_text;
 
     private View circle;
+    private Button stop_circle;
 
 
     private final int UPDATE_TIMER_INTERVAL = 20000; // TODO: Maybe need to adjust
@@ -56,6 +60,18 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
 
     private boolean use_source_timetable, use_destination_timetable;
+
+    private void hide_stop_button(){
+        stop_circle.setVisibility(View.INVISIBLE);
+    }
+
+    private void show_stop_button(){
+        stop_circle.setVisibility(View.VISIBLE);
+    }
+
+    private void stop_button_state(boolean pressed){
+        stop_circle.setPressed(pressed);
+    }
 
     // Update the GUI to show TIME and STOP information
     private void update_gui(){
@@ -112,6 +128,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
 
         if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
+            hide_stop_button();
             textView_arrives_or_departures.setText(R.string.arrived_at_destination); // "Arrived at destination" string
             vt_update_timer.cancel(); // Stop the timer since we don't need it no more
             // Hide circle and its contents
@@ -122,9 +139,12 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
 
         }else{
+
+
             long minutes_left;
 
             if (onBus){ // We are on the bus. Show time until we arrive at the destination
+                show_stop_button();
                 textView_arrives_or_departures.setText(R.string.arrive_at_destination); // "Arrive at destination" string
 
                 minutes_left = use_destination_timetable ? vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) :
@@ -133,6 +153,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
 //                textView_below_circle.setText(parent.getString(R.string.to) + " " + journey_destination.name);
 
             }else{ // We are not on the bus yet. Show time until it arrives to our stop
+                hide_stop_button();
                 textView_arrives_or_departures.setText(R.string.departures_in); // "departures in" string
                 minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.depDate, journey_source.depTime) :
                         vt_time_diff_minutes(journey_source.rtDepDate, journey_source.rtDepTime);
@@ -209,6 +230,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
         textView_counter = (TextView) view.findViewById(R.id.timeTilArrival);
         textView_minutes_text = (TextView) view.findViewById(R.id.info_minutes_text);
         textView_arrives_or_departures = (TextView) view.findViewById(R.id.infoArrivesIn);
+        stop_circle = (Button) view.findViewById(R.id.info_stop);
 
         circle =  view.findViewById(R.id.infoCircleHolder);
 //        circle.setBackgroundColor(Color.parseColor(departure_from_board.bgColor) );
@@ -249,6 +271,12 @@ public class InfoFragment extends Fragment implements VT_Callback{
         update_gui(); // Update GUI once since the timer will wait a defined amount of seconds until it starts
 
         if (!arrived_at_destination) { // has not arrived at destination yet.
+
+            if (onBus){
+                show_stop_button();
+            }else{
+                hide_stop_button();
+            }
 
 
 //            if (!onBus) { // Start WiFi-Finder and check if we are on the bus
