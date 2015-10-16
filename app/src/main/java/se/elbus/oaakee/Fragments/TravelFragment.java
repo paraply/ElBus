@@ -81,8 +81,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
         mBusStopSpinner = (Spinner) v.findViewById(R.id.busStopSpinner); // Spinner
 
-        String[] strBusStops = {};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, strBusStops); // Adapter to connect source stops to gui
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item); // Adapter to connect source stops to gui
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mBusStopSpinner.setAdapter(adapter); // Connects the adapter between
