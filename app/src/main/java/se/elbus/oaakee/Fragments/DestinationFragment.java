@@ -1,13 +1,21 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -33,6 +41,7 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 public class DestinationFragment extends Fragment implements VT_Callback {
 
     private ListView mDestinationsListView;
+    private ArrayAdapter mDestinationsListAdapter;
     private VT_Client vtClient;
 
     private Departure mDeparture;
@@ -43,63 +52,80 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     private Stop mPressedStop;
 
     private FragmentSwitchCallbacks mFragmentSwitcher;
+    private Bundle mSavedInformation; // This is to hold the information from previous fragment.
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         vtClient = new VT_Client(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+            mSavedInformation.putAll(savedInstanceState);
+        }
+
         View v = inflater.inflate(R.layout.fragment_destination, container, false);
 
         TextView mTransportLineName = (TextView) v.findViewById(R.id.transportLineName);
         TextView mTransportLineDirection = (TextView) v.findViewById(R.id.transportLineDirection);
         TextView mTransportFrom = (TextView) v.findViewById(R.id.transportFromStop);
 
-        mTransportLineName.setText(mDeparture.name);
+        mStopLocation = mSavedInformation.getParcelable("source");
+        mDeparture = mSavedInformation.getParcelable("trip");
+
+        mTransportLineName.setText(mDeparture.sname);
+
+        if (mTransportLineName.getText().length() >= 4) {
+            mTransportLineName.setTextSize(12);
+        }
+
         mTransportLineDirection.setText(mDeparture.direction);
-        mTransportFrom.setText(mStopLocation.name);
+
+        // Remove ", [name]"
+        mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(",")));
 
         mDestinationsListView = (ListView) v.findViewById(R.id.destinationsListView);
+        mDestinationsListAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
+        mDestinationsListView.setAdapter(mDestinationsListAdapter);
+
         mDestinationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mPressedStop = mStops.get(position);
 
-                StopLocation source = mStopLocation;
                 Stop destination = mPressedStop;
-                Departure departure = mDeparture;
                 JourneyDetail journeyDetails = mJourneyDetail;
 
-                Bundle fragment_args = new Bundle();
-                fragment_args.putParcelable("source", source);
-                fragment_args.putParcelable("destination", destination);
-                fragment_args.putParcelable("trip", departure);
-                fragment_args.putParcelable("journey", journeyDetails);
+                mSavedInformation.putParcelable("destination", destination);
+                mSavedInformation.putParcelable("journey", journeyDetails);
 
-                mFragmentSwitcher.nextFragment(fragment_args);
+                mFragmentSwitcher.nextFragment((Bundle) mSavedInformation.clone());
             }
         });
 
         vtClient.get_journey_details(mDeparture.journeyDetailRef);
 
+        mTransportLineName.setTextColor(Color.parseColor(mDeparture.bgColor));
+        mTransportLineName.getBackground().setColorFilter(Color.parseColor(mDeparture.fgColor), PorterDuff.Mode.MULTIPLY);
+
+        mTransportLineDirection.requestFocus(); // Make the line direction scroll if necessary
+
         return v;
     }
 
-
     /**
-     * Populates destination list view with names of stops
+     * This will save the information gotten from the previous fragment.
      *
-     * @param destinations list of strings which will be added to the list view
+     * @param outState is the bundle we get in onCreate and onCreateView.
      */
-    private void populateDestinationsList(List<String> destinations) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, destinations);
-
-        mDestinationsListView.setAdapter(adapter);
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putAll(mSavedInformation);
+        super.onSaveInstanceState(outState);
     }
 
     // **************************
@@ -107,6 +133,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     // **************************
     @Override
     public void got_journey_details(JourneyDetail journeyDetail) {
+        mDestinationsListAdapter.clear();
         mJourneyDetail = journeyDetail;
 
         mStops = new ArrayList<>();
@@ -132,7 +159,8 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         destinations.remove(0);
         mStops.remove(0);
 
-        populateDestinationsList(destinations);
+        mDestinationsListAdapter.addAll(destinations);
+        mDestinationsListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -159,7 +187,6 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
-        mStopLocation = args.getParcelable("source");
-        mDeparture = args.getParcelable("trip");
+        mSavedInformation = (Bundle) args.clone();
     }
 }

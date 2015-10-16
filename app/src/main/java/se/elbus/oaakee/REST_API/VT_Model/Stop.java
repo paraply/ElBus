@@ -15,6 +15,10 @@ public class Stop implements Parcelable {
     @Attribute(name="name")
     public String name;
 
+    public String getNameWithoutCity(){
+        return name.substring(0, name.lastIndexOf(","));
+    }
+
     @Attribute(name="id")
     public String id;
 

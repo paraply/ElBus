@@ -70,11 +70,14 @@ public class PaymentFragment  extends Fragment {
     }
 
     @Override
-    public void onDetach() {
+    public void onPause() {
         super.onDetach();
-        mAnim.cancel();
-        mTimer.cancel();
-        mTimer.onFinish();
+        if(mAnim != null)
+            mAnim.cancel();
+        if(mTimer != null){
+            mTimer.cancel();
+            mTimer.onFinish();
+        }
     }
 
     private void hasTicket() {

@@ -20,7 +20,6 @@ import se.elbus.oaakee.Fragments.HamburgerFragment;
 import se.elbus.oaakee.Fragments.InfoFragment;
 import se.elbus.oaakee.Fragments.PaymentFragment;
 import se.elbus.oaakee.Fragments.SettingsFragment;
-import se.elbus.oaakee.Fragments.SettingsWrapper;
 import se.elbus.oaakee.Fragments.TravelFragment;
 
 public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks, FragmentSwitchCallbacks {
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         mFragments.add(mTravelFragments.peek());
         mFragments.add(new PaymentFragment());
         mFragments.add(null); // TODO: Change this to fragment for "Konto"
-        mFragments.add(new SettingsWrapper());
+        mFragments.add(new SettingsFragment());
         mFragments.add(null); // TODO: Change this to fragment for "Historik"
 
         changeFragment(mFragments.get(0));
@@ -139,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.hamburger, menu);
             restoreActionBar();
             return true;
         }
@@ -153,9 +151,6 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

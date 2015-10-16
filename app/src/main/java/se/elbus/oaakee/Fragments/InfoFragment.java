@@ -2,12 +2,15 @@ package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -38,13 +41,12 @@ public class InfoFragment extends Fragment implements VT_Callback{
     private MainActivity parent;
     private VT_Client vt_client; // TODO: Will maybe get reference from parent
 
-    private TextView textView_choosen_trip;
     private TextView textView_arrives_or_departures;
     private TextView textView_counter;
-    private TextView textView_below_circle;
     private TextView textView_minutes_text;
 
     private View circle;
+    private Button stop_circle;
 
 
     private final int UPDATE_TIMER_INTERVAL = 20000; // TODO: Maybe need to adjust
@@ -58,6 +60,18 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
 
     private boolean use_source_timetable, use_destination_timetable;
+
+    private void hide_stop_button(){
+        stop_circle.setVisibility(View.INVISIBLE);
+    }
+
+    private void show_stop_button(){
+        stop_circle.setVisibility(View.VISIBLE);
+    }
+
+    private void stop_button_state(boolean pressed){
+        stop_circle.setPressed(pressed);
+    }
 
     // Update the GUI to show TIME and STOP information
     private void update_gui(){
@@ -114,32 +128,37 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
 
         if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
+            hide_stop_button();
             textView_arrives_or_departures.setText(R.string.arrived_at_destination); // "Arrived at destination" string
             vt_update_timer.cancel(); // Stop the timer since we don't need it no more
             // Hide circle and its contents
 //            circle.setVisibility(View.INVISIBLE);
             textView_counter.setVisibility(View.INVISIBLE);
             textView_minutes_text.setVisibility(View.INVISIBLE);
-            textView_below_circle.setText(journey_destination.name); // Only show name of destination this time. No text before.
+//            textView_below_circle.setText(journey_destination.name); // Only show name of destination this time. No text before.
 
 
         }else{
+
+
             long minutes_left;
 
             if (onBus){ // We are on the bus. Show time until we arrive at the destination
+                show_stop_button();
                 textView_arrives_or_departures.setText(R.string.arrive_at_destination); // "Arrive at destination" string
 
                 minutes_left = use_destination_timetable ? vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) :
                         vt_time_diff_minutes(journey_destination.rtArrDate, journey_destination.rtArrTime);
 
-                textView_below_circle.setText(parent.getString(R.string.to) + " " + journey_destination.name);
+//                textView_below_circle.setText(parent.getString(R.string.to) + " " + journey_destination.name);
 
             }else{ // We are not on the bus yet. Show time until it arrives to our stop
+                hide_stop_button();
                 textView_arrives_or_departures.setText(R.string.departures_in); // "departures in" string
                 minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.depDate, journey_source.depTime) :
                         vt_time_diff_minutes(journey_source.rtDepDate, journey_source.rtDepTime);
 
-                textView_below_circle.setText(parent.getString(R.string.from) + " " + journey_source.name + " (" + parent.getString(R.string.track) + " " + journey_source.track + ")" );
+//                textView_below_circle.setText(parent.getString(R.string.from) + " " + journey_source.name + " (" + parent.getString(R.string.track) + " " + journey_source.track + ")" );
             }
 
             if (minutes_left < 0){
@@ -206,11 +225,12 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
         TextView textview_line_short_name = (TextView) view.findViewById(R.id.infoBusName);
 
-        textView_choosen_trip = (TextView) view.findViewById(R.id.info_from_to);
+        TextView textView_source = (TextView) view.findViewById(R.id.info_source);
+        TextView textView_destination = (TextView) view.findViewById(R.id.info_destination);
         textView_counter = (TextView) view.findViewById(R.id.timeTilArrival);
         textView_minutes_text = (TextView) view.findViewById(R.id.info_minutes_text);
         textView_arrives_or_departures = (TextView) view.findViewById(R.id.infoArrivesIn);
-        textView_below_circle = (TextView) view.findViewById(R.id.below_circle);
+        stop_circle = (Button) view.findViewById(R.id.info_stop);
 
         circle =  view.findViewById(R.id.infoCircleHolder);
 //        circle.setBackgroundColor(Color.parseColor(departure_from_board.bgColor) );
@@ -226,7 +246,8 @@ public class InfoFragment extends Fragment implements VT_Callback{
         departure_from_board = bundle.getParcelable("trip");
         journeyDetails = bundle.getParcelable("journey"); // Use this if no newer is stored in savedState
 
-        textView_choosen_trip.setText(source.name + " - " + destination.name);
+        textView_source.setText(source.getNameWithoutCity());
+        textView_destination.setText(destination.getNameWithoutCity());
 
         if (savedState != null) {
             Log.i("### info_frag", "has saved instance");
@@ -240,7 +261,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
         if (journeyDetails.color != null){
             textview_line_short_name.setTextColor(Color.parseColor(journeyDetails.color.fgColor));
 
-            if (!journeyDetails.color.bgColor.equals("#ffffff")){ // White looks ugly as background when fragment bakground is gray
+            if (!journeyDetails.color.bgColor.equals("#ffffff")){ // White looks ugly as background when fragment background is gray
                 textview_line_short_name.setBackgroundColor(Color.parseColor(journeyDetails.color.bgColor));
             }
         }
@@ -250,6 +271,12 @@ public class InfoFragment extends Fragment implements VT_Callback{
         update_gui(); // Update GUI once since the timer will wait a defined amount of seconds until it starts
 
         if (!arrived_at_destination) { // has not arrived at destination yet.
+
+            if (onBus){
+                show_stop_button();
+            }else{
+                hide_stop_button();
+            }
 
 
 //            if (!onBus) { // Start WiFi-Finder and check if we are on the bus
@@ -317,7 +344,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
     @Override
     public void got_error(String during_method, String error_msg) {
-
+        Log.i("### INFO ERR", error_msg);
     }
 
     //For alarm functionality, add this
