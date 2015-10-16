@@ -36,7 +36,7 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 
 public class TravelFragment extends Fragment implements VT_Callback, LocationListener {
 
-    private static Spinner mBusStopSpinner;
+    private Spinner mBusStopSpinner;
     private static ListView mDeparturesListView;
     private VT_Client vtClient;
     private static final String TAG = "Travel";
@@ -51,13 +51,13 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     private List<Departure> allDepartures;
     private List<List<Departure>> departuresSorted;
 
-    private StopLocation chosenStopLocation;    
-
     private FragmentSwitchCallbacks mFragmentSwitcher;
+    private Bundle savedState;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        savedState = new Bundle();
 
         allDepartures = new ArrayList<>();
         departuresSorted = new ArrayList<>();
@@ -79,19 +79,29 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
 
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
+
+        createBusStopList(v);
+        createDeparturesList(v);
+
+        return v;
+    }
+
+    private void createBusStopList(View v) {
         mBusStopSpinner = (Spinner) v.findViewById(R.id.busStopSpinner); // Spinner
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item); // Adapter to connect source stops to gui
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item); // Adapter to put source stops to gui
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        mBusStopSpinner.setAdapter(adapter); // Connects the adapter between
+        mBusStopSpinner.setAdapter(adapter); // Connects the adapter to the view
         mBusStopSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString() + ", Position: " + mBusStopSpinner.getSelectedItemPosition());
-                int i = mBusStopSpinner.getSelectedItemPosition();
-                chosenStopLocation = busStops.get(i);
-                vtClient.get_departure_board(chosenStopLocation.id);
+                Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString() + ", Position: " + position);
+
+                StopLocation source = busStops.get(position);
+
+                savedState.putParcelable("source", source);
+                vtClient.get_departure_board(source.id);
             }
 
             @Override
@@ -99,10 +109,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
                 Log.i(TAG, "Spinner nothing selected");
             }
         });
-
-        createDeparturesList(v);
-
-        return v;
     }
 
     /**
@@ -423,10 +429,8 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
                 @Override
                 public void onClick(View v) {
                     String toastMessage = "You clicked: " + ((TextView)view.findViewById(R.id.stationTextView)).getText();
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("source", chosenStopLocation);
-                    bundle.putParcelable("trip",departure);
-                    mFragmentSwitcher.nextFragment(bundle);
+                    savedState.putParcelable("trip", departure);
+                    mFragmentSwitcher.nextFragment(savedState);
                     Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
                 }
             });
