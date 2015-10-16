@@ -88,4 +88,7 @@
         <item>hybrid</item>
     </string-array>
 
+    <string-array name="bsim">
+        <item>Ericsson$</item>
+    </string-array>
 </resources>

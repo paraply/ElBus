@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import se.elbus.oaakee.MainActivity;
+import se.elbus.oaakee.R;
 import se.elbus.oaakee.REST_API.EC_Callback;
 import se.elbus.oaakee.REST_API.EC_Client;
 import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
@@ -73,10 +74,10 @@ public class AlarmService extends IntentService implements EC_Callback {
 
         //Strings should be in resources, not hardcoded
         Notification notification = new NotificationCompat.Builder(this)
-                .setTicker("Time to get off yo")
+                .setTicker(getString(R.string.AlarmTicker))
                 .setSmallIcon(android.R.drawable.ic_menu_report_image)
-                .setContentTitle("Stop")
-                .setContentText("Hammer time")
+                .setContentTitle(getString(R.string.AlarmTitle))
+                .setContentText(getString(R.string.AlarmText))
                 .setContentIntent(pi)
                 .setAutoCancel(true)
                 .build();
