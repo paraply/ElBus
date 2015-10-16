@@ -37,11 +37,11 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 
 public class TravelFragment extends Fragment implements VT_Callback, LocationListener {
 
-    private Spinner mBusStopSpinner;
-    private Adapter mSpinnerAdapter;
-    
-    private static ListView mDeparturesListView;
-    private Adapter mDeparturesAdapter;
+    private Spinner mBusStops;
+    private ArrayAdapter<String> mBusStopsAdapter;
+
+    private ListView mDeparturesList;
+    private ArrayAdapter<String> mDepartureListAdapter;
 
     private VT_Client vtClient;
     private static final String TAG = "Travel";
@@ -77,10 +77,10 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
 
-        mBusStopSpinner = (Spinner) v.findViewById(R.id.busStopSpinner);
-        initBusStopList(mBusStopSpinner);
+        mBusStops = (Spinner) v.findViewById(R.id.busStopSpinner);
+        initBusStopList(mBusStops);
 
-        mDeparturesListView = (ListView) v.findViewById(R.id.departuresListView);
+        mDeparturesList = (ListView) v.findViewById(R.id.departuresListView);
 
         return v;
     }
@@ -198,7 +198,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, stops2);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mBusStopSpinner.setAdapter(adapter1);
+        mBusStops.setAdapter(adapter1);
     }
 
     @Override
@@ -237,7 +237,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
             departuresSorted.add(departures); //Adds list of departures for one single bus line number
         }
         ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), departuresSorted);
-        mDeparturesListView.setAdapter(adapter);
+        mDeparturesList.setAdapter(adapter);
     }
 
     @Override
