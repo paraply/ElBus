@@ -78,7 +78,13 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
 
         mBusStops = (Spinner) v.findViewById(R.id.busStopSpinner);
+
+        mBusStopsAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item); // Adapter to put source stops to gui
+        mBusStopsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         initBusStopList(mBusStops);
+        mDepartureListAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item);
+        mDepartureListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mDeparturesList = (ListView) v.findViewById(R.id.departuresListView);
 
@@ -86,9 +92,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     }
 
     private void initBusStopList(final Spinner spinner) {
-
-        mBusStopsAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item); // Adapter to put source stops to gui
-        mBusStopsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(mBusStopsAdapter); // Connects the adapter to the view
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -190,14 +193,10 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         List<StopLocation> stops = stops1;
 
         busStops = stops;
-        ArrayList<String> stops2 = new ArrayList<>();
 
         for (StopLocation s : busStops){
-            stops2.add(s.name);
+            mDepartureListAdapter.add(s.name);
         }
-
-        mDepartureListAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, stops2);
-        mDepartureListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mBusStops.setAdapter(mDepartureListAdapter);
     }
 
