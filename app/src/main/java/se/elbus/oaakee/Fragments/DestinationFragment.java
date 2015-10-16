@@ -3,13 +3,13 @@ package se.elbus.oaakee.Fragments;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -35,6 +35,7 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 public class DestinationFragment extends Fragment implements VT_Callback {
 
     private ListView mDestinationsListView;
+    private ArrayAdapter mDestinationsListAdapter;
     private VT_Client vtClient;
 
     private Departure mDeparture;
@@ -78,6 +79,9 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(",")));
 
         mDestinationsListView = (ListView) v.findViewById(R.id.destinationsListView);
+        mDestinationsListAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
+        mDestinationsListView.setAdapter(mDestinationsListAdapter);
+
         mDestinationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -121,22 +125,12 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     }
 
 
-    /**
-     * Populates destination list view with names of stops
-     *
-     * @param destinations list of strings which will be added to the list view
-     */
-    private void populateDestinationsList(List<String> destinations) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, destinations);
-
-        mDestinationsListView.setAdapter(adapter);
-    }
-
     // **************************
     // VT_Callback implementation
     // **************************
     @Override
     public void got_journey_details(JourneyDetail journeyDetail) {
+        mDestinationsListAdapter.clear();
         mJourneyDetail = journeyDetail;
 
         mStops = new ArrayList<>();
@@ -162,7 +156,8 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         destinations.remove(0);
         mStops.remove(0);
 
-        populateDestinationsList(destinations);
+        mDestinationsListAdapter.addAll(destinations);
+        mDestinationsListAdapter.notifyDataSetChanged();
     }
 
     @Override
