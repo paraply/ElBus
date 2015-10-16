@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -63,7 +64,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             mSavedInformation.putAll(savedInstanceState);
         }
 
@@ -76,14 +77,16 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         mStopLocation = mSavedInformation.getParcelable("source");
         mDeparture = mSavedInformation.getParcelable("trip");
 
-        mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name))); // Remove "Buss", "Spårvagn", etc..
+        mTransportLineName.setText(mDeparture.sname);
 
-        if(mTransportLineName.getText().length() >= 4) {
+        if (mTransportLineName.getText().length() >= 4) {
             mTransportLineName.setTextSize(12);
         }
 
         mTransportLineDirection.setText(mDeparture.direction);
-        mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(","))); // Remove ", Göteborg"
+
+        // Remove ", [name]"
+        mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(",")));
 
         mDestinationsListView = (ListView) v.findViewById(R.id.destinationsListView);
         mDestinationsListAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
@@ -105,9 +108,11 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         });
 
         vtClient.get_journey_details(mDeparture.journeyDetailRef);
+
+        mTransportLineName.setTextColor(Color.parseColor(mDeparture.bgColor));
         mTransportLineName.getBackground().setColorFilter(Color.parseColor(mDeparture.fgColor), PorterDuff.Mode.MULTIPLY);
-        mTransportLineDirection.requestFocus();
-//        mTransportLineName.setText("999");
+
+        mTransportLineDirection.requestFocus(); // Make the line direction scroll if necessary
 
         return v;
     }
@@ -122,15 +127,6 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         outState.putAll(mSavedInformation);
         super.onSaveInstanceState(outState);
     }
-
-    private int getIndexOfFirstDigit(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            if (Character.isDigit(s.charAt(i)))
-                return i;
-        }
-        return 0;
-    }
-
 
     // **************************
     // VT_Callback implementation
