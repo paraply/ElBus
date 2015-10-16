@@ -36,4 +36,7 @@
     <string name="empty_charge">0 kr</string>
     <string name="gps_off_warning_text">Location services off, can\'t get a fix on your location!</string>
 
+    <string name="AlarmTicker">Stop! Hammer time!</string>
+    <string name="AlarmTitle">Arrived</string>
+    <string name="AlarmText">The next stop is your destination. Time to get off!</string>
 </resources>

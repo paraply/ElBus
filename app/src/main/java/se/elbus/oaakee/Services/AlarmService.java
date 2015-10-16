@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import se.elbus.oaakee.MainActivity;
+import se.elbus.oaakee.R;
 import se.elbus.oaakee.REST_API.EC_Callback;
 import se.elbus.oaakee.REST_API.EC_Client;
 import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
@@ -26,18 +27,6 @@ import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
  * Service to repeatedly check the next stop for the current bus.
  * Check if stop matches the chosen destination.
  * If so, send push notification.
-<<<<<<< HEAD:app/src/main/java/se/elbus/oaakee/Services/AlarmService.java
-=======
- * =======
- * <p>
- * /**
- * Created by Anton on 2015-09-30.
- * ToDo:
- * Service to repeatedly check the next stop for the current bus.
- * Check if stop matches the chosen destination.
- * If so, send push notification.
- * >>>>>>> a10002b8f901f733f46d8ba89ab66c3e8a40a373
->>>>>>> master:app/src/main/java/se/elbus/oaakee/AlarmService.java
  */
 
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
@@ -85,10 +74,10 @@ public class AlarmService extends IntentService implements EC_Callback {
 
         //Strings should be in resources, not hardcoded
         Notification notification = new NotificationCompat.Builder(this)
-                .setTicker("Time to get off yo")
+                .setTicker(getString(R.string.AlarmTicker))
                 .setSmallIcon(android.R.drawable.ic_menu_report_image)
-                .setContentTitle("Stop")
-                .setContentText("Hammer time")
+                .setContentTitle(getString(R.string.AlarmTitle))
+                .setContentText(getString(R.string.AlarmText))
                 .setContentIntent(pi)
                 .setAutoCancel(true)
                 .build();

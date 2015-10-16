@@ -26,15 +26,29 @@ public class DetectBusService extends IntentService {
     public static String dgwFound;
     public static boolean onBus = false;
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, AlarmService.class);
-    }
+    private static String source;
+    private static String destination;
+    private static String time;
+    private static String line;
 
     public DetectBusService() {
         super(TAG);
     }
 
-    public static void setServiceAlarm(Context context, boolean isOn) {
+    public static Intent newIntent(Context context) {
+        return new Intent(context, AlarmService.class);
+    }
+
+    public static void setServiceAlarm(Context context, boolean isOn, String s, String d, String t, String l) {
+        //Check if nothing differs from last time setServiceAlarm was called
+        if(s.equals(source) && d.equals(destination) && t.equals(time) && l.equals(line)){
+            return;
+        }
+
+        source = s;
+        destination = d;
+        time = t;
+        line = l;
         Intent i = AlarmService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
 
@@ -48,13 +62,13 @@ public class DetectBusService extends IntentService {
         }
     }
 
-
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.i(TAG, "DetectBusService intent received");
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MILLISECOND, POLL_INTERVAL);
+
 
         //Check wififinder for connection
         WifiFinder wifiFinder = new WifiFinder(this, this.getString(R.string.buswifiname)) {
@@ -63,7 +77,15 @@ public class DetectBusService extends IntentService {
             public void receiveDgw(String dgw) {
                 Log.i(TAG, "Found Wifi, dgw: " + dgw);
                 dgwFound = dgw;
-                onBus = true;
+                /**
+                 *  This should probably be done somewhere else.
+                 *  Should also check if bus we think we're on matches the choice made.
+                 *  Does not matter for prototype since we only target line 55.
+                */
+                if(!onBus) {
+                    AlarmService.setServiceAlarm(DetectBusService.this, true, dgwFound, destination);
+                    onBus = true;
+                }
             }
         };
     }
