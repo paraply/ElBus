@@ -48,8 +48,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     double mSimulatorLatitude = 57.710259;
 
     private List<StopLocation> busStops; //With removed duplicates
-    private List<Departure> allDepartures;
-    private List<List<Departure>> departuresSorted;
 
     private FragmentSwitchCallbacks mFragmentSwitcher;
     private Bundle savedState;
@@ -57,16 +55,11 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         savedState = new Bundle();
-
-        allDepartures = new ArrayList<>();
-        departuresSorted = new ArrayList<>();
-
         vtClient = new VT_Client(this);
 
-        super.onCreate(savedInstanceState);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,27 +70,26 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
             Log.e(TAG, e.getLocalizedMessage());
         }
 
-
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
 
-        createBusStopList(v);
+        mBusStopSpinner = (Spinner) v.findViewById(R.id.busStopSpinner);
+        initBusStopList(mBusStopSpinner);
 
         mDeparturesListView = (ListView) v.findViewById(R.id.departuresListView);
 
         return v;
     }
 
-    private void createBusStopList(View v) {
-        mBusStopSpinner = (Spinner) v.findViewById(R.id.busStopSpinner); // Spinner
+    private void initBusStopList(final Spinner spinner) {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item); // Adapter to put source stops to gui
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        mBusStopSpinner.setAdapter(adapter); // Connects the adapter to the view
-        mBusStopSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setAdapter(adapter); // Connects the adapter to the view
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString() + ", Position: " + position);
+                Log.i(TAG, "Spinner clicked: " + spinner.getSelectedItem().toString() + ", Position: " + position);
 
                 StopLocation source = busStops.get(position);
 
@@ -153,125 +145,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         Toast.makeText(getContext(), R.string.gps_off_warning_text, Toast.LENGTH_LONG).show();
     }
 
-
-    /**
-     * Updates bus stop list (gui)
-     */
-    private void updateBusStopList(){
-        ArrayList<String> stops = new ArrayList<>();
-
-        for (StopLocation s : busStops){
-            stops.add(s.name);
-        }
-
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, stops);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        mBusStopSpinner.setAdapter(adapter1);
-    }
-
-    /**
-     * Sorts departures list, then updates gui
-     */
-    private void sortDeparturesAndUpdateDepartureList(){
-        sortDepartures();
-        updateDeparturesList();
-    }
-
-    /**
-     * Sorts departures, puts them in listes of bus line number
-     */
-    private void sortDepartures(){
-        departuresSorted.clear();
-
-        List<String> shortName = new ArrayList<>(); //list of unique short name sorted by departure time
-
-        for (Departure departure:allDepartures){
-            if (!(shortName.contains(departure.sname))){
-                shortName.add(departure.sname);
-            }
-        }
-
-        for (String s:shortName){ //go through all lines
-            //Log.i(TAG,"Short: " + s);
-            List<Departure> departures = new ArrayList<>();
-
-            for (Departure departure:allDepartures){ //loop through all departures
-                if (departure.sname.equals(s)){
-                    boolean alreadyInList = false;
-
-                    for (Departure d2:departures){ //Checks if direction of this departure is already in list
-                        if (departure.direction.equals(d2.direction)){
-                            alreadyInList=true;
-                            break;
-                        }
-                    }
-
-                    if (!alreadyInList){
-                        departures.add(departure);
-                        //Log.d(TAG,"Added: " + departure.sname + ", Dir: " + departure.direction + ", time: " + departure.time);
-                    }
-                }
-            }
-            departuresSorted.add(departures); //Adds list of departures for one single bus line number
-        }
-    }
-
-    /**
-     * Updates departures list, giving it the sorted departures list
-     */
-    private void updateDeparturesList(){
-        ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), departuresSorted);
-        mDeparturesListView.setAdapter(adapter);
-    }
-
-    /**
-     * Removes duplicate bus stops (tracks!) and updates gui.
-     * @param stopLocations List of bus stops
-     */
-    private void removeDuplicatesAndUpdateStopList(List<StopLocation> stopLocations){
-        List<StopLocation> stops = removeDuplicateStops(stopLocations);
-
-/*        for (StopLocation s : stops) { // List all nearby stops
-            Log.i(TAG, "### NEAR STOP" + " ID:" + s.id + " TRACK:" + s.track + " NAME: " + s.name);
-        }
-
-        StopLocation closest = stops.get(0); // The closest stop is at the top of the list
-        Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id);*/
-
-        busStops = stops;
-        updateBusStopList();
-    }
-
-    /**
-     * Removes duplicate bus stops (tracks)
-     * @param stopLocations Unsorted list of busstops
-     * @return List of bus stops without duplicates
-     */
-    private List<StopLocation> removeDuplicateStops(List<StopLocation> stopLocations){
-        List<StopLocation> stops = new ArrayList<>();
-
-        boolean contains;
-
-        for (StopLocation s:stopLocations){
-            String stopName = s.name;
-
-            contains = false;
-
-            for (StopLocation d:stops){
-                if ((stopName.equals(d.name))) {
-                    contains = true;
-                }
-            }
-
-            if (!contains){
-                stops.add(s);
-            }
-        }
-
-        return stops;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -290,21 +163,85 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
     @Override
     public void got_nearby_stops(LocationList locationList) {
-        removeDuplicatesAndUpdateStopList(locationList.stoplocation);
+        List<StopLocation> stops1 = new ArrayList<>();
+
+        boolean contains;
+
+        for (StopLocation s: locationList.stoplocation){
+            String stopName = s.name;
+
+            contains = false;
+
+            for (StopLocation d: stops1){
+                if ((stopName.equals(d.name))) {
+                    contains = true;
+                }
+            }
+
+            if (!contains){
+                stops1.add(s);
+            }
+        }
+
+        List<StopLocation> stops = stops1;
+
+/*        for (StopLocation s : stops) { // List all nearby stops
+            Log.i(TAG, "### NEAR STOP" + " ID:" + s.id + " TRACK:" + s.track + " NAME: " + s.name);
+        }
+
+        StopLocation closest = stops.get(0); // The closest stop is at the top of the list
+        Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id);*/
+
+        busStops = stops;
+        ArrayList<String> stops2 = new ArrayList<>();
+
+        for (StopLocation s : busStops){
+            stops2.add(s.name);
+        }
+
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, stops2);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mBusStopSpinner.setAdapter(adapter1);
     }
 
     @Override
-    public void got_departure_board(DepartureBoard departureBoard) {
-       /* Log.i(TAG,"Departure board ");
-        for (Departure d : departureBoard.departure) { // List all the allDepartures from this stop
-            Log.i(TAG,"### DEPARTURES - SHORT NAME: " + d.sname + " TIME: " + d.time + " TRACK: " + d.track + " bgColor: " + d.bgColor + " JOURNEYID " + d.journeyid + " DIRECTION: " + d.direction );
-            if (d.sname.equals("11") && d.direction.equals("Bergsjön")){ // If spårvagn 11 mot Bergsjön
-                vtClient.get_journey_details(d.journeyDetailRef); // Get journey details from this journey
-                return;
+    public void got_departure_board(DepartureBoard board) {
+        List<Departure> allDepartures = board.departure;
+        List<List<Departure>> departuresSorted = new ArrayList<>();
+
+        List<String> shortName = new ArrayList<>(); //list of unique short name sorted by departure time
+
+        for (Departure departure: allDepartures){
+            if (!(shortName.contains(departure.sname))){
+                shortName.add(departure.sname);
             }
-        }*/
-        allDepartures = departureBoard.departure;
-        sortDeparturesAndUpdateDepartureList();
+        }
+
+        for (String s:shortName){
+            List<Departure> departures = new ArrayList<>();
+
+            for (Departure departure: allDepartures){ //loop through all departures
+                if (departure.sname.equals(s)){
+                    boolean alreadyInList = false;
+
+                    for (Departure d2:departures){ //Checks if direction of this departure is already in list
+                        if (departure.direction.equals(d2.direction)){
+                            alreadyInList=true;
+                            break;
+                        }
+                    }
+
+                    if (!alreadyInList){
+                        departures.add(departure);
+                        //Log.d(TAG,"Added: " + departure.sname + ", Dir: " + departure.direction + ", time: " + departure.time);
+                    }
+                }
+            }
+            departuresSorted.add(departures); //Adds list of departures for one single bus line number
+        }
+        ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), departuresSorted);
+        mDeparturesListView.setAdapter(adapter);
     }
 
     @Override
