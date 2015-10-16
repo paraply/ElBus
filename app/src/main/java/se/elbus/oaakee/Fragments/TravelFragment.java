@@ -81,7 +81,8 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
 
         createBusStopList(v);
-        createDeparturesList(v);
+
+        mDeparturesListView = (ListView) v.findViewById(R.id.departuresListView);
 
         return v;
     }
@@ -225,23 +226,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     }
 
     /**
-     * Creates a list of allDepartures from an array of strings
-     */
-    private void createDeparturesList(View v) {
-
-        mDeparturesListView = (ListView) v.findViewById(R.id.departuresListView);
-
-        //String[] allDepartures = {"Lindholmen", "Tynnered", "Bergsjön", "Majorna"};
-
-        List<List<Departure>> list = new ArrayList<>();
-        list.add(allDepartures);
-
-        ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), list);
-        mDeparturesListView.setAdapter(adapter);
-
-    }
-
-    /**
      * Removes duplicate bus stops (tracks!) and updates gui.
      * @param stopLocations List of bus stops
      */
@@ -338,7 +322,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     @Override
     public void onLocationChanged(Location location) {
         // TODO: Change location in GUI
-        vtClient.get_nearby_stops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
+        vtClient.get_nearby_stops(location.getLatitude() + "", location.getLongitude() + "", "300", "10000");
 
     }
     @Override
