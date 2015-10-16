@@ -1,7 +1,6 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -23,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.security.Provider;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,9 +78,29 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         }
 
 
-        View v = inflater.inflate(R.layout.fragment_travel, container, false);
+        View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
+        mBusStopSpinner = (Spinner) v.findViewById(R.id.busStopSpinner); // Spinner
 
-        createBusStopList(v);
+        String[] strBusStops = {};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, strBusStops); // Adapter to connect source stops to gui
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mBusStopSpinner.setAdapter(adapter); // Connects the adapter between
+        mBusStopSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString() + ", Position: " + mBusStopSpinner.getSelectedItemPosition());
+                int i = mBusStopSpinner.getSelectedItemPosition();
+                chosenStopLocation = busStops.get(i);
+                vtClient.get_departure_board(chosenStopLocation.id);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.i(TAG, "Spinner nothing selected");
+            }
+        });
+
         createDeparturesList(v);
 
         return v;
@@ -129,36 +147,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         Toast.makeText(getContext(), R.string.gps_off_warning_text, Toast.LENGTH_LONG).show();
     }
 
-
-    /**
-     * Populates the bus stop spinner
-     */
-    private void createBusStopList(View v) {
-        String[] strBusStops = {};
-
-        mBusStopSpinner = (Spinner) v.findViewById(R.id.busStopSpinner);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, strBusStops);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        mBusStopSpinner.setAdapter(adapter);
-
-        mBusStopSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(TAG, "Spinner clicked: " + mBusStopSpinner.getSelectedItem().toString() + ", Position: " + mBusStopSpinner.getSelectedItemPosition());
-                int i = mBusStopSpinner.getSelectedItemPosition();
-                chosenStopLocation = busStops.get(i);
-                vtClient.get_departure_board(chosenStopLocation.id);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.i(TAG, "Spinner nothing selected");
-            }
-        });
-
-    }
 
     /**
      * Updates bus stop list (gui)
