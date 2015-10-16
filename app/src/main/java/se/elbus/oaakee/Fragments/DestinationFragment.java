@@ -1,11 +1,17 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +64,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             mSavedInformation.putAll(savedInstanceState);
         }
 
@@ -71,11 +77,15 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         mStopLocation = mSavedInformation.getParcelable("source");
         mDeparture = mSavedInformation.getParcelable("trip");
 
-        mTransportLineName.setText(mDeparture.name);
-        mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name)));
+        mTransportLineName.setText(mDeparture.sname);
 
-        mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name)));
+        if (mTransportLineName.getText().length() >= 4) {
+            mTransportLineName.setTextSize(12);
+        }
+
         mTransportLineDirection.setText(mDeparture.direction);
+
+        // Remove ", [name]"
         mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(",")));
 
         mDestinationsListView = (ListView) v.findViewById(R.id.destinationsListView);
@@ -99,8 +109,10 @@ public class DestinationFragment extends Fragment implements VT_Callback {
 
         vtClient.get_journey_details(mDeparture.journeyDetailRef);
 
-        mTransportLineName.setTextColor(Color.parseColor(mDeparture.fgColor));
-        mTransportLineDirection.requestFocus();
+        mTransportLineName.setTextColor(Color.parseColor(mDeparture.bgColor));
+        mTransportLineName.getBackground().setColorFilter(Color.parseColor(mDeparture.fgColor), PorterDuff.Mode.MULTIPLY);
+
+        mTransportLineDirection.requestFocus(); // Make the line direction scroll if necessary
 
         return v;
     }
@@ -115,15 +127,6 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         outState.putAll(mSavedInformation);
         super.onSaveInstanceState(outState);
     }
-
-    private int getIndexOfFirstDigit(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            if (Character.isDigit(s.charAt(i)))
-                return i;
-        }
-        return -1;
-    }
-
 
     // **************************
     // VT_Callback implementation
