@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -37,7 +38,11 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 public class TravelFragment extends Fragment implements VT_Callback, LocationListener {
 
     private Spinner mBusStopSpinner;
+    private Adapter mSpinnerAdapter;
+    
     private static ListView mDeparturesListView;
+    private Adapter mDeparturesAdapter;
+
     private VT_Client vtClient;
     private static final String TAG = "Travel";
 
@@ -164,7 +169,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     @Override
     public void got_nearby_stops(LocationList locationList) {
         List<StopLocation> stops1 = new ArrayList<>();
-
         boolean contains;
 
         for (StopLocation s: locationList.stoplocation){
@@ -185,13 +189,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
         List<StopLocation> stops = stops1;
 
-/*        for (StopLocation s : stops) { // List all nearby stops
-            Log.i(TAG, "### NEAR STOP" + " ID:" + s.id + " TRACK:" + s.track + " NAME: " + s.name);
-        }
-
-        StopLocation closest = stops.get(0); // The closest stop is at the top of the list
-        Log.i(TAG, "### CLOSEST STOP " + closest.name + " ID:" + closest.id);*/
-
         busStops = stops;
         ArrayList<String> stops2 = new ArrayList<>();
 
@@ -201,7 +198,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, stops2);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         mBusStopSpinner.setAdapter(adapter1);
     }
 
