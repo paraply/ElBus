@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,8 +75,12 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         mStopLocation = mSavedInformation.getParcelable("source");
         mDeparture = mSavedInformation.getParcelable("trip");
 
-        mTransportLineName.setText(mDeparture.name);
         mTransportLineName.setText(mDeparture.name.substring(getIndexOfFirstDigit(mDeparture.name))); // Remove "Buss", "Spårvagn", etc..
+
+        if(mTransportLineName.getText().length() >= 4) {
+            mTransportLineName.setTextSize(12);
+        }
+
         mTransportLineDirection.setText(mDeparture.direction);
         mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(","))); // Remove ", Göteborg"
 
@@ -131,7 +136,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
             if (Character.isDigit(s.charAt(i)))
                 return i;
         }
-        return -1;
+        return 0;
     }
 
 
