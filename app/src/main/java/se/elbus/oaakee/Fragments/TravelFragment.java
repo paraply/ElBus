@@ -254,7 +254,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     @Override
     public void onLocationChanged(Location location) {
         // TODO: Change location in GUI
-        vtClient.get_nearby_stops(location.getLatitude() + "", location.getLongitude() + "", "300", "10000");
+        vtClient.get_nearby_stops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
 
     }
     @Override
