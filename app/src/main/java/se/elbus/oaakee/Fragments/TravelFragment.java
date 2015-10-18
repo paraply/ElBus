@@ -296,6 +296,11 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
             if (departures.size()>0) {
                 lineNumber.setText(departures.get(0).sname);
+
+                if (departures.get(0).sname.length()>3){
+                    lineNumber.setTextSize(18);
+                }
+
                 Drawable circle = lineNumber.getBackground();
                 try {
                     circle.setColorFilter(Color.parseColor(((departures.get(0)).fgColor)), PorterDuff.Mode.MULTIPLY);
