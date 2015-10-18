@@ -376,6 +376,13 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
             linearLayout.addView(busLineButtonView, layoutParams);
 
             setTextViewText(R.id.stationTextView,busLineButtonView,direction);
+
+            if (time.equals("0")){
+                time = getString(R.string.now);
+                TextView minTextView = (TextView)busLineButtonView.findViewById(R.id.minBelowTextView);
+                minTextView.setVisibility(View.GONE);
+            }
+
             setTextViewText(R.id.minutesTextView,busLineButtonView,time);
 
             return busLineButtonView;
