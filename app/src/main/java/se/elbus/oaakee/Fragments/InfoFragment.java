@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,9 +46,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
     private TextView textView_counter;
     private TextView textView_minutes_text;
 
-    private View circle;
     private Button stop_circle;
-
 
     private final int UPDATE_TIMER_INTERVAL = 20000; // TODO: Maybe need to adjust
     private Timer vt_update_timer;
@@ -77,15 +76,33 @@ public class InfoFragment extends Fragment implements VT_Callback{
     private void update_gui(){
         Stop journey_source = null, journey_destination = null;
 
-        // Check every stop for our SOURCE and DESTINATION
-        for (Stop s : journeyDetails.stop){ // TODO ****************************************************** SOMETHING IS WRONG. NO USE SUBSTRING
-            if (s.id.substring(0,14).equals(source.id.substring(0,14))){ //Using subystring on ID's since last number is different for different tracks and doesn't always match. Don't know why...
+        if (journeyDetails == null){
+            Toast.makeText(parent,"Error: No details of this journey", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        for (Stop s : journeyDetails.stop){
+            if (s.name.equals(source.name)){ // Found a match with source stop and a journey details stop
                 journey_source = s;
-            }
-            if (s.id.substring(0,14).equals(destination.id.substring(0,14))){
+                Log.i("### INFO", "Found src match stop");
+            }else if (s.name.equals(destination.name)){ // Found a match with destination stop and a journey details stop
                 journey_destination = s;
+                Log.i("### INFO", "Found dst match stop");
             }
         }
+
+//        // Check every stop for our SOURCE and DESTINATION
+//        for (Stop s : journeyDetails.stop){ // TODO Maybe a better solution than substring...
+//            Log.i("### INF CMP IDS", "STOP ID: " + s.id + "(" + s.name + ")"  + "   with SRCID: "  + source.id + " (" + source.name + ")" + "   or DSTID: " + destination.id + " (" + destination.name + ")");
+//            if (s.id.substring(0,14).equals(source.id.substring(0,14))){ //Using subystring on ID's since last number is different for different tracks and doesn't always match. Don't know why...
+//                journey_source = s;
+//                Log.i("### INFO SRC ID MATCH", s.id + "(" + s.name + ")" +  "-" + source.id + " (" + source.name + ")");
+//            }
+//            if (s.id.substring(0,14).equals(destination.id.substring(0,14))){
+//                journey_destination = s;
+//                Log.i("### INFO DST ID MATCH", s.id + "-" + destination.id);
+//            }
+//        }
 
         // ***** check if on bus OR get SOURCE time
         if (journey_source != null) {
@@ -104,7 +121,8 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
             }
         }else{
-            Log.e("### INFO", "BAD SOURCE");
+            Log.e("### INFO", "BAD SOURCE, NO ID MATCHED");
+            Toast.makeText(parent, "Error: Cannot find source stop on this journey", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -122,7 +140,8 @@ public class InfoFragment extends Fragment implements VT_Callback{
                 }
             }
         }else{
-            Log.e("### INFO", "BAD DESTINATION");
+            Log.e("### INFO", "BAD DESTINATION, NO ID MATCHED");
+            Toast.makeText(parent,"Error: Cannot find destination stop on this journey", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -131,12 +150,8 @@ public class InfoFragment extends Fragment implements VT_Callback{
             hide_stop_button();
             textView_arrives_or_departures.setText(R.string.arrived_at_destination); // "Arrived at destination" string
             vt_update_timer.cancel(); // Stop the timer since we don't need it no more
-            // Hide circle and its contents
-//            circle.setVisibility(View.INVISIBLE);
             textView_counter.setVisibility(View.INVISIBLE);
             textView_minutes_text.setVisibility(View.INVISIBLE);
-//            textView_below_circle.setText(journey_destination.name); // Only show name of destination this time. No text before.
-
 
         }else{
 
@@ -150,7 +165,6 @@ public class InfoFragment extends Fragment implements VT_Callback{
                 minutes_left = use_destination_timetable ? vt_time_diff_minutes(journey_destination.arrDate, journey_destination.arrTime) :
                         vt_time_diff_minutes(journey_destination.rtArrDate, journey_destination.rtArrTime);
 
-//                textView_below_circle.setText(parent.getString(R.string.to) + " " + journey_destination.name);
 
             }else{ // We are not on the bus yet. Show time until it arrives to our stop
                 hide_stop_button();
@@ -158,7 +172,6 @@ public class InfoFragment extends Fragment implements VT_Callback{
                 minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.depDate, journey_source.depTime) :
                         vt_time_diff_minutes(journey_source.rtDepDate, journey_source.rtDepTime);
 
-//                textView_below_circle.setText(parent.getString(R.string.from) + " " + journey_source.name + " (" + parent.getString(R.string.track) + " " + journey_source.track + ")" );
             }
 
             if (minutes_left < 0){
@@ -193,7 +206,6 @@ public class InfoFragment extends Fragment implements VT_Callback{
             return -1;
         }
     }
-
 
 
     @Override
@@ -232,16 +244,11 @@ public class InfoFragment extends Fragment implements VT_Callback{
         textView_arrives_or_departures = (TextView) view.findViewById(R.id.infoArrivesIn);
         stop_circle = (Button) view.findViewById(R.id.info_stop);
 
-        circle =  view.findViewById(R.id.infoCircleHolder);
-//        circle.setBackgroundColor(Color.parseColor(departure_from_board.bgColor) );
-//        textView_counter.setTextColor(Color.parseColor(journeyDetails.color.fgColor));
 
-//        Log.i("### COLOR", departure_from_board.bgColor);
-
-
-        // Load the arguements from newInstance
+        // Load the arguments from newInstance
         Bundle bundle = getArguments();
         source = bundle.getParcelable("source");
+
         destination = bundle.getParcelable("destination");
         departure_from_board = bundle.getParcelable("trip");
         journeyDetails = bundle.getParcelable("journey"); // Use this if no newer is stored in savedState
@@ -279,20 +286,6 @@ public class InfoFragment extends Fragment implements VT_Callback{
             }
 
 
-//            if (!onBus) { // Start WiFi-Finder and check if we are on the bus
-//                Log.i("### info_frag", "is not on bus yet as we know. Checking WiFi");
-//                wifiFinder = new WifiFinder(parent, parent.getString(R.string.buswifiname)) {
-//                    @Override
-//                    // Found an Dgw close to us. We assume we are on this bus
-//
-//                    public void receiveDgw(String dgw) {
-//                        Log.i("### info_frag", "Found Wifi, dgw: " + dgw);
-//                        current_dgw = dgw;
-//                        onBus = true;
-//                    }
-//                };
-//            }
-
             //  Create a timer that will update the status
             vt_update_timer = new Timer();
             vt_update_timer.schedule(new TimerTask() {
@@ -301,15 +294,15 @@ public class InfoFragment extends Fragment implements VT_Callback{
                     Log.i("### INFO", "TIMER EVENT, Checking Västtrafik API");
 
                     // When you need to modify a UI element, do so on the UI thread.
-                    parent.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // This code will always run on the UI thread, therefore is safe to modify UI elements.
 
-                        }
-                    });
+//                    parent.runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            // This code will always run on the UI thread, therefore is safe to modify UI elements.
+//
+//                        }
+//                    });
                     vt_client.get_journey_details(departure_from_board.journeyDetailRef);
-
                     //Check DetectBusService to see if we're on the bus
                     if(!onBus) {
                         if(DetectBusService.onBus){
@@ -334,9 +327,6 @@ public class InfoFragment extends Fragment implements VT_Callback{
     public void got_journey_details(JourneyDetail journeyDetail) {
         journeyDetails = journeyDetail;
         Log.i("### INFO", "Got new journeydetails. Updating GUI. ServerTIME: " + journeyDetail.serverdate + " " + journeyDetail.servertime );
-
-
-
         update_gui();
     }
 
@@ -355,6 +345,4 @@ public class InfoFragment extends Fragment implements VT_Callback{
         Log.i("### INFO ERR", error_msg);
     }
 
-    //For alarm functionality, add this
-    //AlarmService.setServiceAlarm(getActivity(), true);
 }
