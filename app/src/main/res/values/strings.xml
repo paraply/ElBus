@@ -20,6 +20,8 @@
     <string name="minutes">minutes</string>
     <string name="minute">minute</string>
     <string name="departures_in">departures in</string>
+    <string name="departures">departures</string>
+
     <string name="to">to</string>
     <string name="from">from</string>
     <string name="track">Track</string>
@@ -35,5 +37,11 @@
     <string name="time_never">Never</string>
     <string name="empty_charge">0 kr</string>
     <string name="gps_off_warning_text">Location services off, can\'t get a fix on your location!</string>
+    <string name="ARRIVED">ARRIVED</string>
+    <string name="NOW">NOW</string>
+
+    <string name="info_from">From:</string>
+    <string name="info_to">To:</string>
+    <string name="arrives">arrives</string>
 
 </resources>

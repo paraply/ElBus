@@ -2,12 +2,10 @@ package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,6 +43,7 @@ public class InfoFragment extends Fragment implements VT_Callback{
     private TextView textView_arrives_or_departures;
     private TextView textView_counter;
     private TextView textView_minutes_text;
+    private TextView textView_center_text;
 
     private Button stop_circle;
 
@@ -104,26 +103,28 @@ public class InfoFragment extends Fragment implements VT_Callback{
 //            }
 //        }
 
-        // ***** check if on bus OR get SOURCE time
-        if (journey_source != null) {
-            Log.i("### INFO SRC", journey_source.name + " RT ARRIVAL TIME: " + journey_source.rtArrTime + " TIMETABLE: " + journey_source.arrTime);
+        if (!onBus) {
+            // ***** check if on bus OR get SOURCE time
+            if (journey_source != null) {
+                Log.i("### INFO SRC", journey_source.name + " RT ARRIVAL TIME: " + journey_source.rtArrTime + " TIMETABLE: " + journey_source.arrTime);
 
 
-            if (journey_source.rtArrTime == null) { // If bus has arrived at source || no real time data is available
+                if (journey_source.rtArrTime == null) { // If bus has arrived at source || no real time data is available
 
-                Log.i("### INFO SRC", "NO RT, checking timetable diff: " + vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime));
-                if (vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) <= 0) { // Check timetable so we know if real time data is unavailable  if we really are on the bus
-                    onBus = true;
-                    use_source_timetable = false;
-                } else { // Real time data is unavailable for source
-                    use_source_timetable = true;
+                    Log.i("### INFO SRC", "NO RT, checking timetable diff: " + vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime));
+                    if (vt_time_diff_minutes(journey_source.arrDate, journey_source.arrTime) <= 0) { // Check timetable so we know if real time data is unavailable  if we really are on the bus
+                        onBus = true;
+                        use_source_timetable = false;
+                    } else { // Real time data is unavailable for source
+                        use_source_timetable = true;
+                    }
+
                 }
-
+            } else {
+                Log.e("### INFO", "BAD SOURCE, NO ID MATCHED");
+                Toast.makeText(parent, "Error: Cannot find source stop on this journey", Toast.LENGTH_LONG).show();
+                return;
             }
-        }else{
-            Log.e("### INFO", "BAD SOURCE, NO ID MATCHED");
-            Toast.makeText(parent, "Error: Cannot find source stop on this journey", Toast.LENGTH_LONG).show();
-            return;
         }
 
         // ***** check if arrived to our stop OR get DESTINATION time
@@ -148,10 +149,13 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
         if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
             hide_stop_button();
-            textView_arrives_or_departures.setText(R.string.arrived_at_destination); // "Arrived at destination" string
+            textView_arrives_or_departures.setVisibility(View.INVISIBLE);
             vt_update_timer.cancel(); // Stop the timer since we don't need it no more
             textView_counter.setVisibility(View.INVISIBLE);
             textView_minutes_text.setVisibility(View.INVISIBLE);
+            textView_center_text.setVisibility(View.VISIBLE);
+            textView_center_text.setText(R.string.ARRIVED);
+            textView_center_text.setTextSize(45);
 
         }else{
 
@@ -168,23 +172,50 @@ public class InfoFragment extends Fragment implements VT_Callback{
 
             }else{ // We are not on the bus yet. Show time until it arrives to our stop
                 hide_stop_button();
-                textView_arrives_or_departures.setText(R.string.departures_in); // "departures in" string
+
                 minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.depDate, journey_source.depTime) :
                         vt_time_diff_minutes(journey_source.rtDepDate, journey_source.rtDepTime);
 
             }
 
-            if (minutes_left < 0){
-                minutes_left = 0; // Don't show -1 to the user
+            show_minutes(minutes_left);
+            if (minutes_left >= 0){
+                if (!onBus){
+                    textView_arrives_or_departures.setText(R.string.departures_in); // "departures in" string
+                }else{
+                    textView_arrives_or_departures.setText(R.string.arrives_in); // "arrives in" string
+                }
+            }else{
+                if (!onBus){
+                    textView_arrives_or_departures.setText(R.string.departures); // "departures" string
+                }else{
+                    textView_arrives_or_departures.setText(R.string.arrives); // "arrives" string
+                }
             }
-            textView_counter.setText( minutes_left == -1 ? "?" :  Long.toString(minutes_left)  );
+
+        }
+    }
+
+    private void show_minutes(long minutes_left){
+        if (minutes_left < 0){
+            textView_counter.setVisibility(View.INVISIBLE);
+            textView_minutes_text.setVisibility(View.INVISIBLE);
+            textView_center_text.setVisibility(View.VISIBLE);
+            textView_center_text.setText(R.string.NOW);
+            textView_center_text.setTextSize(70);
+        }else{
+            textView_counter.setVisibility(View.VISIBLE);
+            textView_minutes_text.setVisibility(View.VISIBLE);
+            textView_center_text.setVisibility(View.INVISIBLE);
+            textView_counter.setText(Long.toString(minutes_left));
             if (minutes_left == 1){
                 textView_minutes_text.setText(R.string.minute);
             }else{
                 textView_minutes_text.setText(R.string.minutes);
             }
-
         }
+
+
     }
 
 
@@ -235,13 +266,14 @@ public class InfoFragment extends Fragment implements VT_Callback{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
         View view = inflater.inflate(R.layout.fragment_info, container, false);
 
-        TextView textview_line_short_name = (TextView) view.findViewById(R.id.infoBusName);
+        TextView textview_line_short_name = (TextView) view.findViewById(R.id.info_line_name);
 
         TextView textView_source = (TextView) view.findViewById(R.id.info_source);
         TextView textView_destination = (TextView) view.findViewById(R.id.info_destination);
         textView_counter = (TextView) view.findViewById(R.id.timeTilArrival);
         textView_minutes_text = (TextView) view.findViewById(R.id.info_minutes_text);
-        textView_arrives_or_departures = (TextView) view.findViewById(R.id.infoArrivesIn);
+        textView_arrives_or_departures = (TextView) view.findViewById(R.id.info_above_circle);
+        textView_center_text = (TextView) view.findViewById(R.id.info_center_text);
         stop_circle = (Button) view.findViewById(R.id.info_stop);
 
 
