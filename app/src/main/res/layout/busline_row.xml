@@ -4,16 +4,22 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:weightSum="1"
-    android:minHeight="90dp">
+    android:minHeight="90dp"
+    android:paddingTop="@dimen/spacing_tiny"
+    android:paddingBottom="@dimen/spacing_tiny">
 
     <TextView
         android:id="@+id/busNumberTextView"
-        android:layout_width="91dp"
-        android:layout_height="fill_parent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:gravity="center"
-        android:text="55"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="26dp" />
+        android:textSize="26dp"
+        android:background="@drawable/bus_number_circle"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginRight="@dimen/spacing_normal"
+        android:textColor="#ffffff" />
 
     <LinearLayout
         android:layout_width="match_parent"

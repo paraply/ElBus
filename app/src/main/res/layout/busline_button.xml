@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:paddingRight="10dp"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp">
+    android:paddingRight="@dimen/spacing_normal"
+    android:paddingTop="@dimen/spacing_tiny"
+    android:paddingBottom="@dimen/spacing_tiny">
 
     <TextView
         android:layout_width="wrap_content"
@@ -12,32 +12,43 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/stationTextView"
-        android:layout_gravity="center_vertical" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+        android:layout_gravity="center_vertical"
+        android:textSize="19.71sp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/timeLeftLinearLayout"
+        android:layout_toLeftOf="@+id/timeLeftLinearLayout"
+        android:maxLines="1"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:measureWithLargestChild="false"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/timeLeftLinearLayout"
+        android:layout_marginLeft="@dimen/spacing_tiny">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
-            android:id="@+id/minutesTextView"/>
+            android:id="@+id/minutesTextView"
+            android:layout_gravity="center_horizontal" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="min"
-            android:id="@+id/textView"
-            android:gravity="center" />
+            android:id="@+id/minBelowTextView"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

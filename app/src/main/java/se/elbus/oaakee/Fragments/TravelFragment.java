@@ -2,6 +2,10 @@ package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
 import android.location.Criteria;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -10,6 +14,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import se.elbus.oaakee.R;
@@ -143,7 +149,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
                 warnGpsOff();
             }
             manager.requestSingleUpdate(locationCriteria, this, Looper.myLooper());
-        }else{
+        }else {
             onLocationChanged(fastLocation);
         }
     }
@@ -195,7 +201,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         busStops = stops;
 
         for (StopLocation s : busStops){
-            mDepartureListAdapter.add(s.name);
+            mDepartureListAdapter.add(s.name.substring(0,s.name.length()-10));
         }
         mBusStops.setAdapter(mDepartureListAdapter);
     }
@@ -291,16 +297,77 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
             if (departures.size()>0) {
                 lineNumber.setText(departures.get(0).sname);
+
+                if (departures.get(0).sname.length()>3){
+                    lineNumber.setTextSize(18);
+                }
+
+                Drawable circle = lineNumber.getBackground();
+                try {
+                    circle.setColorFilter(Color.parseColor(((departures.get(0)).fgColor)), PorterDuff.Mode.MULTIPLY);
+                } catch (IllegalArgumentException e){
+                    Log.e(TAG, "Failed parsing color, set to a default colour");
+                    circle.setColorFilter(Color.parseColor("#CCCCCC"), PorterDuff.Mode.MULTIPLY);
+                }
             }
+            for (int i = 0; i < departures.size();i++){
+                Departure departure = departures.get(i);
+                String time;
+                String date;
+                boolean addDivider = true;
 
-            for (Departure departure:departures){
+                if(i==departures.size()-1){
+                    addDivider=false; //last button does not need divider
+                }
 
-                View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, departure.time);
+                if (departure.rtTime!=null){
+                    time = departure.rtTime;
+                    date = departure.rtDate;
+                } else {
+                    time = departure.time;
+                    date = departure.date;
+                }
+
+                String minutesToDeparture;
+                try {
+                    long minutes = minutesToDeparture(date, time);
+                    minutesToDeparture = ""+minutes;
+                } catch (NumberFormatException e){
+                    e.printStackTrace();
+                    minutesToDeparture = "x"; //shows "x" if something goes wrong...
+                }
+
+                View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, minutesToDeparture, addDivider);
                 setButtonClick(busLineButtonView,departure);
-
             }
 
             return customView;
+        }
+
+        /**
+         * Calculates minutes to departure from current time
+         *
+         * @param date Date in format "YYYY-MM-DD"
+         * @param time Time in format "HH-MM"
+         * @return difference from current time in minutes
+         * @throws NumberFormatException If date or time is in wrong format.
+         */
+        private long minutesToDeparture(String date, String time) throws NumberFormatException{
+            int year = Integer.valueOf(date.substring(0, 4));
+            int month = Integer.valueOf(date.substring(5, 7));
+            int day = Integer.valueOf(date.substring(8, 10));
+            int hour = Integer.valueOf(time.substring(0, 2));
+            int minute = Integer.valueOf(time.substring(3, 5));
+
+            Calendar temp = Calendar.getInstance();
+            temp.set(year, month - 1, day, hour, minute); //departure time. Month starts at 0
+
+            Calendar today = Calendar.getInstance();
+
+            long difference = temp.getTime().getTime() - today.getTime().getTime();
+            difference /= 1000*60; //time in minutes
+
+            return difference;
         }
 
         /**
@@ -312,14 +379,26 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
          * @param time
          * @return
          */
-        private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time){
+        private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time, boolean addDivider){
             View busLineButtonView = layoutInflater.inflate(R.layout.busline_button,parent,false);
 
             LinearLayout linearLayout = (LinearLayout)parentView.findViewById(R.id.busLineButtonLayout);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             linearLayout.addView(busLineButtonView, layoutParams);
 
-            setTextViewText(R.id.stationTextView,busLineButtonView,direction);
+            if(addDivider) {
+                View listDivider = layoutInflater.inflate(R.layout.line_divider, parent, false);
+                linearLayout.addView(listDivider, layoutParams);
+            }
+
+            setTextViewText(R.id.stationTextView, busLineButtonView,direction);
+
+            if (time.equals("0")){
+                time = getString(R.string.now);
+                TextView minTextView = (TextView)busLineButtonView.findViewById(R.id.minBelowTextView);
+                minTextView.setVisibility(View.GONE);
+            }
+
             setTextViewText(R.id.minutesTextView,busLineButtonView,time);
 
             return busLineButtonView;
