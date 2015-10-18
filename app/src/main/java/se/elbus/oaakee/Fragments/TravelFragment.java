@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -309,10 +310,15 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
                     circle.setColorFilter(Color.parseColor("#CCCCCC"), PorterDuff.Mode.MULTIPLY);
                 }
             }
-
-            for (Departure departure:departures){
+            for (int i = 0; i < departures.size();i++){
+                Departure departure = departures.get(i);
                 String time;
                 String date;
+                boolean addDivider = true;
+
+                if(i==departures.size()-1){
+                    addDivider=false; //last button does not need divider
+                }
 
                 if (departure.rtTime!=null){
                     time = departure.rtTime;
@@ -331,7 +337,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
                     minutesToDeparture = "x"; //shows "x" if something goes wrong...
                 }
 
-                View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, minutesToDeparture);
+                View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, minutesToDeparture, addDivider);
                 setButtonClick(busLineButtonView,departure);
             }
 
@@ -354,7 +360,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
             int minute = Integer.valueOf(time.substring(3, 5));
 
             Calendar temp = Calendar.getInstance();
-            temp.set(year,month-1,day,hour,minute); //departure time. Month starts at 0
+            temp.set(year, month - 1, day, hour, minute); //departure time. Month starts at 0
 
             Calendar today = Calendar.getInstance();
 
@@ -373,14 +379,19 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
          * @param time
          * @return
          */
-        private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time){
+        private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time, boolean addDivider){
             View busLineButtonView = layoutInflater.inflate(R.layout.busline_button,parent,false);
 
             LinearLayout linearLayout = (LinearLayout)parentView.findViewById(R.id.busLineButtonLayout);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             linearLayout.addView(busLineButtonView, layoutParams);
 
-            setTextViewText(R.id.stationTextView,busLineButtonView,direction);
+            if(addDivider) {
+                View listDivider = layoutInflater.inflate(R.layout.line_divider, parent, false);
+                linearLayout.addView(listDivider, layoutParams);
+            }
+
+            setTextViewText(R.id.stationTextView, busLineButtonView,direction);
 
             if (time.equals("0")){
                 time = getString(R.string.now);
