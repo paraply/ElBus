@@ -24,17 +24,11 @@ import se.elbus.oaakee.Fragments.TravelFragment;
 
 public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks, FragmentSwitchCallbacks {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
     private HamburgerFragment mHamburgerFragment;
 
     private ArrayList<Fragment> mFragments;
     private Stack<Fragment> mTravelFragments;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
     private CharSequence mTitle;
 
     //For notifications etc.
@@ -99,6 +93,10 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         }
     }
 
+    /**
+     * Method to call when changing the fragment in the main view without backstack.
+     * @param f is the fragment to show.
+     */
     private void changeFragment(Fragment f) {
         FragmentManager fm = getSupportFragmentManager();
 
@@ -107,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
                 .commit();
     }
 
+    /**
+     * Method to call when changing the fragment in the main view with backstack.
+     * @param f is the fragment to show.
+     */
     private void changeFragmentWithBackstack(Fragment f) {
         FragmentManager fm = getSupportFragmentManager();
 
@@ -114,21 +116,30 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
                 .replace(R.id.main_container, f)
                 .addToBackStack(null)
                 .commit();
-
-
     }
 
+    /**
+     * This is what changes the action bar when the app drawer is opened.
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mHamburgerFragment.isDrawerOpen()) {
             ActionBar actionBar = getSupportActionBar();
-            actionBar.setDisplayShowTitleEnabled(true);
+            if (actionBar != null) {
+                actionBar.setDisplayShowTitleEnabled(true);
+            }
             actionBar.setTitle(mTitle);
             return true;
         }
         return super.onCreateOptionsMenu(menu);
     }
-    
+
+    /**
+     * This is to move to the next fragment in the Travel menu.
+     * @param args
+     */
     @Override
     public void nextFragment(Bundle args) {
         Fragment newFragment;
@@ -141,6 +152,9 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         changeFragmentWithBackstack(newFragment);
     }
 
+    /**
+     * This is called to get the next fragment to show in the Travel menu.
+     */
     private Fragment getNextFragment() {
         switch (mTravelFragments.size()) {
             case 1:
