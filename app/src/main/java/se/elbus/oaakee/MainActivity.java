@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         mFragments = new ArrayList<>();
         mTravelFragments = new Stack<>();
 
-        setTitle(getString(R.string.title_section1));
+        setTitle(getString(R.string.title_section_trip));
 
         /*
           Here is where we add the fragments in order.
@@ -58,9 +58,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
         mFragments.add(mTravelFragments.peek());
         mFragments.add(new PaymentFragment());
-        mFragments.add(null); // TODO: Change this to fragment for "Konto"
         mFragments.add(new SettingsFragment());
-        mFragments.add(null); // TODO: Change this to fragment for "Historik"
 
         changeFragment(mFragments.get(0));
 
@@ -83,19 +81,13 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
     public void onNavigationDrawerItemSelected(int position) {
         switch (position + 1) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.title_section_trip);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.title_section_payment);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
-            case 4:
-                mTitle = getString(R.string.title_section4);
-                break;
-            case 5:
-                mTitle = getString(R.string.title_section5);
+                mTitle = getString(R.string.title_section_settings);
                 break;
         }
 
