@@ -431,7 +431,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
                     String toastMessage = "You clicked: " + ((TextView)view.findViewById(R.id.stationTextView)).getText();
                     savedState.putParcelable("trip", departure);
                     mFragmentSwitcher.nextFragment(savedState);
-                    Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
                 }
             });
         }
