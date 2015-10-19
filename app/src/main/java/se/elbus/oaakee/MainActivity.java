@@ -118,35 +118,17 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     }
 
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mHamburgerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            restoreActionBar();
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(mTitle);
             return true;
         }
         return super.onCreateOptionsMenu(menu);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
+    
     @Override
     public void nextFragment(Bundle args) {
         Fragment newFragment;
