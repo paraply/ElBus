@@ -75,81 +75,69 @@
             android:layout_below="@+id/info_above_circle"
             android:layout_alignBottom="@+id/infoCircleHolder" />
 
-        <TextView
-            android:id="@+id/info_txt_from"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/info_from"
-            android:paddingBottom="3dp"
-            android:paddingRight="10dp"
-            android:layout_marginTop="21dp"
-            android:gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_below="@+id/infoCircleHolder"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            />
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="@dimen/spacing_huge"
+            android:id="@+id/relativeLayout">
+            <TextView
+                android:id="@+id/info_txt_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/info_from"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:paddingRight="10dp"
+                android:layout_centerHorizontal="true" />
 
-        <TextView
-            android:id="@+id/info_source"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Chalmers"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_alignBottom="@+id/info_txt_from"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:gravity="center_vertical"
-            android:layout_toEndOf="@+id/info_txt_from"
-            android:layout_toRightOf="@+id/info_txt_from" />
-
-
-
-        <TextView
-            android:id="@+id/info_txt_to"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_to"
-            android:layout_marginTop="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_gravity="center_vertical"
-            android:layout_below="@+id/info_source"
-            android:layout_alignRight="@+id/info_txt_from"
-            android:layout_alignEnd="@+id/info_txt_from"
-            android:layout_alignLeft="@+id/info_txt_from"
-            android:layout_alignStart="@+id/info_txt_from" />
+            <TextView
+                android:id="@+id/info_source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Chalmers"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_alignBottom="@+id/info_txt_from"
+                android:layout_toEndOf="@+id/info_txt_from"
+                android:layout_toRightOf="@+id/info_txt_from"
+                android:layout_centerHorizontal="true" />
 
 
-        <TextView
-            android:id="@+id/info_destination"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Lindholmen"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_alignBottom="@+id/info_txt_to"
-            android:layout_alignLeft="@+id/info_source"
-            android:layout_alignStart="@+id/info_source"
-            android:gravity="center_vertical"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
 
-        <TextView
-            android:id="@+id/info_delayed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            tools:text="[Fordonstyp] är ?? minuter sen"
-            android:visibility="invisible"
-            android:gravity="center"
-            android:textColor="#FF0000"
-            android:layout_marginTop="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_below="@+id/info_txt_to"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            <TextView
+                android:id="@+id/info_txt_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_to"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="3dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="center_vertical"
+                android:layout_below="@+id/info_source"
+                android:layout_alignRight="@+id/info_txt_from"
+                android:layout_alignEnd="@+id/info_txt_from"
+                android:layout_alignLeft="@+id/info_txt_from"
+                android:layout_alignStart="@+id/info_txt_from"
+                android:gravity="end"
+                android:paddingRight="10dp"
+                android:layout_centerHorizontal="true" />
+
+
+            <TextView
+                android:id="@+id/info_destination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Lindholmen"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_alignBottom="@+id/info_txt_to"
+                android:layout_alignLeft="@+id/info_source"
+                android:layout_alignStart="@+id/info_source"
+                android:layout_centerHorizontal="true" /></RelativeLayout>
 
 
         <Button
@@ -158,9 +146,11 @@
             android:layout_height="80dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/info_stop_selector"
-            android:layout_above="@+id/info_source"
-            android:layout_toRightOf="@+id/timeTilArrival"
-            android:layout_toEndOf="@+id/timeTilArrival" />
+            android:layout_alignBottom="@+id/infoCircleHolder"
+            android:layout_alignRight="@+id/infoCircleHolder"
+            android:layout_marginRight="-14dp"
+            android:layout_marginBottom="-14dp"
+            />
 
         <TextView
             android:id="@+id/info_center_text"
@@ -174,6 +164,20 @@
             android:gravity="center" />
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/info_delayed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        tools:text="[Fordonstyp] är ?? minuter sen"
+        android:visibility="invisible"
+        android:gravity="center"
+        android:textColor="#FF0000"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignTop="@+id/infoCircleHolder"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp" />
 
 
 </FrameLayout>
