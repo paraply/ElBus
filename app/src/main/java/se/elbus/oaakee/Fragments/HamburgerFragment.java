@@ -54,9 +54,6 @@ public class HamburgerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    public HamburgerFragment() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -246,8 +243,6 @@ public class HamburgerFragment extends Fragment {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
