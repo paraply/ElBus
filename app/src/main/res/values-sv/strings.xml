@@ -33,8 +33,8 @@
     <string name="time_never">Aldrig</string>
     <string name="empty_charge">0 kr</string>
 
-    <string name="ARRIVED">FRAMME</string>
-    <string name="NOW">NU</string>
+    <string name="ARRIVED">framme</string>
+    <string name="NOW">nu</string>
 
     <string name="info_from">Från:</string>
     <string name="info_to">Till:</string>
