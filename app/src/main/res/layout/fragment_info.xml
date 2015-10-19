@@ -168,10 +168,10 @@
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_white"
             android:textSize="40sp"
-            android:gravity="center"
-            tools:text="NU"
-            android:layout_centerInParent="true"
-            />
+            tools:text="nu"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center" />
 
     </RelativeLayout>
 

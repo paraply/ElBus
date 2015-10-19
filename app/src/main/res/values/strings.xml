@@ -22,10 +22,9 @@
     <string name="to">to</string>
     <string name="from">from</string>
     <string name="track">Track</string>
-    <string name="now">Now</string>
+    <string name="NOW">Now</string>
 
     <string name="ARRIVED">arrived</string>
-    <string name="NOW">now</string>
 
     <string name="info_from">From:</string>
     <string name="info_to">To:</string>
