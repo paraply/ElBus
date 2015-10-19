@@ -344,7 +344,7 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
                     vt_client.get_journey_details(departure_from_board.journeyDetailRef);
 
                     //Check DetectBusService to see if we're on the bus
-                    if(!onBus) {
+//                    if(!onBus) {
                         if(DetectBusService.onBus){
                             AlarmService.setServiceAlarm(getActivity(), true, DetectBusService.dgwFound, destination.name);
                             onBus = true;
@@ -359,7 +359,7 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
                                 }
                             },0, EC_UPDATE_TIMER_INTERVAL);
                         }
-                    }
+//                    }
                 }
             }, 0, VT_UPDATE_TIMER_INTERVAL);
 
