@@ -54,7 +54,8 @@
             android:textSize="20sp"
             android:id="@+id/info_minutes_text"
             android:gravity="center"
-            android:layout_marginTop="60dp"
+            android:paddingTop="60dp"
+
             android:layout_alignLeft="@+id/infoCircleHolder"
             android:layout_alignStart="@+id/infoCircleHolder"
             android:layout_alignRight="@+id/infoCircleHolder"
@@ -63,6 +64,13 @@
             android:layout_alignBottom="@+id/infoCircleHolder" />
 
         <TextView
+
+            android:layout_alignLeft="@+id/infoCircleHolder"
+            android:layout_alignStart="@+id/infoCircleHolder"
+            android:layout_alignRight="@+id/infoCircleHolder"
+            android:layout_alignEnd="@+id/infoCircleHolder"
+            android:layout_below="@+id/info_above_circle"
+
             android:id="@+id/timeTilArrival"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,9 +78,8 @@
             android:textSize="70sp"
             tools:text="16"
             android:gravity="center"
-            android:layout_marginBottom="30dp"
+            android:paddingBottom="30dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/info_above_circle"
             android:layout_alignBottom="@+id/infoCircleHolder" />
 
         <RelativeLayout
