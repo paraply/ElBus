@@ -311,11 +311,14 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
         textview_line_short_name.setText( departure_from_board.name );
 
         if (journeyDetails.color != null){
-            textview_line_short_name.setTextColor(Color.parseColor(journeyDetails.color.fgColor));
 
-            if (!journeyDetails.color.bgColor.equals("#ffffff")){ // White looks ugly as background when fragment background is gray
-                textview_line_short_name.setBackgroundColor(Color.parseColor(journeyDetails.color.bgColor));
+            if (!journeyDetails.color.fgColor.equals("#ffffff")) { // Cannot use white on light background
+                textview_line_short_name.setTextColor(Color.parseColor(journeyDetails.color.fgColor)); // Set the foreground color of the name text
             }
+//
+//            if (!journeyDetails.color.bgColor.equals("#ffffff")){ // White looks ugly as background when fragment background is gray
+//                textview_line_short_name.setBackgroundColor(Color.parseColor(journeyDetails.color.bgColor));
+//            }
         }
 
 
