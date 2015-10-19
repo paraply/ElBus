@@ -24,17 +24,11 @@ import se.elbus.oaakee.Fragments.TravelFragment;
 
 public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks, FragmentSwitchCallbacks {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
     private HamburgerFragment mHamburgerFragment;
 
     private ArrayList<Fragment> mFragments;
     private Stack<Fragment> mTravelFragments;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
     private CharSequence mTitle;
 
     //For notifications etc.
@@ -49,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         mFragments = new ArrayList<>();
         mTravelFragments = new Stack<>();
 
-        setTitle(getString(R.string.title_section1));
+        setTitle(getString(R.string.title_section_trip));
 
         /*
           Here is where we add the fragments in order.
@@ -58,9 +52,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
         mFragments.add(mTravelFragments.peek());
         mFragments.add(new PaymentFragment());
-        mFragments.add(null); // TODO: Change this to fragment for "Konto"
         mFragments.add(new SettingsFragment());
-        mFragments.add(null); // TODO: Change this to fragment for "Historik"
 
         changeFragment(mFragments.get(0));
 
@@ -83,19 +75,13 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
     public void onNavigationDrawerItemSelected(int position) {
         switch (position + 1) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.title_section_trip);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.title_section_payment);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
-            case 4:
-                mTitle = getString(R.string.title_section4);
-                break;
-            case 5:
-                mTitle = getString(R.string.title_section5);
+                mTitle = getString(R.string.title_section_settings);
                 break;
         }
 
@@ -107,6 +93,10 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         }
     }
 
+    /**
+     * Method to call when changing the fragment in the main view without backstack.
+     * @param f is the fragment to show.
+     */
     private void changeFragment(Fragment f) {
         FragmentManager fm = getSupportFragmentManager();
 
@@ -115,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
                 .commit();
     }
 
+    /**
+     * Method to call when changing the fragment in the main view with backstack.
+     * @param f is the fragment to show.
+     */
     private void changeFragmentWithBackstack(Fragment f) {
         FragmentManager fm = getSupportFragmentManager();
 
@@ -122,39 +116,30 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
                 .replace(R.id.main_container, f)
                 .addToBackStack(null)
                 .commit();
-
-
     }
 
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
-
+    /**
+     * This is what changes the action bar when the app drawer is opened.
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mHamburgerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            restoreActionBar();
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayShowTitleEnabled(true);
+            }
+            actionBar.setTitle(mTitle);
             return true;
         }
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
+    /**
+     * This is to move to the next fragment in the Travel menu.
+     * @param args
+     */
     @Override
     public void nextFragment(Bundle args) {
         Fragment newFragment;
@@ -167,6 +152,9 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
         changeFragmentWithBackstack(newFragment);
     }
 
+    /**
+     * This is called to get the next fragment to show in the Travel menu.
+     */
     private Fragment getNextFragment() {
         switch (mTravelFragments.size()) {
             case 1:

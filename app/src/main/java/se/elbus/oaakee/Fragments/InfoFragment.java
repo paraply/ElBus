@@ -40,6 +40,7 @@ import se.elbus.oaakee.Services.DetectBusService;
 public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
 
     private boolean onBus;
+    private boolean got_bus_info_from_wifi;
     private boolean arrived_at_destination;
 
     private MainActivity parent;
@@ -344,10 +345,11 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
                     vt_client.get_journey_details(departure_from_board.journeyDetailRef);
 
                     //Check DetectBusService to see if we're on the bus
-                    if(!onBus) {
+                    if(!got_bus_info_from_wifi) {
                         if(DetectBusService.onBus){
                             AlarmService.setServiceAlarm(getActivity(), true, DetectBusService.dgwFound, destination.name);
                             onBus = true;
+                            got_bus_info_from_wifi = true;
                             ec_update_timer = new Timer();
                             ec_update_timer.schedule(new TimerTask() {
                                 @Override

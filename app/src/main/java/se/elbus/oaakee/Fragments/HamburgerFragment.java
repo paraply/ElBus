@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import se.elbus.oaakee.R;
 
@@ -107,11 +106,9 @@ public class HamburgerFragment extends Fragment {
 
     private String[] getHamburgerChoices() {
         return new String[]{
-                getString(R.string.title_section1),
-                getString(R.string.title_section2),
-                getString(R.string.title_section3),
-                getString(R.string.title_section4),
-                getString(R.string.title_section5)
+                getString(R.string.title_section_trip),
+                getString(R.string.title_section_payment),
+                getString(R.string.title_section_settings),
         };
     }
 
