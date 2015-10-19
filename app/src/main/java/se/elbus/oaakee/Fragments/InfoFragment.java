@@ -149,8 +149,12 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
         if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
             hide_stop_button();
             textView_above_circle.setVisibility(View.INVISIBLE);
-            vt_update_timer.cancel(); // Stop the timer since we don't need it no more
-            ec_update_timer.cancel();
+            if (vt_update_timer != null){
+                vt_update_timer.cancel(); // Stop the timer since we don't need it no more
+            }
+            if (ec_update_timer != null){
+                ec_update_timer.cancel();
+            }
             textView_counter.setVisibility(View.INVISIBLE);
             textView_minutes_text.setVisibility(View.INVISIBLE);
             textView_center_text.setVisibility(View.VISIBLE);
@@ -257,10 +261,14 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
 
     @Override
     public void onDestroy(){ // Kill the timer when closing fragment
-        vt_update_timer.cancel();
-        vt_update_timer.purge();
-        ec_update_timer.cancel();
-        ec_update_timer.purge();
+        if (vt_update_timer != null){
+            vt_update_timer.cancel();
+            vt_update_timer.purge();
+        }
+        if (ec_update_timer != null){
+            ec_update_timer.cancel();
+            ec_update_timer.purge();
+        }
         super.onDestroy();
     }
 
