@@ -19,6 +19,7 @@
     <string name="minutes">minuter</string>
     <string name="minute">minut</string>
     <string name="departures_in">avgår om</string>
+    <string name="departures">avgår</string>
     <string name="to">till</string>
     <string name="from">från</string>
     <string name="track">Läge</string>
@@ -33,5 +34,11 @@
     <string name="press_for_ticket">tryck för att stämpla</string>
     <string name="time_never">Aldrig</string>
     <string name="empty_charge">0 kr</string>
+
+    <string name="ARRIVED">FRAMME</string>
+    <string name="NOW">NU</string>
+
+    <string name="info_from">Från:</string>
+    <string name="info_to">Till:</string>
 
 </resources>

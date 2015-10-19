@@ -12,14 +12,14 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin">
 
         <TextView
-            android:id="@+id/infoArrivesIn"
+            android:id="@+id/info_above_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/infoCircleHolder"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
-            android:text="arrives/departures"
+            tools:text="arrives/departures"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <View
@@ -38,28 +38,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:id="@+id/infoBusName"
-            android:layout_above="@+id/infoArrivesIn"
+            android:id="@+id/info_line_name"
+            android:layout_above="@+id/info_above_circle"
             android:layout_centerHorizontal="true"
-            android:text="name"
+            tools:text="name"
             android:textSize="32sp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="32dp"
-            android:id="@+id/linearLayout2">
 
-        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="min"
+            tools:text="min"
             android:textColor="@color/text_color_white"
             android:textSize="20sp"
             android:id="@+id/info_minutes_text"
@@ -69,7 +59,7 @@
             android:layout_alignStart="@+id/infoCircleHolder"
             android:layout_alignRight="@+id/infoCircleHolder"
             android:layout_alignEnd="@+id/infoCircleHolder"
-            android:layout_below="@+id/infoArrivesIn"
+            android:layout_below="@+id/info_above_circle"
             android:layout_alignBottom="@+id/infoCircleHolder" />
 
         <TextView
@@ -82,7 +72,7 @@
             android:gravity="center"
             android:layout_marginBottom="30dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/infoArrivesIn"
+            android:layout_below="@+id/info_above_circle"
             android:layout_alignBottom="@+id/infoCircleHolder" />
 
         <TextView
@@ -90,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="From:"
+            android:text="@string/info_from"
             android:paddingBottom="3dp"
             android:paddingRight="10dp"
             android:layout_marginTop="21dp"
@@ -99,13 +89,13 @@
             android:layout_below="@+id/infoCircleHolder"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-  />
+            />
 
         <TextView
             android:id="@+id/info_source"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chalmers"
+            tools:text="Chalmers"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_alignBottom="@+id/info_txt_from"
             android:layout_alignParentRight="true"
@@ -120,7 +110,7 @@
             android:id="@+id/info_txt_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="To:"
+            android:text="@string/info_to"
             android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_gravity="center_vertical"
@@ -135,7 +125,7 @@
             android:id="@+id/info_destination"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lindholmen"
+            tools:text="Lindholmen"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_alignBottom="@+id/info_txt_to"
             android:layout_alignLeft="@+id/info_source"
@@ -149,7 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="[Fordonstyp] är ?? minuter sen"
+            tools:text="[Fordonstyp] är ?? minuter sen"
             android:visibility="invisible"
             android:gravity="center"
             android:textColor="#FF0000"
@@ -171,6 +161,17 @@
             android:layout_above="@+id/info_source"
             android:layout_toRightOf="@+id/timeTilArrival"
             android:layout_toEndOf="@+id/timeTilArrival" />
+
+        <TextView
+            android:id="@+id/info_center_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_white"
+            android:textSize="40sp"
+            android:gravity="center"
+            tools:text="NU"
+            android:layout_centerInParent="true"
+            />
 
     </RelativeLayout>
 
