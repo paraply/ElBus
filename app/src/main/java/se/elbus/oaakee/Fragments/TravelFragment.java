@@ -201,7 +201,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         busStops = stops;
 
         for (StopLocation s : busStops){
-            mDepartureListAdapter.add(s.name.substring(0,s.name.length()-10));
+            mDepartureListAdapter.add(s.getNameWithoutCity());
         }
         mBusStops.setAdapter(mDepartureListAdapter);
     }
@@ -303,8 +303,13 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
                 }
 
                 Drawable circle = lineNumber.getBackground();
+
                 try {
-                    circle.setColorFilter(Color.parseColor(((departures.get(0)).fgColor)), PorterDuff.Mode.MULTIPLY);
+                    String backgroundColor = (departures.get(0)).fgColor;
+                    if (backgroundColor.equals("#ffffff")){
+                        backgroundColor = "#DBDBDB";
+                    }
+                    circle.setColorFilter(Color.parseColor(backgroundColor), PorterDuff.Mode.MULTIPLY);
                 } catch (IllegalArgumentException e){
                     Log.e(TAG, "Failed parsing color, set to a default colour");
                     circle.setColorFilter(Color.parseColor("#CCCCCC"), PorterDuff.Mode.MULTIPLY);

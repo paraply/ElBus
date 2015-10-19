@@ -109,8 +109,14 @@ public class DestinationFragment extends Fragment implements VT_Callback {
 
         vtClient.get_journey_details(mDeparture.journeyDetailRef);
 
-        mTransportLineName.setTextColor(Color.parseColor(mDeparture.bgColor));
-        mTransportLineName.getBackground().setColorFilter(Color.parseColor(mDeparture.fgColor), PorterDuff.Mode.MULTIPLY);
+        String white = "#ffffff";
+        String backgroundColor = mDeparture.fgColor;
+        mTransportLineName.setTextColor(Color.parseColor(white));
+        Log.i("DEST","Color white: " + mDeparture.fgColor + ", " + mDeparture.sname);
+        if (mDeparture.fgColor.equals(white)){
+            backgroundColor = "#DBDBDB"; //grey if background white
+        }
+        mTransportLineName.getBackground().setColorFilter(Color.parseColor(backgroundColor), PorterDuff.Mode.MULTIPLY);
 
         mTransportLineDirection.requestFocus(); // Make the line direction scroll if necessary
 
