@@ -9,9 +9,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import se.elbus.oaakee.Fragments.DestinationFragment;
@@ -168,7 +168,12 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     @Override
     public void onBackPressed() {
-        mTravelFragments.pop();
-        super.onBackPressed();
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        boolean inTravel = mTravelFragments.contains(currentFragment);
+        if (inTravel && getSupportFragmentManager().popBackStackImmediate()) {
+            mTravelFragments.pop();
+            return;
+        }
+        supportFinishAfterTransition();
     }
 }

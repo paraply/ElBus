@@ -52,11 +52,11 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     private VT_Client vtClient;
     private static final String TAG = "Travel";
 
-    private final long LATEST_LOCATION_TIME_MILLIS = 4 * 60 * 1000;
+    private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
     private final int LOCATION_ACCURACY = Criteria.ACCURACY_LOW; // "For horizontal and vertical position this corresponds roughly to an accuracy of greater than 500 meters."
 
-    double mSimulatorLongitude = 11.970462;
-    double mSimulatorLatitude = 57.710259;
+    double mSimulatorLongitude = 11.972305;
+    double mSimulatorLatitude = 57.707792;
 
     private List<StopLocation> busStops; //With removed duplicates
 
@@ -69,7 +69,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         super.onCreate(savedInstanceState);
         savedState = new Bundle();
         vtClient = new VT_Client(this);
-
     }
 
     @Override
