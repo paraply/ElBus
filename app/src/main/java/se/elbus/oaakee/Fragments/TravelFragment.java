@@ -422,7 +422,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
             view.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    String toastMessage = "You clicked: " + ((TextView)view.findViewById(R.id.stationTextView)).getText();
                     savedState.putParcelable("trip", departure);
                     mFragmentSwitcher.nextFragment(savedState);
                 }
