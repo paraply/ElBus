@@ -48,6 +48,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
     private ListView mDeparturesList;
     private ArrayAdapter<String> mDepartureListAdapter;
+    private List<List<Departure>> departuresSorted;
 
     private VT_Client vtClient;
     private static final String TAG = "Travel";
@@ -160,12 +161,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -208,7 +203,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     @Override
     public void got_departure_board(DepartureBoard board) {
         List<Departure> allDepartures = board.departure;
-        List<List<Departure>> departuresSorted = new ArrayList<>();
+        departuresSorted = new ArrayList<>();
 
         List<String> shortName = new ArrayList<>(); //list of unique short name sorted by departure time
 
