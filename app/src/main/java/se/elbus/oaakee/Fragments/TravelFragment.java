@@ -49,6 +49,9 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     private ListView mDeparturesList;
     private ArrayAdapter<String> mDepartureListAdapter;
 
+    private List<List<Departure>> departuresSorted;
+    private ArrayAdapter<List<Departure>> mDeparturesAdapter;
+
     private VT_Client vtClient;
     private static final String TAG = "Travel";
 
@@ -68,6 +71,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         savedState = new Bundle();
+        departuresSorted = new ArrayList<>();
         vtClient = new VT_Client(this);
     }
 
@@ -92,6 +96,8 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         mDepartureListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mDeparturesList = (ListView) v.findViewById(R.id.departuresListView);
+        mDeparturesAdapter = new DeparturesAdapter(getContext(), departuresSorted);
+        mDeparturesList.setAdapter(mDeparturesAdapter);
 
         return v;
     }
@@ -160,12 +166,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -208,7 +208,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     @Override
     public void got_departure_board(DepartureBoard board) {
         List<Departure> allDepartures = board.departure;
-        List<List<Departure>> departuresSorted = new ArrayList<>();
+        departuresSorted.clear();
 
         List<String> shortName = new ArrayList<>(); //list of unique short name sorted by departure time
 
@@ -240,8 +240,8 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
             }
             departuresSorted.add(departures); //Adds list of departures for one single bus line number
         }
-        ArrayAdapter<List<Departure>> adapter = new DeparturesAdapter(getContext(), departuresSorted);
-        mDeparturesList.setAdapter(adapter);
+        
+        mDeparturesAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -427,7 +427,6 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
             view.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    String toastMessage = "You clicked: " + ((TextView)view.findViewById(R.id.stationTextView)).getText();
                     savedState.putParcelable("trip", departure);
                     mFragmentSwitcher.nextFragment(savedState);
                 }
