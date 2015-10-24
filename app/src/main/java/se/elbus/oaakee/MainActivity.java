@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 import se.elbus.oaakee.Fragments.DestinationFragment;
@@ -95,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     /**
      * Method to call when changing the fragment in the main view without backstack.
+     *
      * @param f is the fragment to show.
      */
     private void changeFragment(Fragment f) {
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     /**
      * Method to call when changing the fragment in the main view with backstack.
+     *
      * @param f is the fragment to show.
      */
     private void changeFragmentWithBackstack(Fragment f) {
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     /**
      * This is what changes the action bar when the app drawer is opened.
+     *
      * @param menu
      * @return
      */
@@ -138,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     /**
      * This is to move to the next fragment in the Travel menu.
+     *
      * @param args
      */
     @Override

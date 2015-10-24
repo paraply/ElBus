@@ -10,8 +10,18 @@ import org.simpleframework.xml.Attribute;
  */
 public class JourneyId implements Parcelable {
 
-    public JourneyId(){}
-    
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<JourneyId> CREATOR = new Parcelable.Creator<JourneyId>() {
+        @Override
+        public JourneyId createFromParcel(Parcel in) {
+            return new JourneyId(in);
+        }
+
+        @Override
+        public JourneyId[] newArray(int size) {
+            return new JourneyId[size];
+        }
+    };
     @Attribute(name = "id")
     public String id;
 
@@ -20,6 +30,9 @@ public class JourneyId implements Parcelable {
 
     @Attribute(name = "routeIdxTo")
     public String routeIdxTo;
+
+    public JourneyId() {
+    }
 
     protected JourneyId(Parcel in) {
         id = in.readString();
@@ -38,17 +51,4 @@ public class JourneyId implements Parcelable {
         dest.writeString(routeIdxFrom);
         dest.writeString(routeIdxTo);
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<JourneyId> CREATOR = new Parcelable.Creator<JourneyId>() {
-        @Override
-        public JourneyId createFromParcel(Parcel in) {
-            return new JourneyId(in);
-        }
-
-        @Override
-        public JourneyId[] newArray(int size) {
-            return new JourneyId[size];
-        }
-    };
 }

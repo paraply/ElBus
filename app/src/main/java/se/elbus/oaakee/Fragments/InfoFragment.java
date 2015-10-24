@@ -37,27 +37,22 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 import se.elbus.oaakee.Services.AlarmService;
 import se.elbus.oaakee.Services.DetectBusService;
 
-public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
+public class InfoFragment extends Fragment implements VT_Callback, EC_Callback {
 
+    private final int VT_UPDATE_TIMER_INTERVAL = 20000; // Update Västtrafik every 20000 ms
+    private final int EC_UPDATE_TIMER_INTERVAL = 10000; // Update Electricity every 10000 ms
     private boolean onBus;
     private boolean got_bus_info_from_wifi;
     private boolean arrived_at_destination;
-
     private MainActivity parent;
     private VT_Client vt_client;
     private EC_Client ec_client;
-
     private TextView textView_above_circle;
     private TextView textView_counter;
     private TextView textView_minutes_text;
     private TextView textView_center_text;
-
     private Button stop_circle;
-
-
-    private final int VT_UPDATE_TIMER_INTERVAL = 20000; // Update Västtrafik every 20000 ms
     private Timer vt_update_timer;
-    private final int EC_UPDATE_TIMER_INTERVAL = 10000; // Update Electricity every 10000 ms
     private Timer ec_update_timer;
 
 
@@ -69,34 +64,34 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
     private boolean use_source_timetable, use_destination_timetable;
 
 
-    private void hide_stop_button(){
+    private void hide_stop_button() {
         stop_circle.setVisibility(View.INVISIBLE);
     }
 
-    private void show_stop_button(){
+    private void show_stop_button() {
         stop_circle.setVisibility(View.VISIBLE);
     }
 
-    private void stop_button_state(boolean pressed){
+    private void stop_button_state(boolean pressed) {
         stop_circle.setPressed(pressed);
     }
 
     // Update the GUI to show TIME and STOP information
-    private void update_gui(){
+    private void update_gui() {
         Stop journey_source = null, journey_destination = null;
 
-        if (journeyDetails == null){
+        if (journeyDetails == null) {
             Toast.makeText(parent, "Error: No details of this journey", Toast.LENGTH_LONG).show();
             return;
         }
 
         // Compare names from source stop and destination stop
         // with the results from journeyDetails
-        for (Stop s : journeyDetails.stop){
-            if (s.name.equals(source.name)){ // Found a match with source stop and a journey details stop
+        for (Stop s : journeyDetails.stop) {
+            if (s.name.equals(source.name)) { // Found a match with source stop and a journey details stop
                 journey_source = s;
                 Log.i("### INFO", "Found src match stop");
-            }else if (s.name.equals(destination.name)){ // Found a match with destination stop and a journey details stop
+            } else if (s.name.equals(destination.name)) { // Found a match with destination stop and a journey details stop
                 journey_destination = s;
                 Log.i("### INFO", "Found dst match stop");
             }
@@ -140,20 +135,20 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
                     use_destination_timetable = true;
                 }
             }
-        }else{
+        } else {
             Log.e("### INFO", "BAD DESTINATION, NO STOP NAME MATCHED");
-            Toast.makeText(parent,"Error: Cannot find destination stop on this journey", Toast.LENGTH_LONG).show();
+            Toast.makeText(parent, "Error: Cannot find destination stop on this journey", Toast.LENGTH_LONG).show();
             return;
         }
 
 
-        if (arrived_at_destination){ // We are at the destination. Update the GUI to show the user.
+        if (arrived_at_destination) { // We are at the destination. Update the GUI to show the user.
             hide_stop_button();
             textView_above_circle.setVisibility(View.INVISIBLE);
-            if (vt_update_timer != null){
+            if (vt_update_timer != null) {
                 vt_update_timer.cancel(); // Stop the timer since we don't need it no more
             }
-            if (ec_update_timer != null){
+            if (ec_update_timer != null) {
                 ec_update_timer.cancel();
             }
             textView_counter.setVisibility(View.INVISIBLE);
@@ -162,12 +157,12 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
             textView_center_text.setText(R.string.ARRIVED);
             textView_center_text.setTextSize(45);
 
-        }else{
+        } else {
 
 
             long minutes_left;
 
-            if (onBus){ // We are on the bus. Show time until we arrive at the destination
+            if (onBus) { // We are on the bus. Show time until we arrive at the destination
                 show_stop_button();
                 textView_above_circle.setText(R.string.arrive_at_destination); // "Arrive at destination" string
 
@@ -175,10 +170,10 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
                         vt_time_diff_minutes(journey_destination.rtArrDate, journey_destination.rtArrTime);
 
 
-            }else{ // We are not on the bus yet. Show time until it arrives to our stop
+            } else { // We are not on the bus yet. Show time until it arrives to our stop
                 hide_stop_button();
 
-                minutes_left = use_source_timetable ?  vt_time_diff_minutes(journey_source.depDate, journey_source.depTime) :
+                minutes_left = use_source_timetable ? vt_time_diff_minutes(journey_source.depDate, journey_source.depTime) :
                         vt_time_diff_minutes(journey_source.rtDepDate, journey_source.rtDepTime);
 
             }
@@ -189,11 +184,11 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
     }
 
     // Show the counter e.g "1 minute" or "2 minutes" and "departures" or "arrives" above the circle
-    private void show_minutes(long minutes_left){
-        if (minutes_left <= 0){
-            if (!onBus){
+    private void show_minutes(long minutes_left) {
+        if (minutes_left <= 0) {
+            if (!onBus) {
                 textView_above_circle.setText(R.string.departures); // "departures" string
-            }else{
+            } else {
                 textView_above_circle.setText(R.string.arrives); // "arrives" string
             }
             textView_counter.setVisibility(View.INVISIBLE);
@@ -201,19 +196,19 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
             textView_center_text.setVisibility(View.VISIBLE);
             textView_center_text.setText(R.string.NOW);
             textView_center_text.setTextSize(70);
-        }else{
-            if (!onBus){
+        } else {
+            if (!onBus) {
                 textView_above_circle.setText(R.string.departures_in); // "departures in" string
-            }else{
+            } else {
                 textView_above_circle.setText(R.string.arrives_in); // "arrives in" string
             }
             textView_counter.setVisibility(View.VISIBLE);
             textView_minutes_text.setVisibility(View.VISIBLE);
             textView_center_text.setVisibility(View.INVISIBLE);
             textView_counter.setText(Long.toString(minutes_left));
-            if (minutes_left == 1){
+            if (minutes_left == 1) {
                 textView_minutes_text.setText(R.string.minute);
-            }else{
+            } else {
                 textView_minutes_text.setText(R.string.minutes);
             }
         }
@@ -224,14 +219,14 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
 
     // Helper method to show de difference between a [date , time] compared to Vasttrafik server [date , time]
     // We don't want to rely on that the local clock matches the servers, therefore we use the data that is always supplied from Vasttrafik
-    private long vt_time_diff_minutes(String date_1, String time_1){
+    private long vt_time_diff_minutes(String date_1, String time_1) {
         SimpleDateFormat input_format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         try {
             Date input_date = input_format.parse(date_1 + " " + time_1);
             Date vasttrafik_server_date = input_format.parse(journeyDetails.serverdate + " " + journeyDetails.servertime);
 
-            long diffInMilliseconds = input_date.getTime() -  vasttrafik_server_date.getTime();
+            long diffInMilliseconds = input_date.getTime() - vasttrafik_server_date.getTime();
             long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMilliseconds);
 
             return diffInMinutes;
@@ -242,9 +237,8 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
     }
 
 
-
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){ // Save the state in case the fragment gets destroyed
+    public void onSaveInstanceState(Bundle savedInstanceState) { // Save the state in case the fragment gets destroyed
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putBoolean("onBus", onBus);
         savedInstanceState.putBoolean("arrived_at_destination", arrived_at_destination);
@@ -254,18 +248,18 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
     // Called when a fragment is first attached to its context
     // Used to get reference to parent activity
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
         parent = (MainActivity) getActivity();
     }
 
     @Override
-    public void onDestroy(){ // Kill the timer when closing fragment
-        if (vt_update_timer != null){
+    public void onDestroy() { // Kill the timer when closing fragment
+        if (vt_update_timer != null) {
             vt_update_timer.cancel();
             vt_update_timer.purge();
         }
-        if (ec_update_timer != null){
+        if (ec_update_timer != null) {
             ec_update_timer.cancel();
             ec_update_timer.purge();
         }
@@ -306,9 +300,9 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
             journeyDetails = savedState.getParcelable("journeyDetails_updated");
         }
 
-        textview_line_short_name.setText( departure_from_board.name );
+        textview_line_short_name.setText(departure_from_board.name);
 
-        if (journeyDetails.color != null){
+        if (journeyDetails.color != null) {
 
             if (!journeyDetails.color.fgColor.equals("#ffffff")) { // Cannot use white on light background
                 textview_line_short_name.setTextColor(Color.parseColor(journeyDetails.color.fgColor)); // Set the foreground color of the name text
@@ -328,9 +322,9 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
 
         if (!arrived_at_destination) { // has not arrived at destination yet.
 
-            if (onBus){
+            if (onBus) {
                 show_stop_button();
-            }else{
+            } else {
                 hide_stop_button();
             }
 
@@ -345,8 +339,8 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
                     vt_client.get_journey_details(departure_from_board.journeyDetailRef);
 
                     //Check DetectBusService to see if we're on the bus
-                    if(!got_bus_info_from_wifi) {
-                        if(DetectBusService.onBus){
+                    if (!got_bus_info_from_wifi) {
+                        if (DetectBusService.onBus) {
                             AlarmService.setServiceAlarm(getActivity(), true, DetectBusService.dgwFound, destination.name);
                             onBus = true;
                             got_bus_info_from_wifi = true;
@@ -359,13 +353,13 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
                                     hundred_seconds_old.add(Calendar.SECOND, -20);
                                     ec_client.get_bus_resource(DetectBusService.dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
                                 }
-                            },0, EC_UPDATE_TIMER_INTERVAL);
+                            }, 0, EC_UPDATE_TIMER_INTERVAL);
                         }
                     }
                 }
             }, 0, VT_UPDATE_TIMER_INTERVAL);
 
-        }else{
+        } else {
             Log.i("### INFO", "has arrived at destination");
 
         }
@@ -378,32 +372,37 @@ public class InfoFragment extends Fragment implements VT_Callback,EC_Callback{
     @Override
     public void got_journey_details(JourneyDetail journeyDetail) {
         journeyDetails = journeyDetail;
-        Log.i("### INFO", "Got new journeydetails. Updating GUI. ServerTIME: " + journeyDetail.serverdate + " " + journeyDetail.servertime );
+        Log.i("### INFO", "Got new journeydetails. Updating GUI. ServerTIME: " + journeyDetail.serverdate + " " + journeyDetail.servertime);
         update_gui();
     }
 
     @Override
-    public void got_nearby_stops(LocationList locationList) {}
+    public void got_nearby_stops(LocationList locationList) {
+    }
 
     @Override
-    public void got_departure_board(DepartureBoard departureBoard) {}
+    public void got_departure_board(DepartureBoard departureBoard) {
+    }
 
     @Override
-    public void got_sensor_data(List<Bus_info> bus_info) {}
+    public void got_sensor_data(List<Bus_info> bus_info) {
+    }
 
     @Override
-    public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {}
+    public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {
+    }
 
     @Override
     public void got_reource_data(List<Bus_info> bus_info) {
         if (bus_info == null) return;
-        Bus_info b = bus_info.get(bus_info.size()-1);
+        Bus_info b = bus_info.get(bus_info.size() - 1);
         Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         stop_button_state(b.value.equals("true"));
     }
 
     @Override
-    public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {}
+    public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
+    }
 
     @Override
     public void got_error(String during_method, String error_msg) {

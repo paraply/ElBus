@@ -41,7 +41,7 @@ public class DetectBusService extends IntentService {
 
     public static void setServiceAlarm(Context context, boolean isOn, String s, String d, String t, String l) {
         //Check if nothing differs from last time setServiceAlarm was called
-        if(s.equals(source) && d.equals(destination) && t.equals(time) && l.equals(line)){
+        if (s.equals(source) && d.equals(destination) && t.equals(time) && l.equals(line)) {
             return;
         }
 
@@ -52,9 +52,9 @@ public class DetectBusService extends IntentService {
         Intent i = AlarmService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
 
-        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        if(isOn) {
+        if (isOn) {
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), POLL_INTERVAL, pi);
         } else {
             alarmManager.cancel(pi);
@@ -81,8 +81,8 @@ public class DetectBusService extends IntentService {
                  *  This should probably be done somewhere else.
                  *  Should also check if bus we think we're on matches the choice made.
                  *  Does not matter for prototype since we only target line 55.
-                */
-                if(!onBus) {
+                 */
+                if (!onBus) {
                     AlarmService.setServiceAlarm(DetectBusService.this, true, dgwFound, destination);
                     onBus = true;
                 }

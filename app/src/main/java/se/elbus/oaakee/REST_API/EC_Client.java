@@ -2,7 +2,6 @@ package se.elbus.oaakee.REST_API;
 
 import android.util.Base64;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -21,11 +20,11 @@ import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
 public class EC_Client {
     private static final String EC_API_URL = "https://ece01.ericsson.net:4443/";
     private final String CREDENTIALS = "grp31:C7CVFDHO48";
- private final String CREDENTIALS_BASE64 = "Basic " + Base64.encodeToString(CREDENTIALS.getBytes(), Base64.NO_WRAP);
+    private final String CREDENTIALS_BASE64 = "Basic " + Base64.encodeToString(CREDENTIALS.getBytes(), Base64.NO_WRAP);
     private EC_Callback ec_callback;
     private EC_API ec_api;
 
-    public EC_Client(EC_Callback ec_callback){
+    public EC_Client(EC_Callback ec_callback) {
         this.ec_callback = ec_callback;
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(EC_API_URL)
@@ -55,7 +54,7 @@ public class EC_Client {
                     ec_callback.got_error("get_bus_sensor", error.getMessage());
                 }
             });
-        }else{
+        } else {
             ec_api.get_all_buses_sensors(CREDENTIALS_BASE64, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), sensor, new Callback<List<Bus_info>>() {
                 @Override
                 public void success(List<Bus_info> bus_infos, Response response) {
@@ -75,7 +74,7 @@ public class EC_Client {
     // Example resources:
     // Ericsson$Latitude_Value       - returns the Latitude the bus has travelled through between start and end time
     // Ericsson$Stop_Pressed_Value
-    public void get_bus_resource(String bus_ID_or_empty, Date start_time, Date end_time, String resource){
+    public void get_bus_resource(String bus_ID_or_empty, Date start_time, Date end_time, String resource) {
         if (!bus_ID_or_empty.isEmpty()) {
             ec_api.get_bus_resource(CREDENTIALS_BASE64, bus_ID_or_empty, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), resource, new Callback<List<Bus_info>>() {
                 @Override
@@ -88,7 +87,7 @@ public class EC_Client {
                     ec_callback.got_error("get_bus_resource", error.getMessage());
                 }
             });
-        }else{
+        } else {
             ec_api.get_all_buses_resources(CREDENTIALS_BASE64, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), resource, new Callback<List<Bus_info>>() {
                 @Override
                 public void success(List<Bus_info> bus_infos, Response response) {

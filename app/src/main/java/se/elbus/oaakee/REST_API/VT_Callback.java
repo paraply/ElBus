@@ -10,7 +10,9 @@ import se.elbus.oaakee.REST_API.VT_Model.LocationList;
  */
 public interface VT_Callback {
     void got_journey_details(JourneyDetail journeyDetail);
+
     void got_nearby_stops(LocationList locationList);
+
     void got_departure_board(DepartureBoard departureBoard);
 
     void got_error(String during_method, String error_msg);

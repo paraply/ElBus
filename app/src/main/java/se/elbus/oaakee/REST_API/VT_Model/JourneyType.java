@@ -8,10 +8,20 @@ import org.simpleframework.xml.Attribute;
 /**
  * Created by paraply on 2015-10-04.
  */
-public class JourneyType implements Parcelable{
+public class JourneyType implements Parcelable {
 
-    public JourneyType(){}
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<JourneyType> CREATOR = new Parcelable.Creator<JourneyType>() {
+        @Override
+        public JourneyType createFromParcel(Parcel in) {
+            return new JourneyType(in);
+        }
 
+        @Override
+        public JourneyType[] newArray(int size) {
+            return new JourneyType[size];
+        }
+    };
     @Attribute(name = "type")
     public String type;
 
@@ -20,6 +30,9 @@ public class JourneyType implements Parcelable{
 
     @Attribute(name = "routeIdxTo")
     public String routeIdxTo;
+
+    public JourneyType() {
+    }
 
     protected JourneyType(Parcel in) {
         type = in.readString();
@@ -38,17 +51,4 @@ public class JourneyType implements Parcelable{
         dest.writeString(routeIdxFrom);
         dest.writeString(routeIdxTo);
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<JourneyType> CREATOR = new Parcelable.Creator<JourneyType>() {
-        @Override
-        public JourneyType createFromParcel(Parcel in) {
-            return new JourneyType(in);
-        }
-
-        @Override
-        public JourneyType[] newArray(int size) {
-            return new JourneyType[size];
-        }
-    };
 }

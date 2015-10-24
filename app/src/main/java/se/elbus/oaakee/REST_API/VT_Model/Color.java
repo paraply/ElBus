@@ -9,17 +9,30 @@ import org.simpleframework.xml.Attribute;
 /**
  * Created by paraply on 2015-10-04.
  */
-public class Color implements Parcelable{
+public class Color implements Parcelable {
 
-    public Color(){}
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Color> CREATOR = new Parcelable.Creator<Color>() {
+        @Override
+        public Color createFromParcel(Parcel in) {
+            return new Color(in);
+        }
 
-    @Attribute(name="fgColor", required = false) // Foreground color
+        @Override
+        public Color[] newArray(int size) {
+            return new Color[size];
+        }
+    };
+    @Attribute(name = "fgColor", required = false) // Foreground color
     public String fgColor;
-    @Attribute (name="bgColor", required = false) // Background color
+    @Attribute(name = "bgColor", required = false) // Background color
     public String bgColor;
-    @Attribute (name="stroke", required = false) // Stroke true or false
+    @Attribute(name = "stroke", required = false) // Stroke true or false
     public String stroke;
 
+
+    public Color() {
+    }
 
     protected Color(Parcel in) {
         fgColor = in.readString();
@@ -38,18 +51,5 @@ public class Color implements Parcelable{
         dest.writeString(bgColor);
         dest.writeString(stroke);
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Color> CREATOR = new Parcelable.Creator<Color>() {
-        @Override
-        public Color createFromParcel(Parcel in) {
-            return new Color(in);
-        }
-
-        @Override
-        public Color[] newArray(int size) {
-            return new Color[size];
-        }
-    };
 
 }

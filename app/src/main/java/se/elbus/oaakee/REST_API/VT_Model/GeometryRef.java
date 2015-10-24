@@ -10,10 +10,23 @@ import org.simpleframework.xml.Attribute;
  */
 public class GeometryRef implements Parcelable {
 
-    public GeometryRef(){}
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<GeometryRef> CREATOR = new Parcelable.Creator<GeometryRef>() {
+        @Override
+        public GeometryRef createFromParcel(Parcel in) {
+            return new GeometryRef(in);
+        }
 
+        @Override
+        public GeometryRef[] newArray(int size) {
+            return new GeometryRef[size];
+        }
+    };
     @Attribute()  // URL to geometry information
     public String ref;
+
+    public GeometryRef() {
+    }
 
     protected GeometryRef(Parcel in) {
         ref = in.readString();
@@ -28,17 +41,4 @@ public class GeometryRef implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(ref);
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<GeometryRef> CREATOR = new Parcelable.Creator<GeometryRef>() {
-        @Override
-        public GeometryRef createFromParcel(Parcel in) {
-            return new GeometryRef(in);
-        }
-
-        @Override
-        public GeometryRef[] newArray(int size) {
-            return new GeometryRef[size];
-        }
-    };
 }

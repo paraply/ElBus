@@ -8,15 +8,28 @@ import org.simpleframework.xml.Attribute;
 /**
  * Created by paraply on 2015-10-04.
  */
-public class Direction implements Parcelable{
+public class Direction implements Parcelable {
 
-    public Direction(){}
-    
-    @Attribute(name="routeIdxFrom") //Start of validity on total route
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Direction> CREATOR = new Parcelable.Creator<Direction>() {
+        @Override
+        public Direction createFromParcel(Parcel in) {
+            return new Direction(in);
+        }
+
+        @Override
+        public Direction[] newArray(int size) {
+            return new Direction[size];
+        }
+    };
+    @Attribute(name = "routeIdxFrom") //Start of validity on total route
     public String routeIdxFrom;
 
-    @Attribute (name="routeIdxTo") // End of validity on total route
+    @Attribute(name = "routeIdxTo") // End of validity on total route
     public String routeIdxTo;
+
+    public Direction() {
+    }
 
     protected Direction(Parcel in) {
         routeIdxFrom = in.readString();
@@ -33,17 +46,4 @@ public class Direction implements Parcelable{
         dest.writeString(routeIdxFrom);
         dest.writeString(routeIdxTo);
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Direction> CREATOR = new Parcelable.Creator<Direction>() {
-        @Override
-        public Direction createFromParcel(Parcel in) {
-            return new Direction(in);
-        }
-
-        @Override
-        public Direction[] newArray(int size) {
-            return new Direction[size];
-        }
-    };
 }

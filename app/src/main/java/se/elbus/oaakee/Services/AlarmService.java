@@ -37,9 +37,9 @@ public class AlarmService extends IntentService implements EC_Callback {
     private static final String TAG = "AlarmService";
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up
     private static final int POLL_INTERVAL = 1000 * 30;
-    EC_Client client = new EC_Client(this);
     private static String busID = "Ericsson$Vin_Num_001";
     private static String destination = "Lindholmen";
+    EC_Client client = new EC_Client(this);
 
     public AlarmService() {
         super(TAG);

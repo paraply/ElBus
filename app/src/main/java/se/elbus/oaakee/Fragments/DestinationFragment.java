@@ -1,21 +1,15 @@
 package se.elbus.oaakee.Fragments;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -112,8 +106,8 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         String white = "#ffffff";
         String backgroundColor = mDeparture.fgColor;
         mTransportLineName.setTextColor(Color.parseColor(white));
-        Log.i("DEST","Color white: " + mDeparture.fgColor + ", " + mDeparture.sname);
-        if (mDeparture.fgColor.equals(white)){
+        Log.i("DEST", "Color white: " + mDeparture.fgColor + ", " + mDeparture.sname);
+        if (mDeparture.fgColor.equals(white)) {
             backgroundColor = "#DBDBDB"; //grey if background white
         }
         mTransportLineName.getBackground().setColorFilter(Color.parseColor(backgroundColor), PorterDuff.Mode.MULTIPLY);
