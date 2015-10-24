@@ -8,6 +8,4 @@ public class Bus_info {
     public String gatewayId;
     public long timestamp;
     public String value;
-
-
 }
