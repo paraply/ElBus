@@ -17,16 +17,16 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 /**
  * Created by paraply on 2015-10-05.
  */
-public class EXAMPLE implements VT_Callback, EC_Callback {
-    VT_Client vast;
-    EC_Client ecity;
+public class Example implements VTCallback, ECCallback {
+    VTClient vast;
+    ECClient ecity;
 
-    public EXAMPLE() {
-        vast = new VT_Client(this);
+    public Example() {
+        vast = new VTClient(this);
         vast.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
         Calendar hundred_seconds_old = Calendar.getInstance();
         hundred_seconds_old.add(Calendar.SECOND, -100);
-        ecity = new EC_Client(this);
+        ecity = new ECClient(this);
         ecity.get_bus_sensor("Ericsson$Vin_Num_001", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$GPS");
         ecity.get_bus_sensor("", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$GPS");
         ecity.get_bus_resource("Ericsson$Vin_Num_001", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Latitude_Value");
