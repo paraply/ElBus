@@ -18,8 +18,8 @@ import java.util.List;
 
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.REST_API.EC_Callback;
-import se.elbus.oaakee.REST_API.EC_Client;
+import se.elbus.oaakee.REST_API.ECCallback;
+import se.elbus.oaakee.REST_API.ECClient;
 import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
 
 /**
@@ -32,14 +32,14 @@ import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
 // The activity using the service must have a method equivalent to the newIntent method in this class (for the callback from the notification)
 
-public class AlarmService extends IntentService implements EC_Callback {
+public class AlarmService extends IntentService implements ECCallback {
 
     private static final String TAG = "AlarmService";
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up
     private static final int POLL_INTERVAL = 1000 * 30;
     private static String busID = "Ericsson$Vin_Num_001";
     private static String destination = "Lindholmen";
-    EC_Client client = new EC_Client(this);
+    ECClient client = new ECClient(this);
 
     public AlarmService() {
         super(TAG);

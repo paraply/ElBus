@@ -8,7 +8,7 @@ import se.elbus.oaakee.REST_API.VT_Model.LocationList;
 /**
  * Created by paraply on 2015-10-05.
  */
-public interface VT_Callback {
+public interface VTCallback {
     void got_journey_details(JourneyDetail journeyDetail);
 
     void got_nearby_stops(LocationList locationList);

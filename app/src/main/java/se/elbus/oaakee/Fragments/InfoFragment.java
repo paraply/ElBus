@@ -23,11 +23,11 @@ import java.util.concurrent.TimeUnit;
 
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.REST_API.EC_Callback;
-import se.elbus.oaakee.REST_API.EC_Client;
+import se.elbus.oaakee.REST_API.ECCallback;
+import se.elbus.oaakee.REST_API.ECClient;
 import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
-import se.elbus.oaakee.REST_API.VT_Callback;
-import se.elbus.oaakee.REST_API.VT_Client;
+import se.elbus.oaakee.REST_API.VTCallback;
+import se.elbus.oaakee.REST_API.VTClient;
 import se.elbus.oaakee.REST_API.VT_Model.Departure;
 import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
 import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
@@ -37,7 +37,7 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 import se.elbus.oaakee.Services.AlarmService;
 import se.elbus.oaakee.Services.DetectBusService;
 
-public class InfoFragment extends Fragment implements VT_Callback, EC_Callback {
+public class InfoFragment extends Fragment implements VTCallback, ECCallback {
 
     private final int VT_UPDATE_TIMER_INTERVAL = 20000; // Update Västtrafik every 20000 ms
     private final int EC_UPDATE_TIMER_INTERVAL = 10000; // Update Electricity every 10000 ms
@@ -45,8 +45,8 @@ public class InfoFragment extends Fragment implements VT_Callback, EC_Callback {
     private boolean got_bus_info_from_wifi;
     private boolean arrived_at_destination;
     private MainActivity parent;
-    private VT_Client vt_client;
-    private EC_Client ec_client;
+    private VTClient vt_client;
+    private ECClient ec_client;
     private TextView textView_above_circle;
     private TextView textView_counter;
     private TextView textView_minutes_text;
@@ -314,8 +314,8 @@ public class InfoFragment extends Fragment implements VT_Callback, EC_Callback {
         }
 
         // Create REST clients
-        vt_client = new VT_Client(this);
-        ec_client = new EC_Client(this);
+        vt_client = new VTClient(this);
+        ec_client = new ECClient(this);
 
 
         update_gui(); // Update GUI once since the timer will wait a defined amount of seconds until it starts

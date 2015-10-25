@@ -18,13 +18,13 @@ import se.elbus.oaakee.REST_API.VT_Model.LocationList;
  */
 // ********* EXAMPLE USAGE:
 
-//public class MainActivity extends AppCompatActivity implements VT_Callback {
-//    VT_Client vast;
+//public class MainActivity extends AppCompatActivity implements VTCallback {
+//    VTClient vast;
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
-//        vast = new VT_Client(this);
+//        vast = new VTClient(this);
 //        vast.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
 //    }
 //
@@ -64,13 +64,13 @@ import se.elbus.oaakee.REST_API.VT_Model.LocationList;
 //}
 
 
-public class VT_Client {
+public class VTClient {
     private static final String API_KEY = "47befa35-9616-4ee0-af17-b82dd53e8e1c";
     private static final String VT_API_URL = "http://api.vasttrafik.se/bin/rest.exe/v1";
-    VT_Callback vt_callback;
-    private VT_API vt_api;
+    VTCallback vt_callback;
+    private VTApi vt_api;
 
-    public VT_Client(VT_Callback vt_callback) {
+    public VTClient(VTCallback vt_callback) {
         this.vt_callback = vt_callback;
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(VT_API_URL)
@@ -78,13 +78,13 @@ public class VT_Client {
                 .setConverter(new SimpleXMLConverter())
                 .build();
 
-        vt_api = restAdapter.create(VT_API.class);
+        vt_api = restAdapter.create(VTApi.class);
     }
 
 //     Given a station ID returns all departures from that station
 //
 //     Example usage:
-//          VT_Client vast = new VT_Client();
+//          VTClient vast = new VTClient();
 //          vast.get_station_board("9021014031336000");
 
     public void get_departure_board(String stop_id) {
@@ -128,7 +128,7 @@ public class VT_Client {
 //        Sorted by: closest stop first
 
 //        Example usage:
-//          VT_Client vast = new VT_Client();
+//          VTClient vast = new VTClient();
 //          vast.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
 
     public void get_nearby_stops(String lat, String lon, String max_results, String max_distance) {
@@ -147,7 +147,7 @@ public class VT_Client {
     }
 
 
-    public interface VT_API {
+    public interface VTApi {
 
         @GET("/location.nearbystops?authKey=" + API_KEY)
             //use "&format=json" to get json replies otherwise xml as default

@@ -30,15 +30,15 @@ import java.util.Calendar;
 import java.util.List;
 
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.REST_API.VT_Callback;
-import se.elbus.oaakee.REST_API.VT_Client;
+import se.elbus.oaakee.REST_API.VTCallback;
+import se.elbus.oaakee.REST_API.VTClient;
 import se.elbus.oaakee.REST_API.VT_Model.Departure;
 import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
 import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
 import se.elbus.oaakee.REST_API.VT_Model.LocationList;
 import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
 
-public class TravelFragment extends Fragment implements VT_Callback, LocationListener {
+public class TravelFragment extends Fragment implements VTCallback, LocationListener {
 
     private static final String TAG = "Travel";
     private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
@@ -51,7 +51,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     private ArrayAdapter<String> mDepartureListAdapter;
     private List<List<Departure>> departuresSorted;
     private ArrayAdapter<List<Departure>> mDeparturesAdapter;
-    private VT_Client vtClient;
+    private VTClient vtClient;
     private List<StopLocation> busStops; //With removed duplicates
 
     private FragmentSwitchCallbacks mFragmentSwitcher;
@@ -63,7 +63,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         super.onCreate(savedInstanceState);
         savedState = new Bundle();
         departuresSorted = new ArrayList<>();
-        vtClient = new VT_Client(this);
+        vtClient = new VTClient(this);
     }
 
     @Override

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.REST_API.VT_Callback;
-import se.elbus.oaakee.REST_API.VT_Client;
+import se.elbus.oaakee.REST_API.VTCallback;
+import se.elbus.oaakee.REST_API.VTClient;
 import se.elbus.oaakee.REST_API.VT_Model.Departure;
 import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
 import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
@@ -32,11 +32,11 @@ import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
  * Fragment for the "Choose destination"-layout
  * Created by Tobias on 15-09-30.
  */
-public class DestinationFragment extends Fragment implements VT_Callback {
+public class DestinationFragment extends Fragment implements VTCallback {
 
     private ListView mDestinationsListView;
     private ArrayAdapter mDestinationsListAdapter;
-    private VT_Client vtClient;
+    private VTClient vtClient;
 
     private Departure mDeparture;
     private JourneyDetail mJourneyDetail;
@@ -51,7 +51,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        vtClient = new VT_Client(this);
+        vtClient = new VTClient(this);
     }
 
     @Nullable
@@ -129,7 +129,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     }
 
     // **************************
-    // VT_Callback implementation
+    // VTCallback implementation
     // **************************
     @Override
     public void got_journey_details(JourneyDetail journeyDetail) {
