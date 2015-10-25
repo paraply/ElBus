@@ -1,4 +1,4 @@
-package se.elbus.oaakee.Fragments;
+package se.elbus.oaakee.fragments;
 
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
