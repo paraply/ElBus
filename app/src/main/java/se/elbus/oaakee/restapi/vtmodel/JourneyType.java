@@ -1,4 +1,4 @@
-package se.elbus.oaakee.REST_API.VT_Model;
+package se.elbus.oaakee.restapi.vtmodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,22 +8,22 @@ import org.simpleframework.xml.Attribute;
 /**
  * Created by paraply on 2015-10-04.
  */
-public class JourneyId implements Parcelable {
+public class JourneyType implements Parcelable {
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<JourneyId> CREATOR = new Parcelable.Creator<JourneyId>() {
+    public static final Parcelable.Creator<JourneyType> CREATOR = new Parcelable.Creator<JourneyType>() {
         @Override
-        public JourneyId createFromParcel(Parcel in) {
-            return new JourneyId(in);
+        public JourneyType createFromParcel(Parcel in) {
+            return new JourneyType(in);
         }
 
         @Override
-        public JourneyId[] newArray(int size) {
-            return new JourneyId[size];
+        public JourneyType[] newArray(int size) {
+            return new JourneyType[size];
         }
     };
-    @Attribute(name = "id")
-    public String id;
+    @Attribute(name = "type")
+    public String type;
 
     @Attribute(name = "routeIdxFrom")
     public String routeIdxFrom;
@@ -31,11 +31,11 @@ public class JourneyId implements Parcelable {
     @Attribute(name = "routeIdxTo")
     public String routeIdxTo;
 
-    public JourneyId() {
+    public JourneyType() {
     }
 
-    protected JourneyId(Parcel in) {
-        id = in.readString();
+    protected JourneyType(Parcel in) {
+        type = in.readString();
         routeIdxFrom = in.readString();
         routeIdxTo = in.readString();
     }
@@ -47,7 +47,7 @@ public class JourneyId implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeString(type);
         dest.writeString(routeIdxFrom);
         dest.writeString(routeIdxTo);
     }

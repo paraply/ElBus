@@ -1,4 +1,4 @@
-package se.elbus.oaakee.REST_API.VT_Model;
+package se.elbus.oaakee.restapi.vtmodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;

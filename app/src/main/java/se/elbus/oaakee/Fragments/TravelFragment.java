@@ -30,13 +30,13 @@ import java.util.Calendar;
 import java.util.List;
 
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.REST_API.VTCallback;
-import se.elbus.oaakee.REST_API.VTClient;
-import se.elbus.oaakee.REST_API.VT_Model.Departure;
-import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
-import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
-import se.elbus.oaakee.REST_API.VT_Model.LocationList;
-import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
+import se.elbus.oaakee.restapi.VTCallback;
+import se.elbus.oaakee.restapi.VTClient;
+import se.elbus.oaakee.restapi.vtmodel.Departure;
+import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
+import se.elbus.oaakee.restapi.vtmodel.LocationList;
+import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
 public class TravelFragment extends Fragment implements VTCallback, LocationListener {
 

@@ -23,19 +23,19 @@ import java.util.concurrent.TimeUnit;
 
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.REST_API.ECCallback;
-import se.elbus.oaakee.REST_API.ECClient;
-import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
-import se.elbus.oaakee.REST_API.VTCallback;
-import se.elbus.oaakee.REST_API.VTClient;
-import se.elbus.oaakee.REST_API.VT_Model.Departure;
-import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
-import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
-import se.elbus.oaakee.REST_API.VT_Model.LocationList;
-import se.elbus.oaakee.REST_API.VT_Model.Stop;
-import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
-import se.elbus.oaakee.Services.AlarmService;
-import se.elbus.oaakee.Services.DetectBusService;
+import se.elbus.oaakee.restapi.ECCallback;
+import se.elbus.oaakee.restapi.ECClient;
+import se.elbus.oaakee.restapi.ecmodel.Bus_info;
+import se.elbus.oaakee.restapi.VTCallback;
+import se.elbus.oaakee.restapi.VTClient;
+import se.elbus.oaakee.restapi.vtmodel.Departure;
+import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
+import se.elbus.oaakee.restapi.vtmodel.LocationList;
+import se.elbus.oaakee.restapi.vtmodel.Stop;
+import se.elbus.oaakee.restapi.vtmodel.StopLocation;
+import se.elbus.oaakee.services.AlarmService;
+import se.elbus.oaakee.services.DetectBusService;
 
 public class InfoFragment extends Fragment implements VTCallback, ECCallback {
 

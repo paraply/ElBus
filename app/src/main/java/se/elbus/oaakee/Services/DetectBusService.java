@@ -1,4 +1,4 @@
-package se.elbus.oaakee.Services;
+package se.elbus.oaakee.services;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -10,7 +10,7 @@ import android.util.Log;
 
 import java.util.Calendar;
 
-import se.elbus.oaakee.Buses.WifiFinder;
+import se.elbus.oaakee.buses.WifiFinder;
 import se.elbus.oaakee.R;
 
 /**

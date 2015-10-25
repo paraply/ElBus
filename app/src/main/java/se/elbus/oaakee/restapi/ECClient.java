@@ -1,4 +1,4 @@
-package se.elbus.oaakee.REST_API;
+package se.elbus.oaakee.restapi;
 
 import android.util.Base64;
 
@@ -12,7 +12,7 @@ import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Query;
-import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
+import se.elbus.oaakee.restapi.ecmodel.Bus_info;
 
 /**
  * Created by paraply on 2015-10-05.

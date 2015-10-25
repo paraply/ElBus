@@ -1,17 +1,17 @@
-package se.elbus.oaakee.REST_API;
+package se.elbus.oaakee.restapi;
 
 import android.util.Log;
 
 import java.util.Calendar;
 import java.util.List;
 
-import se.elbus.oaakee.REST_API.EC_Model.Bus_info;
-import se.elbus.oaakee.REST_API.VT_Model.Departure;
-import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
-import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
-import se.elbus.oaakee.REST_API.VT_Model.LocationList;
-import se.elbus.oaakee.REST_API.VT_Model.Stop;
-import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
+import se.elbus.oaakee.restapi.ecmodel.Bus_info;
+import se.elbus.oaakee.restapi.vtmodel.Departure;
+import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
+import se.elbus.oaakee.restapi.vtmodel.LocationList;
+import se.elbus.oaakee.restapi.vtmodel.Stop;
+import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
 
 /**

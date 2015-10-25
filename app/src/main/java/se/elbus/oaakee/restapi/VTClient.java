@@ -1,4 +1,4 @@
-package se.elbus.oaakee.REST_API;
+package se.elbus.oaakee.restapi;
 
 
 import retrofit.Callback;
@@ -8,10 +8,10 @@ import retrofit.client.Response;
 import retrofit.converter.SimpleXMLConverter;
 import retrofit.http.GET;
 import retrofit.http.Query;
-import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
-import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
-import se.elbus.oaakee.REST_API.VT_Model.JourneyDetailRef;
-import se.elbus.oaakee.REST_API.VT_Model.LocationList;
+import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetailRef;
+import se.elbus.oaakee.restapi.vtmodel.LocationList;
 
 /**
  * Created by paraply on 2015-10-04.
