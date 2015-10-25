@@ -14,7 +14,7 @@ import se.elbus.oaakee.buses.WifiFinder;
 import se.elbus.oaakee.R;
 
 /**
- * Created by Anton on 2015-10-11.
+ * Created by Anton on 2015-10-11..
  */
 public class DetectBusService extends IntentService {
 
