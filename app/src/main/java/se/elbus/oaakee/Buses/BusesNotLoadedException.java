@@ -1,4 +1,4 @@
-package se.elbus.oaakee.Buses;
+package se.elbus.oaakee.buses;
 
 /**
  * This exception is used to signal when the Buses.java class isn't correctly initialized. Created
