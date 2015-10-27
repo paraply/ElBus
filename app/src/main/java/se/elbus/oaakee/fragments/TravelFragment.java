@@ -43,27 +43,28 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     private static final String TAG = "Travel";
     private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
     private final int LOCATION_ACCURACY = Criteria.ACCURACY_LOW; // "For horizontal and vertical position this corresponds roughly to an accuracy of greater than 500 meters."
+
     double mSimulatorLongitude = 11.972305;
     double mSimulatorLatitude = 57.707792;
     private Spinner mBusStops;
     private ArrayAdapter<String> mBusStopsAdapter;
     private ListView mDeparturesList;
     private ArrayAdapter<String> mDepartureListAdapter;
-    private List<List<Departure>> departuresSorted;
+    private List<List<Departure>> mDeparturesSorted;
     private ArrayAdapter<List<Departure>> mDeparturesAdapter;
-    private VTClient vtClient;
-    private List<StopLocation> busStops; //With removed duplicates
+    private VTClient mVtClient;
+    private List<StopLocation> mBusStopList; //With removed duplicates
 
     private FragmentSwitchCallbacks mFragmentSwitcher;
-    private Bundle savedState;
+    private Bundle mSavedState;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        savedState = new Bundle();
-        departuresSorted = new ArrayList<>();
-        vtClient = new VTClient(this);
+        mSavedState = new Bundle();
+        mDeparturesSorted = new ArrayList<>();
+        mVtClient = new VTClient(this);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         mDepartureListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mDeparturesList = (ListView) v.findViewById(R.id.departuresListView);
-        mDeparturesAdapter = new DeparturesAdapter(getContext(), departuresSorted);
+        mDeparturesAdapter = new DeparturesAdapter(getContext(), mDeparturesSorted);
         mDeparturesList.setAdapter(mDeparturesAdapter);
 
         return v;
@@ -101,10 +102,10 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "Spinner clicked: " + spinner.getSelectedItem().toString() + ", Position: " + position);
 
-                StopLocation source = busStops.get(position);
+                StopLocation source = mBusStopList.get(position);
 
-                savedState.putParcelable("source", source);
-                vtClient.get_departure_board(source.id);
+                mSavedState.putParcelable("source", source);
+                mVtClient.get_departure_board(source.id);
             }
 
             @Override
@@ -188,9 +189,9 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         List<StopLocation> stops = stops1;
 
-        busStops = stops;
+        mBusStopList = stops;
 
-        for (StopLocation s : busStops) {
+        for (StopLocation s : mBusStopList) {
             mDepartureListAdapter.add(s.getNameWithoutCity());
         }
         mBusStops.setAdapter(mDepartureListAdapter);
@@ -199,7 +200,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     @Override
     public void got_departure_board(DepartureBoard board) {
         List<Departure> allDepartures = board.departure;
-        departuresSorted.clear();
+        mDeparturesSorted.clear();
 
         List<String> shortName = new ArrayList<>(); //list of unique short name sorted by departure time
 
@@ -229,7 +230,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
                     }
                 }
             }
-            departuresSorted.add(departures); //Adds list of departures for one single bus line number
+            mDeparturesSorted.add(departures); //Adds list of departures for one single bus line number
         }
 
         mDeparturesAdapter.notifyDataSetChanged();
@@ -251,7 +252,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     @Override
     public void onLocationChanged(Location location) {
         // TODO: Change location in GUI
-        vtClient.get_nearby_stops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
+        mVtClient.get_nearby_stops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
 
     }
 
@@ -327,7 +328,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
                 String minutesToDeparture;
                 try {
-                    long minutes = minutesToDeparture(date, time);
+                    long minutes = getMinutesToDeparture(date, time);
                     minutesToDeparture = "" + minutes;
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -349,7 +350,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
          * @return difference from current time in minutes
          * @throws NumberFormatException If date or time is in wrong format.
          */
-        private long minutesToDeparture(String date, String time) throws NumberFormatException {
+        private long getMinutesToDeparture(String date, String time) throws NumberFormatException {
             int year = Integer.valueOf(date.substring(0, 4));
             int month = Integer.valueOf(date.substring(5, 7));
             int day = Integer.valueOf(date.substring(8, 10));
@@ -410,8 +411,8 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    savedState.putParcelable("trip", departure);
-                    mFragmentSwitcher.nextFragment(savedState);
+                    mSavedState.putParcelable("trip", departure);
+                    mFragmentSwitcher.nextFragment(mSavedState);
                 }
             });
         }
