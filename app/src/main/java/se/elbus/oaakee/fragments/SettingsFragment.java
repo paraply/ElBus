@@ -6,7 +6,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import se.elbus.oaakee.R;
 
 /**
- * Fragment to for Settings. <p/> Created by Tobias on 2015-10-02.
+ * Fragment to for Settings.
  */
 public class SettingsFragment extends PreferenceFragmentCompat {
 
