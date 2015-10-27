@@ -162,12 +162,12 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     }
 
     @Override
-    public void got_journey_details(JourneyDetail journeyDetail) {
+    public void handleJourneyDetails(JourneyDetail journeyDetail) {
 
     }
 
     @Override
-    public void got_nearby_stops(LocationList locationList) {
+    public void handleNearbyStops(LocationList locationList) {
         List<StopLocation> stops1 = new ArrayList<>();
         boolean contains;
 
@@ -198,7 +198,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     }
 
     @Override
-    public void got_departure_board(DepartureBoard board) {
+    public void handleDepartureBoard(DepartureBoard board) {
         List<Departure> allDepartures = board.departure;
         mDeparturesSorted.clear();
 
@@ -237,7 +237,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     }
 
     @Override
-    public void got_error(String during_method, String error_msg) {
+    public void handleError(String during_method, String error_msg) {
     }
 
     @Override

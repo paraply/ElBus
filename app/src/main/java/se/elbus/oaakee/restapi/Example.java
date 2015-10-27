@@ -31,14 +31,14 @@ public class Example implements VTCallback, ECCallback {
 
 
     @Override
-    public void got_journey_details(JourneyDetail journeyDetail) {
+    public void handleJourneyDetails(JourneyDetail journeyDetail) {
         for (Stop s : journeyDetail.stop) {
             Log.i("### LINE STOPS @", s.name + " WHEN: " + s.arrTime);
         }
     }
 
     @Override
-    public void got_nearby_stops(LocationList locationList) {
+    public void handleNearbyStops(LocationList locationList) {
         for (StopLocation s : locationList.stoplocation) { // List all nearby stops
             Log.i("### NEAR STOP", s.name + " ID:" + s.id + " TRACK:" + s.track);
         }
@@ -48,7 +48,7 @@ public class Example implements VTCallback, ECCallback {
     }
 
     @Override
-    public void got_departure_board(DepartureBoard departureBoard) {
+    public void handleDepartureBoard(DepartureBoard departureBoard) {
 
         for (Departure d : departureBoard.departure) { // List all the departures from this stop
             Log.i("### DEPARTURES: ", d.name + " SHORT NAME: " + d.sname + " DIRECTION: " + d.direction);
@@ -62,35 +62,35 @@ public class Example implements VTCallback, ECCallback {
 
 
     @Override
-    public void got_sensor_data(List<busInfo> busInfo) {
+    public void handleSensorData(List<busInfo> busInfo) {
         for (busInfo b : busInfo) {
             Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_sensor_data_from_all_buses(List<busInfo> busInfo) {
+    public void handleSensorDataFromAllBuses(List<busInfo> busInfo) {
         for (busInfo b : busInfo) {
             Log.i("### SENSOR RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_reource_data(List<busInfo> busInfo) {
+    public void handleResourceData(List<busInfo> busInfo) {
         for (busInfo b : busInfo) {
             Log.i("### RSRC RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_reource_data_from_all_buses(List<busInfo> busInfo) {
+    public void handleResourceDataFromAllBuses(List<busInfo> busInfo) {
         for (busInfo b : busInfo) {
             Log.i("### RSRC RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_error(String during_method, String error_msg) {
+    public void handleError(String during_method, String error_msg) {
         Log.i("### ERR", "during: " + during_method + "-" + error_msg);
     }
 }

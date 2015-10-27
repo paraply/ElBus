@@ -44,24 +44,24 @@ public class ECClient {
             ec_api.get_bus_sensor(CREDENTIALS_BASE64, bus_ID_or_empty, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), sensor, new Callback<List<busInfo>>() {
                 @Override
                 public void success(List<busInfo> busInfos, Response response) {
-                    ec_callback.got_sensor_data(busInfos);
+                    ec_callback.handleSensorData(busInfos);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    ec_callback.got_error("get_bus_sensor", error.getMessage());
+                    ec_callback.handleError("get_bus_sensor", error.getMessage());
                 }
             });
         } else {
             ec_api.get_all_buses_sensors(CREDENTIALS_BASE64, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), sensor, new Callback<List<busInfo>>() {
                 @Override
                 public void success(List<busInfo> busInfos, Response response) {
-                    ec_callback.got_sensor_data_from_all_buses(busInfos);
+                    ec_callback.handleSensorDataFromAllBuses(busInfos);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    ec_callback.got_error("get_bus_sensor", error.getMessage());
+                    ec_callback.handleError("get_bus_sensor", error.getMessage());
                 }
             });
         }
@@ -77,24 +77,24 @@ public class ECClient {
             ec_api.get_bus_resource(CREDENTIALS_BASE64, bus_ID_or_empty, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), resource, new Callback<List<busInfo>>() {
                 @Override
                 public void success(List<busInfo> busInfos, Response response) {
-                    ec_callback.got_reource_data(busInfos);
+                    ec_callback.handleResourceData(busInfos);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    ec_callback.got_error("get_bus_resource", error.getMessage());
+                    ec_callback.handleError("get_bus_resource", error.getMessage());
                 }
             });
         } else {
             ec_api.get_all_buses_resources(CREDENTIALS_BASE64, Long.toString(start_time.getTime()), Long.toString(end_time.getTime()), resource, new Callback<List<busInfo>>() {
                 @Override
                 public void success(List<busInfo> busInfos, Response response) {
-                    ec_callback.got_reource_data_from_all_buses(busInfos);
+                    ec_callback.handleResourceDataFromAllBuses(busInfos);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    ec_callback.got_error("get_bus_resource", error.getMessage());
+                    ec_callback.handleError("get_bus_resource", error.getMessage());
                 }
             });
         }
