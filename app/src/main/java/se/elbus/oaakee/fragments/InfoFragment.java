@@ -371,30 +371,30 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
 
 
     @Override
-    public void got_journey_details(JourneyDetail journeyDetail) {
+    public void handleJourneyDetails(JourneyDetail journeyDetail) {
         mJourney = journeyDetail;
         Log.i("### INFO", "Got new journeydetails. Updating GUI. ServerTIME: " + journeyDetail.serverdate + " " + journeyDetail.servertime);
         updateGui();
     }
 
     @Override
-    public void got_nearby_stops(LocationList locationList) {
+    public void handleNearbyStops(LocationList locationList) {
     }
 
     @Override
-    public void got_departure_board(DepartureBoard departureBoard) {
+    public void handleDepartureBoard(DepartureBoard departureBoard) {
     }
 
     @Override
-    public void got_sensor_data(List<busInfo> busInfo) {
+    public void handleSensorData(List<busInfo> busInfo) {
     }
 
     @Override
-    public void got_sensor_data_from_all_buses(List<busInfo> busInfo) {
+    public void handleSensorDataFromAllBuses(List<busInfo> busInfo) {
     }
 
     @Override
-    public void got_reource_data(List<busInfo> busInfo) {
+    public void handleResourceData(List<busInfo> busInfo) {
         if (busInfo == null) return;
         busInfo b = busInfo.get(busInfo.size() - 1);
         Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
@@ -402,11 +402,11 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
     }
 
     @Override
-    public void got_reource_data_from_all_buses(List<busInfo> busInfo) {
+    public void handleResourceDataFromAllBuses(List<busInfo> busInfo) {
     }
 
     @Override
-    public void got_error(String during_method, String error_msg) {
+    public void handleError(String during_method, String error_msg) {
         Log.i("### INFO ERR", error_msg);
     }
 }

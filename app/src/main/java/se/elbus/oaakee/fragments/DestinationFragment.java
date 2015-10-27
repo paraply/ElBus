@@ -125,7 +125,7 @@ public class DestinationFragment extends Fragment implements VTCallback {
     }
 
     @Override
-    public void got_journey_details(JourneyDetail journeyDetail) {
+    public void handleJourneyDetails(JourneyDetail journeyDetail) {
         mDestinationsListAdapter.clear();
         mJourneyDetail = journeyDetail;
 
@@ -157,17 +157,17 @@ public class DestinationFragment extends Fragment implements VTCallback {
     }
 
     @Override
-    public void got_nearby_stops(LocationList locationList) {
+    public void handleNearbyStops(LocationList locationList) {
 
     }
 
     @Override
-    public void got_departure_board(DepartureBoard departureBoard) {
+    public void handleDepartureBoard(DepartureBoard departureBoard) {
 
     }
 
     @Override
-    public void got_error(String during_method, String error_msg) {
+    public void handleError(String during_method, String error_msg) {
 
     }
 

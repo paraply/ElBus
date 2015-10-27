@@ -6,11 +6,11 @@ import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
 import se.elbus.oaakee.restapi.vtmodel.LocationList;
 
 public interface VTCallback {
-    void got_journey_details(JourneyDetail journeyDetail);
+    void handleJourneyDetails(JourneyDetail journeyDetail);
 
-    void got_nearby_stops(LocationList locationList);
+    void handleNearbyStops(LocationList locationList);
 
-    void got_departure_board(DepartureBoard departureBoard);
+    void handleDepartureBoard(DepartureBoard departureBoard);
 
-    void got_error(String during_method, String error_msg);
+    void handleError(String during_method, String error_msg);
 }

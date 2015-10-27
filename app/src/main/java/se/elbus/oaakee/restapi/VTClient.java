@@ -27,14 +27,14 @@ import retrofit.http.Query;
 //    }
 //
 //    @Override
-//    public void got_journey_details(JourneyDetail journeyDetail) {
+//    public void handleJourneyDetails(JourneyDetail journeyDetail) {
 //        for (Stop s : journeyDetail.stop) {
 //            Log.i("### LINE STOPS @", s.name + " WHEN: " + s.arrTime);
 //        }
 //    }
 //
 //    @Override
-//    public void got_nearby_stops(LocationList locationList) {
+//    public void handleNearbyStops(LocationList locationList) {
 //        for (StopLocation s : locationList.stoplocation) { // List all nearby stops
 //            Log.i("### NEAR STOP", s.name + " ID:" + s.id + " TRACK:" +  s.track );
 //        }
@@ -44,7 +44,7 @@ import retrofit.http.Query;
 //    }
 //
 //    @Override
-//    public void got_departure_board(DepartureBoard departureBoard) {
+//    public void handleDepartureBoard(DepartureBoard departureBoard) {
 //
 //        for (Departure d : departureBoard.departure) { // List all the departures from this stop
 //            Log.i("### DEPARTURES: ", d.name  + " SHORT NAME: " + d.sname + " DIRECTION: " + d.direction);
@@ -56,7 +56,7 @@ import retrofit.http.Query;
 //    }
 //
 //    @Override
-//    public void got_error(String during_method, String error_msg) {
+//    public void handleError(String during_method, String error_msg) {
 //        Log.i("### ERR", "during: " + during_method + "-" +  error_msg);
 //    }
 //}
@@ -89,12 +89,12 @@ public class VTClient {
         vt_api.api_get_departure_board(stop_id, new Callback<DepartureBoard>() {
             @Override
             public void success(DepartureBoard departureBoard, Response response) {
-                vt_callback.got_departure_board(departureBoard);
+                vt_callback.handleDepartureBoard(departureBoard);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                vt_callback.got_error("get_departure_board", error.getMessage());
+                vt_callback.handleError("get_departure_board", error.getMessage());
             }
         });
     }
@@ -108,12 +108,12 @@ public class VTClient {
         vt_api.api_get_journey_detail(trimmed_url, new Callback<JourneyDetail>() {
             @Override
             public void success(JourneyDetail journeyDetail, Response response) {
-                vt_callback.got_journey_details(journeyDetail);
+                vt_callback.handleJourneyDetails(journeyDetail);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                vt_callback.got_error("get_journey_details", error.getMessage());
+                vt_callback.handleError("get_journey_details", error.getMessage());
             }
         });
 
@@ -134,12 +134,12 @@ public class VTClient {
 
             @Override
             public void success(LocationList locationList, Response response) {
-                vt_callback.got_nearby_stops(locationList);
+                vt_callback.handleNearbyStops(locationList);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                vt_callback.got_error("get_nearby_stops", error.getMessage());
+                vt_callback.handleError("get_nearby_stops", error.getMessage());
             }
         });
     }
