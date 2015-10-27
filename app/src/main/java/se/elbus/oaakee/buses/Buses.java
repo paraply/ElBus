@@ -9,16 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class is used to store all the buses in a practical way. (Might use more memory than it has
- * to) TODO: Find a replacement.
+ * This class is used to store all the buses in a practical way. TODO: Find a replacement.
  */
 public class Buses {
     private static List<Bus> sBuses;
 
     /**
      * This will read in all the buses into memory. It will only read in the sBuses the first time
-     * called. <p> TODO: If more resources are added, we need to change this code to make it import
-     * it!!
+     * called.
      */
     public static void initBuses(Context context) {
         if (sBuses != null) {
@@ -65,7 +63,7 @@ public class Buses {
      * @param mac is the mac-address to look for.
      * @return the bus if it's found. If it's not found, it will return an empty bus.
      */
-    public static Bus findByMac(String mac) {
+    public static Bus findBusByMac(String mac) {
         checkInit();
         for (Bus b : sBuses) {
             if (b.mac.contentEquals(mac.toLowerCase())) {
@@ -76,7 +74,7 @@ public class Buses {
     }
 
 
-    public Bus findByDgw(String dgw) {
+    public Bus findBusByDgw(String dgw) {
         checkInit();
         for (Bus b : sBuses) {
             if (b.dgw.contentEquals(dgw.toLowerCase())) {
@@ -87,7 +85,7 @@ public class Buses {
     }
 
 
-    public Bus findByReg(String reg) {
+    public Bus findBusByReg(String reg) {
         checkInit();
         for (Bus b : sBuses) {
             if (b.reg.contentEquals(reg.toLowerCase())) {
@@ -98,7 +96,7 @@ public class Buses {
     }
 
 
-    public Bus findByVin(String vin) {
+    public Bus findBusByVin(String vin) {
         checkInit();
         for (Bus b : sBuses) {
             if (b.vin.contentEquals(vin.toLowerCase())) {
