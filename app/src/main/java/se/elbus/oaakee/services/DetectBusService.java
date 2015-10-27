@@ -23,10 +23,10 @@ public class DetectBusService extends IntentService {
     public static String dgwFound;
     public static boolean onBus = false;
 
-    private static String source;
-    private static String destination;
-    private static String time;
-    private static String line;
+    private static String mSource;
+    private static String mDestination;
+    private static String mTime;
+    private static String mLine;
 
     public DetectBusService() {
         super(TAG);
@@ -38,14 +38,14 @@ public class DetectBusService extends IntentService {
 
     public static void setServiceAlarm(Context context, boolean isOn, String s, String d, String t, String l) {
         //Check if nothing differs from last time setServiceAlarm was called
-        if (s.equals(source) && d.equals(destination) && t.equals(time) && l.equals(line)) {
+        if (s.equals(mSource) && d.equals(mDestination) && t.equals(mTime) && l.equals(mLine)) {
             return;
         }
 
-        source = s;
-        destination = d;
-        time = t;
-        line = l;
+        mSource = s;
+        mDestination = d;
+        mTime = t;
+        mLine = l;
         Intent i = AlarmService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
 
@@ -68,7 +68,7 @@ public class DetectBusService extends IntentService {
 
 
         //Check wififinder for connection
-        WifiFinder wifiFinder = new WifiFinder(this, this.getString(R.string.buswifiname)) {
+        WifiFinder wifiFinder = new WifiFinder(this, this.getString(R.string.wifi_name)) {
             @Override
             // Found an Dgw close to us. We assume we are on this bus
             public void receiveDgw(String dgw) {
@@ -80,7 +80,7 @@ public class DetectBusService extends IntentService {
                  *  Does not matter for prototype since we only target line 55.
                  */
                 if (!onBus) {
-                    AlarmService.setServiceAlarm(DetectBusService.this, true, dgwFound, destination);
+                    AlarmService.setServiceAlarm(DetectBusService.this, true, dgwFound, mDestination);
                     onBus = true;
                 }
             }

@@ -23,7 +23,7 @@ import retrofit.http.Query;
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
 //        vast = new VtClient(this);
-//        vast.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
+//        vast.getNearbyStops("57.703834&", "11.966404", "30", "1000");
 //    }
 //
 //    @Override
@@ -40,7 +40,7 @@ import retrofit.http.Query;
 //        }
 //        StopLocation closest = locationList.stoplocation.get(0); // The closest stop is at the top of the list
 //        Log.i("### CLOSEST STOP", closest.name + " ID:" + closest.id + " TRACK:" +  closest.track );
-//        vast.get_departure_board(closest.id); // Get departures from this stop
+//        vast.getDepartureBoard(closest.id); // Get departures from this stop
 //    }
 //
 //    @Override
@@ -49,7 +49,7 @@ import retrofit.http.Query;
 //        for (Departure d : departureBoard.departure) { // List all the departures from this stop
 //            Log.i("### DEPARTURES: ", d.name  + " SHORT NAME: " + d.sname + " DIRECTION: " + d.direction);
 //            if (d.sname.equals("11") && d.direction.equals("Bergsjön")){ // If spårvagn 11 mot Bergsjön
-//                vast.get_journey_details(d.journeyDetailRef); // Get journey details from this journey
+//                vast.getJourneyDetails(d.journeyDetailRef); // Get journey details from this journey
 //                return;
 //            }
 //        }
@@ -65,18 +65,18 @@ import retrofit.http.Query;
 public class VtClient {
     private static final String API_KEY = "47befa35-9616-4ee0-af17-b82dd53e8e1c";
     private static final String VT_API_URL = "http://api.vasttrafik.se/bin/rest.exe/v1";
-    VtCallback vt_callback;
-    private VTApi vt_api;
+    private VtCallback VtCallback;
+    private VtApi mVtApi;
 
-    public VtClient(VtCallback vt_callback) {
-        this.vt_callback = vt_callback;
+    public VtClient(VtCallback vtCallback) {
+        this.VtCallback = vtCallback;
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(VT_API_URL)
 //                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setConverter(new SimpleXMLConverter())
                 .build();
 
-        vt_api = restAdapter.create(VTApi.class);
+        mVtApi = restAdapter.create(VtApi.class);
     }
 
 //     Given a station ID returns all departures from that station
@@ -85,16 +85,16 @@ public class VtClient {
 //          VtClient vast = new VtClient();
 //          vast.get_station_board("9021014031336000");
 
-    public void get_departure_board(String stop_id) {
-        vt_api.api_get_departure_board(stop_id, new Callback<DepartureBoard>() {
+    public void getDepartureBoard(String stop_id) {
+        mVtApi.api_get_departure_board(stop_id, new Callback<DepartureBoard>() {
             @Override
             public void success(DepartureBoard departureBoard, Response response) {
-                vt_callback.handleDepartureBoard(departureBoard);
+                VtCallback.handleDepartureBoard(departureBoard);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                vt_callback.handleError("get_departure_board", error.getMessage());
+                VtCallback.handleError("getDepartureBoard", error.getMessage());
             }
         });
     }
@@ -102,18 +102,18 @@ public class VtClient {
 //    Get the stops from a line
 //    Needs a JourneyDetailRef from DepartureBoard (or trip if ever implemented)
 
-    public void get_journey_details(JourneyDetailRef jref) {
+    public void getJourneyDetails(JourneyDetailRef jref) {
         String trimmed_url = jref.getRef().substring((VT_API_URL + "/journeyDetail?ref=").length()); // remove http://api.vasttrafik.se/bin/rest.exe/v1/journeyDetail?ref=
 
-        vt_api.api_get_journey_detail(trimmed_url, new Callback<JourneyDetail>() {
+        mVtApi.api_get_journey_detail(trimmed_url, new Callback<JourneyDetail>() {
             @Override
             public void success(JourneyDetail journeyDetail, Response response) {
-                vt_callback.handleJourneyDetails(journeyDetail);
+                VtCallback.handleJourneyDetails(journeyDetail);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                vt_callback.handleError("get_journey_details", error.getMessage());
+                VtCallback.handleError("getJourneyDetails", error.getMessage());
             }
         });
 
@@ -127,25 +127,25 @@ public class VtClient {
 
 //        Example usage:
 //          VtClient vast = new VtClient();
-//          vast.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
+//          vast.getNearbyStops("57.703834&", "11.966404", "30", "1000");
 
-    public void get_nearby_stops(String lat, String lon, String max_results, String max_distance) {
-        vt_api.api_get_LocationList(lat, lon, max_results, max_distance, new Callback<LocationList>() {
+    public void getNearbyStops(String lat, String lon, String max_results, String max_distance) {
+        mVtApi.api_get_LocationList(lat, lon, max_results, max_distance, new Callback<LocationList>() {
 
             @Override
             public void success(LocationList locationList, Response response) {
-                vt_callback.handleNearbyStops(locationList);
+                VtCallback.handleNearbyStops(locationList);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                vt_callback.handleError("get_nearby_stops", error.getMessage());
+                VtCallback.handleError("getNearbyStops", error.getMessage());
             }
         });
     }
 
 
-    public interface VTApi {
+    public interface VtApi {
 
         @GET("/location.nearbystops?authKey=" + API_KEY)
             //use "&format=json" to get json replies otherwise xml as default

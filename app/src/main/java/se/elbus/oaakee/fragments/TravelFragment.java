@@ -105,7 +105,7 @@ public class TravelFragment extends Fragment implements VtCallback, LocationList
                 StopLocation source = mBusStopList.get(position);
 
                 mSavedState.putParcelable("source", source);
-                mVtClient.get_departure_board(source.id);
+                mVtClient.getDepartureBoard(source.id);
             }
 
             @Override
@@ -252,7 +252,7 @@ public class TravelFragment extends Fragment implements VtCallback, LocationList
     @Override
     public void onLocationChanged(Location location) {
         // TODO: Change location in GUI
-        mVtClient.get_nearby_stops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
+        mVtClient.getNearbyStops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
 
     }
 
@@ -386,7 +386,7 @@ public class TravelFragment extends Fragment implements VtCallback, LocationList
             setTextViewText(R.id.stationTextView, busLineButtonView, direction);
 
             if (time.equals("0")) {
-                time = getString(R.string.NOW);
+                time = getString(R.string.now);
                 TextView minTextView = (TextView) busLineButtonView.findViewById(R.id.minBelowTextView);
                 minTextView.setVisibility(View.GONE);
             }

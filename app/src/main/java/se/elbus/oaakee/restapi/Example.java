@@ -19,7 +19,7 @@ public class Example implements VtCallback, mEcCallback {
 
     public Example() {
         vast = new VtClient(this);
-        vast.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
+        vast.getNearbyStops("57.703834&", "11.966404", "30", "1000");
         Calendar hundred_seconds_old = Calendar.getInstance();
         hundred_seconds_old.add(Calendar.SECOND, -100);
         ecity = new EcClient(this);
@@ -44,7 +44,7 @@ public class Example implements VtCallback, mEcCallback {
         }
         StopLocation closest = locationList.stoplocation.get(0); // The closest stop is at the top of the list
         Log.i("### CLOSEST STOP", closest.name + " ID:" + closest.id + " TRACK:" + closest.track);
-        vast.get_departure_board(closest.id); // Get departures from this stop
+        vast.getDepartureBoard(closest.id); // Get departures from this stop
     }
 
     @Override
@@ -54,7 +54,7 @@ public class Example implements VtCallback, mEcCallback {
             Log.i("### DEPARTURES: ", d.name + " SHORT NAME: " + d.sname + " DIRECTION: " + d.direction);
             if (d.sname.equals("11") && d.direction.equals("Bergsjön")) { // If spårvagn 11 mot Bergsjön
 
-                vast.get_journey_details(d.journeyDetailRef); // Get journey details from this journey
+                vast.getJourneyDetails(d.journeyDetailRef); // Get journey details from this journey
                 return;
             }
         }

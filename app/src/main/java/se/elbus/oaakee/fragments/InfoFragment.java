@@ -153,7 +153,7 @@ public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
             mTxtTimeLeft.setVisibility(View.INVISIBLE);
             mTxtMin.setVisibility(View.INVISIBLE);
             mTxtCenter.setVisibility(View.VISIBLE);
-            mTxtCenter.setText(R.string.ARRIVED);
+            mTxtCenter.setText(R.string.arrived);
             mTxtCenter.setTextSize(45);
 
         } else {
@@ -193,7 +193,7 @@ public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
             mTxtTimeLeft.setVisibility(View.INVISIBLE);
             mTxtMin.setVisibility(View.INVISIBLE);
             mTxtCenter.setVisibility(View.VISIBLE);
-            mTxtCenter.setText(R.string.NOW);
+            mTxtCenter.setText(R.string.now);
             mTxtCenter.setTextSize(70);
         } else {
             if (!mOnBus) {
@@ -337,7 +337,7 @@ public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
                 public void run() {
                     Log.i("### INFO", "TIMER EVENT, Checking Västtrafik API");
 
-                    mVtClient.get_journey_details(mDeparture.journeyDetailRef);
+                    mVtClient.getJourneyDetails(mDeparture.journeyDetailRef);
 
                     //Check DetectBusService to see if we're on the bus
                     if (!mHasWifiInfo) {

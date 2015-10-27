@@ -98,7 +98,7 @@ public class DestinationFragment extends Fragment implements VtCallback {
             }
         });
 
-        mVtClient.get_journey_details(mDeparture.journeyDetailRef);
+        mVtClient.getJourneyDetails(mDeparture.journeyDetailRef);
 
         String white = "#ffffff";
         String backgroundColor = mDeparture.fgColor;
