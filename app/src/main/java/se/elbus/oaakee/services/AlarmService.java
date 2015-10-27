@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * Service to repeatedly check the next stop for the current bus.
- * Check if stop matches the chosen destination. If so, send push notification.
+ * Check if stop matches the chosen mDestination. If so, send push notification.
  */
 
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
@@ -35,8 +35,8 @@ public class AlarmService extends IntentService implements mEcCallback {
     private static final String TAG = "AlarmService";
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up
     private static final int POLL_INTERVAL = 1000 * 30;
-    private static String busID = "Ericsson$Vin_Num_001";
-    private static String destination = "Lindholmen";
+    private static String mBusID = "Ericsson$Vin_Num_001";
+    private static String mDestination = "Lindholmen";
     ECClient client = new ECClient(this);
 
     public AlarmService() {
@@ -61,21 +61,21 @@ public class AlarmService extends IntentService implements mEcCallback {
             pi.cancel();
         }
 
-        busID = bus;
-        destination = dest;
+        mBusID = bus;
+        mDestination = dest;
     }
 
-    private void SendNotification() {
+    private void sendNotification() {
         Resources resources = getResources();
         Intent i = MainActivity.newIntent(this);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
         //Strings should be in resources, not hardcoded
         Notification notification = new NotificationCompat.Builder(this)
-                .setTicker(getString(R.string.AlarmTicker))
+                .setTicker(getString(R.string.alarm_ticker))
                 .setSmallIcon(android.R.drawable.ic_menu_report_image)
-                .setContentTitle(getString(R.string.AlarmTitle))
-                .setContentText(getString(R.string.AlarmText))
+                .setContentTitle(getString(R.string.alarm_title))
+                .setContentText(getString(R.string.alarm_text))
                 .setContentIntent(pi)
                 .setAutoCancel(true)
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
@@ -100,20 +100,20 @@ public class AlarmService extends IntentService implements mEcCallback {
             return;
         }
 
-        Log.i(TAG, "AlarmService intent received for " + destination);
+        Log.i(TAG, "AlarmService intent received for " + mDestination);
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MILLISECOND, -POLL_INTERVAL);
 
-        client.getBusSensor(busID, calendar.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
+        client.getBusSensor(mBusID, calendar.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
     }
 
     @Override
     public void handleSensorData(List<busInfo> busInfo) {
         if (busInfo == null) return;
 
-        if (busInfo.get(busInfo.size() - 1).value.equals(destination)) {
-            SendNotification();
+        if (busInfo.get(busInfo.size() - 1).value.equals(mDestination)) {
+            sendNotification();
         }
 
         for (busInfo b : busInfo) {
@@ -138,8 +138,8 @@ public class AlarmService extends IntentService implements mEcCallback {
         }
         Log.i("Result as VT: ", vtResult);
 
-        if (vtResult.equals(destination)) {
-            SendNotification();
+        if (vtResult.equals(mDestination)) {
+            sendNotification();
         }
     }
 

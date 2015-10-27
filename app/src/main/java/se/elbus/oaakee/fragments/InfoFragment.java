@@ -17,8 +17,8 @@ import se.elbus.oaakee.R;
 import se.elbus.oaakee.buses.Buses;
 import se.elbus.oaakee.buses.WifiFinder;
 import se.elbus.oaakee.restapi.ECClient;
+import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
-import se.elbus.oaakee.restapi.VtCallback;
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
 import se.elbus.oaakee.restapi.mEcCallback;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
@@ -39,7 +39,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
+public class InfoFragment extends Fragment implements VTCallback, mEcCallback {
 
     private boolean onBus;
     private String dgwFound;
@@ -180,7 +180,7 @@ public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
             mTxtTimeLeft.setVisibility(View.INVISIBLE);
             mTxtMin.setVisibility(View.INVISIBLE);
             mTxtCenter.setVisibility(View.VISIBLE);
-            mTxtCenter.setText(R.string.ARRIVED);
+            mTxtCenter.setText(R.string.arrived);
             mTxtCenter.setTextSize(45);
 
         } else {
@@ -220,7 +220,7 @@ public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
             mTxtTimeLeft.setVisibility(View.INVISIBLE);
             mTxtMin.setVisibility(View.INVISIBLE);
             mTxtCenter.setVisibility(View.VISIBLE);
-            mTxtCenter.setText(R.string.NOW);
+            mTxtCenter.setText(R.string.now);
             mTxtCenter.setTextSize(70);
         } else {
             if (!mOnBus) {
@@ -364,7 +364,7 @@ public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
                 public void run() {
                     Log.i("### INFO", "TIMER EVENT, Checking Västtrafik API");
 
-                    mVTClient.get_journey_details(mDeparture.journeyDetailRef);
+                    mVTClient.getJourneyDetails(mDeparture.journeyDetailRef);
 
                     //Check DetectBusService to see if we're on the bus
                     if (!mHasWifiInfo) {

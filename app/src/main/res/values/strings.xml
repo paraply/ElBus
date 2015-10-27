@@ -2,7 +2,7 @@
     <string name="app_name">Åke</string>
     <string name="action_settings">Settings</string>
     <string name="current_bus_stop">My stop:</string>
-    <string name="buswifiname">ElectriCity</string>
+    <string name="wifi_name">ElectriCity</string>
 
     <string name="title_section_trip">My trip</string>
     <string name="title_section_payment">Pay</string>
@@ -22,9 +22,9 @@
     <string name="to">to</string>
     <string name="from">from</string>
     <string name="track">Track</string>
-    <string name="NOW">Now</string>
+    <string name="now">Now</string>
 
-    <string name="ARRIVED">arrived</string>
+    <string name="arrived">arrived</string>
 
     <string name="info_from">From:</string>
     <string name="info_to">To:</string>
@@ -44,9 +44,9 @@
     <string name="gps_off_warning_text">Location services off, can\'t get a fix on your location!
     </string>
 
-    <string name="AlarmTicker">Stop! Hammer time!</string>
-    <string name="AlarmTitle">Arrived</string>
-    <string name="AlarmText">The next stop is your destination. Time to get off!</string>
+    <string name="alarm_ticker">Stop! Hammer time!</string>
+    <string name="alarm_title">Arrived</string>
+    <string name="alarm_text">The next stop is your destination. Time to get off!</string>
 
 
 </resources>
