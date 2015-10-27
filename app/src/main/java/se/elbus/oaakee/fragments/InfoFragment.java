@@ -16,11 +16,11 @@ import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.buses.Buses;
 import se.elbus.oaakee.buses.WifiFinder;
-import se.elbus.oaakee.restapi.ECCallback;
 import se.elbus.oaakee.restapi.ECClient;
-import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
+import se.elbus.oaakee.restapi.VtCallback;
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
+import se.elbus.oaakee.restapi.mEcCallback;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
@@ -39,7 +39,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class InfoFragment extends Fragment implements VTCallback, ECCallback {
+public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
 
     private boolean onBus;
     private String dgwFound;
@@ -71,8 +71,8 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
     private boolean mHasWifiInfo;
     private boolean mAtDestination;
     private Context mContext;
-    private VTClient mVtClient;
-    private ECClient mEcClient;
+    private VTClient mVTClient;
+    private ECClient mECClient;
     private TextView mTxtFinishedIn;
     private TextView mTxtTimeLeft;
     private TextView mTxtMin;
@@ -342,8 +342,8 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
         }
 
         // Create REST clients
-        mVtClient = new VTClient(this);
-        mEcClient = new ECClient(this);
+        mVTClient = new VTClient(this);
+        mECClient = new ECClient(this);
 
 
         updateGui(); // Update GUI once since the timer will wait a defined amount of seconds until it starts
@@ -364,7 +364,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                 public void run() {
                     Log.i("### INFO", "TIMER EVENT, Checking Västtrafik API");
 
-                    mVtClient.get_journey_details(mDeparture.journeyDetailRef);
+                    mVTClient.get_journey_details(mDeparture.journeyDetailRef);
 
                     //Check DetectBusService to see if we're on the bus
                     if (!mHasWifiInfo) {
@@ -379,7 +379,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                                     Log.i("### INFO", "EC TIMER EVENT");
                                     Calendar hundred_seconds_old = Calendar.getInstance();
                                     hundred_seconds_old.add(Calendar.SECOND, -20);
-                                    mEcClient.get_bus_resource(DetectBusService.dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
+                                    mECClient.getBusResource(DetectBusService.dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
                                 }
                             }, 0, EC_UPDATE_TIMER_INTERVAL);
                         }
@@ -415,7 +415,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                             Log.i("### INFO", "EC TIMER EVENT");
                             Calendar hundred_seconds_old = Calendar.getInstance();
                             hundred_seconds_old.add(Calendar.SECOND, -20);
-                            ec_client.get_bus_resource(dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
+                            ec_client.getBusResource(dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
                         }
                     }, 0, EC_UPDATE_TIMER_INTERVAL);
                 }

@@ -5,7 +5,7 @@ import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
 import se.elbus.oaakee.restapi.vtmodel.LocationList;
 
-public interface VTCallback {
+public interface VtCallback {
     void handleJourneyDetails(JourneyDetail journeyDetail);
 
     void handleNearbyStops(LocationList locationList);

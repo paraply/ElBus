@@ -16,7 +16,7 @@ import retrofit.http.Query;
 
 // ********* EXAMPLE USAGE:
 
-//public class MainActivity extends AppCompatActivity implements VTCallback {
+//public class MainActivity extends AppCompatActivity implements VtCallback {
 //    VTClient vast;
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +65,10 @@ import retrofit.http.Query;
 public class VTClient {
     private static final String API_KEY = "47befa35-9616-4ee0-af17-b82dd53e8e1c";
     private static final String VT_API_URL = "http://api.vasttrafik.se/bin/rest.exe/v1";
-    VTCallback vt_callback;
+    VtCallback vt_callback;
     private VTApi vt_api;
 
-    public VTClient(VTCallback vt_callback) {
+    public VTClient(VtCallback vt_callback) {
         this.vt_callback = vt_callback;
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(VT_API_URL)

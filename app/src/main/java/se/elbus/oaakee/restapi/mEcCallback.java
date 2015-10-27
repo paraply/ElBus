@@ -4,7 +4,7 @@ import se.elbus.oaakee.restapi.ecmodel.busInfo;
 
 import java.util.List;
 
-public interface ECCallback {
+public interface mEcCallback {
     void handleSensorData(List<busInfo> busInfo);
 
     void handleSensorDataFromAllBuses(List<busInfo> busInfo);

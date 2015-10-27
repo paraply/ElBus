@@ -15,7 +15,7 @@ import android.util.Log;
 
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.restapi.ECCallback;
+import se.elbus.oaakee.restapi.mEcCallback;
 import se.elbus.oaakee.restapi.ECClient;
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
 
@@ -30,7 +30,7 @@ import java.util.List;
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
 // The activity using the service must have a method equivalent to the newIntent method in this class (for the callback from the notification)
 
-public class AlarmService extends IntentService implements ECCallback {
+public class AlarmService extends IntentService implements mEcCallback {
 
     private static final String TAG = "AlarmService";
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up
@@ -105,7 +105,7 @@ public class AlarmService extends IntentService implements ECCallback {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MILLISECOND, -POLL_INTERVAL);
 
-        client.get_bus_sensor(busID, calendar.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
+        client.getBusSensor(busID, calendar.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
     }
 
     @Override

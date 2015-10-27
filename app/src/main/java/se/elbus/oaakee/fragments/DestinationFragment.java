@@ -16,8 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
+import se.elbus.oaakee.restapi.VtCallback;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
@@ -31,10 +31,10 @@ import java.util.List;
 /**
  * Fragment for the "Choose destination"-layout
  */
-public class DestinationFragment extends Fragment implements VTCallback {
+public class DestinationFragment extends Fragment implements VtCallback {
 
     private ArrayAdapter mDestinationsListAdapter;
-    private VTClient mVtClient;
+    private VTClient mVTClient;
 
     private JourneyDetail mJourneyDetail;
     private StopLocation mStopLocation;
@@ -48,7 +48,7 @@ public class DestinationFragment extends Fragment implements VTCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mVtClient = new VTClient(this);
+        mVTClient = new VTClient(this);
     }
 
     @Nullable
@@ -98,7 +98,7 @@ public class DestinationFragment extends Fragment implements VTCallback {
             }
         });
 
-        mVtClient.get_journey_details(mDeparture.journeyDetailRef);
+        mVTClient.get_journey_details(mDeparture.journeyDetailRef);
 
         String white = "#ffffff";
         String backgroundColor = mDeparture.fgColor;
