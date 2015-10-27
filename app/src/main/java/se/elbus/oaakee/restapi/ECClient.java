@@ -2,6 +2,8 @@ package se.elbus.oaakee.restapi;
 
 import android.util.Base64;
 
+import se.elbus.oaakee.restapi.ecmodel.Bus_info;
+
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +14,6 @@ import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Query;
-import se.elbus.oaakee.restapi.ecmodel.Bus_info;
 
 /**
  * Created by paraply on 2015-10-05.

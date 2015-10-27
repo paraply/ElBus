@@ -13,20 +13,18 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
-import java.util.Calendar;
-import java.util.List;
-
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.ECCallback;
 import se.elbus.oaakee.restapi.ECClient;
 import se.elbus.oaakee.restapi.ecmodel.Bus_info;
 
+import java.util.Calendar;
+import java.util.List;
+
 /**
- * Created by Anton on 2015-09-30.
- * Service to repeatedly check the next stop for the current bus.
- * Check if stop matches the chosen destination.
- * If so, send push notification.
+ * Created by Anton on 2015-09-30. Service to repeatedly check the next stop for the current bus.
+ * Check if stop matches the chosen destination. If so, send push notification.
  */
 
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);

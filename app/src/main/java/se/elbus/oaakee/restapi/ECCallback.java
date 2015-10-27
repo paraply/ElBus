@@ -1,8 +1,8 @@
 package se.elbus.oaakee.restapi;
 
-import java.util.List;
-
 import se.elbus.oaakee.restapi.ecmodel.Bus_info;
+
+import java.util.List;
 
 /**
  * Created by paraply on 2015-10-05.

@@ -1,8 +1,7 @@
 package se.elbus.oaakee.buses;
 
 /**
- * This class us just used to hold the data of the individual buses. <p> Created by TH on
- * 2015-09-27.
+ * This class us just used to hold the data of the individual buses.
  */
 public class Bus {
     public final String dgw;

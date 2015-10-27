@@ -41,7 +41,8 @@
     <string name="press_for_ticket">press to pay</string>
     <string name="time_never">Never</string>
     <string name="empty_charge">0 kr</string>
-    <string name="gps_off_warning_text">Location services off, can\'t get a fix on your location!</string>
+    <string name="gps_off_warning_text">Location services off, can\'t get a fix on your location!
+    </string>
 
     <string name="AlarmTicker">Stop! Hammer time!</string>
     <string name="AlarmTitle">Arrived</string>
