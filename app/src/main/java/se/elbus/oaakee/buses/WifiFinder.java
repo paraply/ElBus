@@ -9,19 +9,19 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 
 /**
- * This class is used to scan wifi networks to find the closest bus. Created by TH on 2015-09-27.
+ * This class is used to scan wifi networks to find the closest bus.
  */
 public abstract class WifiFinder extends BroadcastReceiver {
-    private final String wifiName;
+    private final String mWifiName;
 
     /**
      * Constructor for the class.
      *
      * @param context  is the context to first scan wifi from.
-     * @param wifiName is the exact name of the network to find.
+     * @param mWifiName is the exact name of the network to find.
      */
-    public WifiFinder(Context context, String wifiName) {
-        this.wifiName = wifiName;
+    public WifiFinder(Context context, String mWifiName) {
+        this.mWifiName = mWifiName;
         this.scan(context);
     }
 
@@ -70,7 +70,7 @@ public abstract class WifiFinder extends BroadcastReceiver {
              * It it matches and we don't have anything, we save it.
              * If we find another one with a better signal, that one will replace the previous one.
              */
-            if (sr.SSID.contentEquals(wifiName)) {
+            if (sr.SSID.contentEquals(mWifiName)) {
                 if (result == null) {
                     result = sr;
                 } else {
@@ -98,7 +98,7 @@ public abstract class WifiFinder extends BroadcastReceiver {
             return;
         }
         Log.i("WifiFinder", "Found " + wifi.BSSID);
-        Bus bus = Buses.findByMac(wifi.BSSID);
+        Bus bus = Buses.findBusByMac(wifi.BSSID);
         receiveDgw(bus.dgw);
     }
 
