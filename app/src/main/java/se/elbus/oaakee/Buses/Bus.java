@@ -1,4 +1,4 @@
-package se.elbus.oaakee.Buses;
+package se.elbus.oaakee.buses;
 
 /**
  * This class us just used to hold the data of the individual buses. <p> Created by TH on

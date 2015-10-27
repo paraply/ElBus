@@ -1,7 +1,6 @@
-package se.elbus.oaakee.Fragments;
+package se.elbus.oaakee.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 public interface FragmentSwitchCallbacks {
     void nextFragment(Bundle bundle);

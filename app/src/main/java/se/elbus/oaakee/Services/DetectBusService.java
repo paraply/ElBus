@@ -1,4 +1,4 @@
-package se.elbus.oaakee.Services;
+package se.elbus.oaakee.services;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -10,11 +10,11 @@ import android.util.Log;
 
 import java.util.Calendar;
 
-import se.elbus.oaakee.Buses.WifiFinder;
+import se.elbus.oaakee.buses.WifiFinder;
 import se.elbus.oaakee.R;
 
 /**
- * Created by Anton on 2015-10-11.
+ * Created by Anton on 2015-10-11..
  */
 public class DetectBusService extends IntentService {
 
@@ -41,7 +41,7 @@ public class DetectBusService extends IntentService {
 
     public static void setServiceAlarm(Context context, boolean isOn, String s, String d, String t, String l) {
         //Check if nothing differs from last time setServiceAlarm was called
-        if(s.equals(source) && d.equals(destination) && t.equals(time) && l.equals(line)){
+        if (s.equals(source) && d.equals(destination) && t.equals(time) && l.equals(line)) {
             return;
         }
 
@@ -52,9 +52,9 @@ public class DetectBusService extends IntentService {
         Intent i = AlarmService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
 
-        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        if(isOn) {
+        if (isOn) {
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), POLL_INTERVAL, pi);
         } else {
             alarmManager.cancel(pi);
@@ -81,8 +81,8 @@ public class DetectBusService extends IntentService {
                  *  This should probably be done somewhere else.
                  *  Should also check if bus we think we're on matches the choice made.
                  *  Does not matter for prototype since we only target line 55.
-                */
-                if(!onBus) {
+                 */
+                if (!onBus) {
                     AlarmService.setServiceAlarm(DetectBusService.this, true, dgwFound, destination);
                     onBus = true;
                 }

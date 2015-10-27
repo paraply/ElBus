@@ -1,4 +1,4 @@
-package se.elbus.oaakee.Fragments;
+package se.elbus.oaakee.fragments;
 
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
@@ -22,20 +22,18 @@ import se.elbus.oaakee.R;
 /**
  * Created by TH on 2015-10-05.
  */
-public class PaymentFragment  extends Fragment {
+public class PaymentFragment extends Fragment {
 
+    private final long TICKET_TIME = 125000; // 2 minutes and 5 seconds.
+    private final double TICKET_COST = 10;
     private ImageButton mTicketButton;
     private ProgressBar mProgressbar;
     private TextView mTimeLeftText;
     private LinearLayout mTimeLeftViews;
     private TextView mCurrencyView;
     private TextView mHistoryView;
-
     private CountDownTimer mTimer;
     private ObjectAnimator mAnim;
-
-    private final long TICKET_TIME = 125000; // 2 minutes and 5 seconds.
-    private final double TICKET_COST = 10;
     private long mValidTo = 0;
     private double mCharge = 200;
 
@@ -57,7 +55,7 @@ public class PaymentFragment  extends Fragment {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCharge > TICKET_COST){
+                if (mCharge > TICKET_COST) {
                     mCharge -= TICKET_COST;
                     mValidTo = System.currentTimeMillis() + TICKET_TIME;
                     hasTicket();
@@ -72,9 +70,9 @@ public class PaymentFragment  extends Fragment {
     @Override
     public void onPause() {
         super.onDetach();
-        if(mAnim != null)
+        if (mAnim != null)
             mAnim.cancel();
-        if(mTimer != null){
+        if (mTimer != null) {
             mTimer.cancel();
             mTimer.onFinish();
         }
@@ -87,7 +85,7 @@ public class PaymentFragment  extends Fragment {
 
         final long time = (mValidTo - System.currentTimeMillis());
 
-        if (time < 0){
+        if (time < 0) {
             hasNotTicket();
             return;
         }
@@ -95,7 +93,7 @@ public class PaymentFragment  extends Fragment {
         /*
         This will update the minute text once every 5 seconds.
          */
-        mTimer = new CountDownTimer(time,5000) {
+        mTimer = new CountDownTimer(time, 5000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 mTimeLeftText.setText(millisToMinutes(millisUntilFinished));
@@ -138,7 +136,7 @@ public class PaymentFragment  extends Fragment {
         mCurrencyView.setText(formatter.format(mCharge));
     }
 
-    private void updateLastTicket(){
+    private void updateLastTicket() {
         mHistoryView.setText(DateFormat.getInstance().format(System.currentTimeMillis()));
     }
 }

@@ -1,21 +1,15 @@
-package se.elbus.oaakee.Fragments;
+package se.elbus.oaakee.fragments;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -25,24 +19,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.REST_API.VT_Callback;
-import se.elbus.oaakee.REST_API.VT_Client;
-import se.elbus.oaakee.REST_API.VT_Model.Departure;
-import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
-import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
-import se.elbus.oaakee.REST_API.VT_Model.LocationList;
-import se.elbus.oaakee.REST_API.VT_Model.Stop;
-import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
+import se.elbus.oaakee.restapi.VTCallback;
+import se.elbus.oaakee.restapi.VTClient;
+import se.elbus.oaakee.restapi.vtmodel.Departure;
+import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
+import se.elbus.oaakee.restapi.vtmodel.LocationList;
+import se.elbus.oaakee.restapi.vtmodel.Stop;
+import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
 /**
  * Fragment for the "Choose destination"-layout
  * Created by Tobias on 15-09-30.
  */
-public class DestinationFragment extends Fragment implements VT_Callback {
+public class DestinationFragment extends Fragment implements VTCallback {
 
     private ListView mDestinationsListView;
     private ArrayAdapter mDestinationsListAdapter;
-    private VT_Client vtClient;
+    private VTClient vtClient;
 
     private Departure mDeparture;
     private JourneyDetail mJourneyDetail;
@@ -57,7 +51,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        vtClient = new VT_Client(this);
+        vtClient = new VTClient(this);
     }
 
     @Nullable
@@ -112,8 +106,8 @@ public class DestinationFragment extends Fragment implements VT_Callback {
         String white = "#ffffff";
         String backgroundColor = mDeparture.fgColor;
         mTransportLineName.setTextColor(Color.parseColor(white));
-        Log.i("DEST","Color white: " + mDeparture.fgColor + ", " + mDeparture.sname);
-        if (mDeparture.fgColor.equals(white)){
+        Log.i("DEST", "Color white: " + mDeparture.fgColor + ", " + mDeparture.sname);
+        if (mDeparture.fgColor.equals(white)) {
             backgroundColor = "#DBDBDB"; //grey if background white
         }
         mTransportLineName.getBackground().setColorFilter(Color.parseColor(backgroundColor), PorterDuff.Mode.MULTIPLY);
@@ -135,7 +129,7 @@ public class DestinationFragment extends Fragment implements VT_Callback {
     }
 
     // **************************
-    // VT_Callback implementation
+    // VTCallback implementation
     // **************************
     @Override
     public void got_journey_details(JourneyDetail journeyDetail) {

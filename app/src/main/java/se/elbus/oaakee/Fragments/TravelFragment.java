@@ -1,11 +1,10 @@
-package se.elbus.oaakee.Fragments;
+package se.elbus.oaakee.fragments;
 
 import android.content.Context;
-import android.location.Criteria;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,12 +13,10 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -33,34 +30,28 @@ import java.util.Calendar;
 import java.util.List;
 
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.REST_API.VT_Callback;
-import se.elbus.oaakee.REST_API.VT_Client;
-import se.elbus.oaakee.REST_API.VT_Model.Departure;
-import se.elbus.oaakee.REST_API.VT_Model.DepartureBoard;
-import se.elbus.oaakee.REST_API.VT_Model.JourneyDetail;
-import se.elbus.oaakee.REST_API.VT_Model.LocationList;
-import se.elbus.oaakee.REST_API.VT_Model.StopLocation;
+import se.elbus.oaakee.restapi.VTCallback;
+import se.elbus.oaakee.restapi.VTClient;
+import se.elbus.oaakee.restapi.vtmodel.Departure;
+import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
+import se.elbus.oaakee.restapi.vtmodel.LocationList;
+import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
-public class TravelFragment extends Fragment implements VT_Callback, LocationListener {
+public class TravelFragment extends Fragment implements VTCallback, LocationListener {
 
-    private Spinner mBusStops;
-    private ArrayAdapter<String> mBusStopsAdapter;
-
-    private ListView mDeparturesList;
-    private ArrayAdapter<String> mDepartureListAdapter;
-
-    private List<List<Departure>> departuresSorted;
-    private ArrayAdapter<List<Departure>> mDeparturesAdapter;
-
-    private VT_Client vtClient;
     private static final String TAG = "Travel";
-
     private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
     private final int LOCATION_ACCURACY = Criteria.ACCURACY_LOW; // "For horizontal and vertical position this corresponds roughly to an accuracy of greater than 500 meters."
-
     double mSimulatorLongitude = 11.972305;
     double mSimulatorLatitude = 57.707792;
-
+    private Spinner mBusStops;
+    private ArrayAdapter<String> mBusStopsAdapter;
+    private ListView mDeparturesList;
+    private ArrayAdapter<String> mDepartureListAdapter;
+    private List<List<Departure>> departuresSorted;
+    private ArrayAdapter<List<Departure>> mDeparturesAdapter;
+    private VTClient vtClient;
     private List<StopLocation> busStops; //With removed duplicates
 
     private FragmentSwitchCallbacks mFragmentSwitcher;
@@ -72,15 +63,15 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         super.onCreate(savedInstanceState);
         savedState = new Bundle();
         departuresSorted = new ArrayList<>();
-        vtClient = new VT_Client(this);
+        vtClient = new VTClient(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        try{
+        try {
             getLocation(LATEST_LOCATION_TIME_MILLIS, LOCATION_ACCURACY);
-        }catch (SecurityException e){
+        } catch (SecurityException e) {
             Log.e(TAG, e.getLocalizedMessage());
         }
 
@@ -126,35 +117,36 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
     /**
      * This will register this as a listener if it can't find an acceptably old location.
      * It will call the listener method if it found an "old", acceptable location.
+     *
      * @param maxLocationAgeMillis is the maximum age of the location in milliseconds.
-     * @param locationAccuracy is the acceptable accuracy to have when getting the position.
+     * @param locationAccuracy     is the acceptable accuracy to have when getting the position.
      * @throws SecurityException
      */
-    private void getLocation(long maxLocationAgeMillis, int locationAccuracy) throws SecurityException{
+    private void getLocation(long maxLocationAgeMillis, int locationAccuracy) throws SecurityException {
         Criteria locationCriteria = new Criteria();
         locationCriteria.setAccuracy(locationAccuracy);
 
         LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         String bestProvider = manager.getBestProvider(locationCriteria, false);
         Location fastLocation;
-        if(Build.FINGERPRINT.startsWith("generic")){
+        if (Build.FINGERPRINT.startsWith("generic")) {
             fastLocation = new Location(bestProvider);
             fastLocation.setLatitude(mSimulatorLatitude);
             fastLocation.setLongitude(mSimulatorLongitude);
             fastLocation.setTime(System.currentTimeMillis());
-        }else{
+        } else {
             fastLocation = manager.getLastKnownLocation(bestProvider);
         }
 
         /*
          If a long time has passed since the last scan.
          */
-        if(fastLocation == null || fastLocation.getTime() + maxLocationAgeMillis < System.currentTimeMillis()){
-            if(!manager.isProviderEnabled(bestProvider)){
+        if (fastLocation == null || fastLocation.getTime() + maxLocationAgeMillis < System.currentTimeMillis()) {
+            if (!manager.isProviderEnabled(bestProvider)) {
                 warnGpsOff();
             }
             manager.requestSingleUpdate(locationCriteria, this, Looper.myLooper());
-        }else {
+        } else {
             onLocationChanged(fastLocation);
         }
     }
@@ -179,18 +171,18 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         List<StopLocation> stops1 = new ArrayList<>();
         boolean contains;
 
-        for (StopLocation s: locationList.stoplocation){
+        for (StopLocation s : locationList.stoplocation) {
             String stopName = s.name;
 
             contains = false;
 
-            for (StopLocation d: stops1){
+            for (StopLocation d : stops1) {
                 if ((stopName.equals(d.name))) {
                     contains = true;
                 }
             }
 
-            if (!contains){
+            if (!contains) {
                 stops1.add(s);
             }
         }
@@ -199,7 +191,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
         busStops = stops;
 
-        for (StopLocation s : busStops){
+        for (StopLocation s : busStops) {
             mDepartureListAdapter.add(s.getNameWithoutCity());
         }
         mBusStops.setAdapter(mDepartureListAdapter);
@@ -212,27 +204,27 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
         List<String> shortName = new ArrayList<>(); //list of unique short name sorted by departure time
 
-        for (Departure departure: allDepartures){
-            if (!(shortName.contains(departure.sname))){
+        for (Departure departure : allDepartures) {
+            if (!(shortName.contains(departure.sname))) {
                 shortName.add(departure.sname);
             }
         }
 
-        for (String s:shortName){
+        for (String s : shortName) {
             List<Departure> departures = new ArrayList<>();
 
-            for (Departure departure: allDepartures){ //loop through all departures
-                if (departure.sname.equals(s)){
+            for (Departure departure : allDepartures) { //loop through all departures
+                if (departure.sname.equals(s)) {
                     boolean alreadyInList = false;
 
-                    for (Departure d2:departures){ //Checks if direction of this departure is already in list
-                        if (departure.direction.equals(d2.direction)){
-                            alreadyInList=true;
+                    for (Departure d2 : departures) { //Checks if direction of this departure is already in list
+                        if (departure.direction.equals(d2.direction)) {
+                            alreadyInList = true;
                             break;
                         }
                     }
 
-                    if (!alreadyInList){
+                    if (!alreadyInList) {
                         departures.add(departure);
                         //Log.d(TAG,"Added: " + departure.sname + ", Dir: " + departure.direction + ", time: " + departure.time);
                     }
@@ -240,12 +232,13 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
             }
             departuresSorted.add(departures); //Adds list of departures for one single bus line number
         }
-        
+
         mDeparturesAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void got_error(String during_method, String error_msg) {}
+    public void got_error(String during_method, String error_msg) {
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -262,14 +255,17 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
         vtClient.get_nearby_stops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
 
     }
+
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
+
     @Override
     public void onProviderEnabled(String provider) {
 
     }
+
     @Override
     public void onProviderDisabled(String provider) {
 
@@ -277,7 +273,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
     /**
      * Custom adapter for departures ListView.
-     *
+     * <p/>
      * Created by Tobias on 15-09-27.
      */
     public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
@@ -292,12 +288,12 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
             List<Departure> departures = getItem(position);
 
-            TextView lineNumber = (TextView)customView.findViewById(R.id.busNumberTextView);
+            TextView lineNumber = (TextView) customView.findViewById(R.id.busNumberTextView);
 
-            if (departures.size()>0) {
+            if (departures.size() > 0) {
                 lineNumber.setText(departures.get(0).sname);
 
-                if (departures.get(0).sname.length()>3){
+                if (departures.get(0).sname.length() > 3) {
                     lineNumber.setTextSize(18);
                 }
 
@@ -305,26 +301,26 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
 
                 try {
                     String backgroundColor = (departures.get(0)).fgColor;
-                    if (backgroundColor.equals("#ffffff")){
+                    if (backgroundColor.equals("#ffffff")) {
                         backgroundColor = "#DBDBDB";
                     }
                     circle.setColorFilter(Color.parseColor(backgroundColor), PorterDuff.Mode.MULTIPLY);
-                } catch (IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     Log.e(TAG, "Failed parsing color, set to a default colour");
                     circle.setColorFilter(Color.parseColor("#CCCCCC"), PorterDuff.Mode.MULTIPLY);
                 }
             }
-            for (int i = 0; i < departures.size();i++){
+            for (int i = 0; i < departures.size(); i++) {
                 Departure departure = departures.get(i);
                 String time;
                 String date;
                 boolean addDivider = true;
 
-                if(i==departures.size()-1){
-                    addDivider=false; //last button does not need divider
+                if (i == departures.size() - 1) {
+                    addDivider = false; //last button does not need divider
                 }
 
-                if (departure.rtTime!=null){
+                if (departure.rtTime != null) {
                     time = departure.rtTime;
                     date = departure.rtDate;
                 } else {
@@ -335,14 +331,14 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
                 String minutesToDeparture;
                 try {
                     long minutes = minutesToDeparture(date, time);
-                    minutesToDeparture = ""+minutes;
-                } catch (NumberFormatException e){
+                    minutesToDeparture = "" + minutes;
+                } catch (NumberFormatException e) {
                     e.printStackTrace();
                     minutesToDeparture = "x"; //shows "x" if something goes wrong...
                 }
 
                 View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, minutesToDeparture, addDivider);
-                setButtonClick(busLineButtonView,departure);
+                setButtonClick(busLineButtonView, departure);
             }
 
             return customView;
@@ -356,7 +352,7 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
          * @return difference from current time in minutes
          * @throws NumberFormatException If date or time is in wrong format.
          */
-        private long minutesToDeparture(String date, String time) throws NumberFormatException{
+        private long minutesToDeparture(String date, String time) throws NumberFormatException {
             int year = Integer.valueOf(date.substring(0, 4));
             int month = Integer.valueOf(date.substring(5, 7));
             int day = Integer.valueOf(date.substring(8, 10));
@@ -369,13 +365,14 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
             Calendar today = Calendar.getInstance();
 
             long difference = temp.getTime().getTime() - today.getTime().getTime();
-            difference /= 1000*60; //time in minutes
+            difference /= 1000 * 60; //time in minutes
 
             return difference;
         }
 
         /**
          * Created button for bus line departure
+         *
          * @param parentView
          * @param layoutInflater
          * @param parent
@@ -383,48 +380,50 @@ public class TravelFragment extends Fragment implements VT_Callback, LocationLis
          * @param time
          * @return
          */
-        private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time, boolean addDivider){
-            View busLineButtonView = layoutInflater.inflate(R.layout.busline_button,parent,false);
+        private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time, boolean addDivider) {
+            View busLineButtonView = layoutInflater.inflate(R.layout.busline_button, parent, false);
 
-            LinearLayout linearLayout = (LinearLayout)parentView.findViewById(R.id.busLineButtonLayout);
+            LinearLayout linearLayout = (LinearLayout) parentView.findViewById(R.id.busLineButtonLayout);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             linearLayout.addView(busLineButtonView, layoutParams);
 
-            if(addDivider) {
+            if (addDivider) {
                 View listDivider = layoutInflater.inflate(R.layout.line_divider, parent, false);
                 linearLayout.addView(listDivider, layoutParams);
             }
 
-            setTextViewText(R.id.stationTextView, busLineButtonView,direction);
+            setTextViewText(R.id.stationTextView, busLineButtonView, direction);
 
-            if (time.equals("0")){
+            if (time.equals("0")) {
                 time = getString(R.string.NOW);
-                TextView minTextView = (TextView)busLineButtonView.findViewById(R.id.minBelowTextView);
+                TextView minTextView = (TextView) busLineButtonView.findViewById(R.id.minBelowTextView);
                 minTextView.setVisibility(View.GONE);
             }
 
-            setTextViewText(R.id.minutesTextView,busLineButtonView,time);
+            setTextViewText(R.id.minutesTextView, busLineButtonView, time);
 
             return busLineButtonView;
         }
 
         /**
          * Sets text of TextView
+         *
          * @param id
          * @param parent
          * @param text
          */
-        private void setTextViewText(int id, View parent, String text){
-            TextView textView = (TextView)parent.findViewById(id);
+        private void setTextViewText(int id, View parent, String text) {
+            TextView textView = (TextView) parent.findViewById(id);
             textView.setText(text);
         }
 
         /**
          * Sets button click
+         *
          * @param view
          */
-        private void setButtonClick(final View view, final Departure departure){
-            view.setOnClickListener(new View.OnClickListener(){
+        private void setButtonClick(final View view, final Departure departure) {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     savedState.putParcelable("trip", departure);

@@ -1,4 +1,4 @@
-package se.elbus.oaakee.REST_API.VT_Model;
+package se.elbus.oaakee.restapi.vtmodel;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
@@ -12,19 +12,17 @@ import java.util.List;
 @Root(name = "LocationList")
 public class LocationList {
 
-    public LocationList(){}
-
-    @Attribute(name="noNamespaceSchemaLocation") // Mostly unnecessary information
+    @Attribute(name = "noNamespaceSchemaLocation") // Mostly unnecessary information
     public String noNamespaceSchemaLocation;
-
-    @Attribute (name="servertime")              // The server time when request was performed
+    @Attribute(name = "servertime")              // The server time when request was performed
     public String servertime;
-
-    @Attribute (name="serverdate")              // The server date when request was performed
+    @Attribute(name = "serverdate")              // The server date when request was performed
     public String serverdate;
-
-    @ElementList (entry = "StopLocation", inline = true)
+    @ElementList(entry = "StopLocation", inline = true)
     public List<StopLocation> stoplocation; // = new ArrayList<StopLocation>()
+
+    public LocationList() {
+    }
 
 // Has coordlocation only if trip request. Maybe?
 }

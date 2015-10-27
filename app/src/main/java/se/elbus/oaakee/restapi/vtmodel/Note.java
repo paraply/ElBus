@@ -1,4 +1,4 @@
-package se.elbus.oaakee.REST_API.VT_Model;
+package se.elbus.oaakee.restapi.vtmodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,10 +8,20 @@ import org.simpleframework.xml.Attribute;
 /**
  * Created by paraply on 2015-10-04.
  */
-public class Note implements Parcelable{
+public class Note implements Parcelable {
 
-    public Note(){}
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Note> CREATOR = new Parcelable.Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
 
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
     @Attribute(name = "text") // Note text
     public String text;
 
@@ -20,6 +30,9 @@ public class Note implements Parcelable{
 
     @Attribute(name = "routeIdxTo")
     public String routeIdxTo;
+
+    public Note() {
+    }
 
     protected Note(Parcel in) {
         text = in.readString();
@@ -38,18 +51,5 @@ public class Note implements Parcelable{
         dest.writeString(routeIdxFrom);
         dest.writeString(routeIdxTo);
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Note> CREATOR = new Parcelable.Creator<Note>() {
-        @Override
-        public Note createFromParcel(Parcel in) {
-            return new Note(in);
-        }
-
-        @Override
-        public Note[] newArray(int size) {
-            return new Note[size];
-        }
-    };
 
 }

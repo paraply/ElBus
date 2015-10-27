@@ -1,4 +1,4 @@
-package se.elbus.oaakee.REST_API.VT_Model;
+package se.elbus.oaakee.restapi.vtmodel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,40 +15,53 @@ import java.util.List;
  */
 public class JourneyDetail implements Parcelable {
 
-    public JourneyDetail(){}
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<JourneyDetail> CREATOR = new Parcelable.Creator<JourneyDetail>() {
+        @Override
+        public JourneyDetail createFromParcel(Parcel in) {
+            return new JourneyDetail(in);
+        }
 
-    @Attribute(name="noNamespaceSchemaLocation")
+        @Override
+        public JourneyDetail[] newArray(int size) {
+            return new JourneyDetail[size];
+        }
+    };
+    @Attribute(name = "noNamespaceSchemaLocation")
     public String noNamespaceSchemaLocation;
 
-    @Attribute (name="servertime")
+    @Attribute(name = "servertime")
     public String servertime;
 
-    @Attribute (name="serverdate")
+    @Attribute(name = "serverdate")
     public String serverdate;
 
     @ElementList(entry = "Stop", inline = true)
     public List<Stop> stop;
 
-    @Element (name = "GeometryRef")
+    @Element(name = "GeometryRef")
     public GeometryRef geometryRef;
 
-    @ElementList (entry = "JourneyName", inline = true)
+    @ElementList(entry = "JourneyName", inline = true)
     public List<JourneyName> JourneyName;
 
-    @ElementList (entry = "JourneyType", inline = true)
+    @ElementList(entry = "JourneyType", inline = true)
     public List<JourneyType> journeyType;
 
-    @ElementList (entry = "JourneyId", inline = true)
+    @ElementList(entry = "JourneyId", inline = true)
     public List<JourneyId> journeyId;
 
-    @Element (name = "Color")
+    @Element(name = "Color")
     public Color color;
 
-    @ElementList (entry = "Note", inline =  true, required = false)
+    @ElementList(entry = "Note", inline = true, required = false)
     public Note note;
 
-    @ElementList (entry = "Direction",  inline = true, required = false)
+    @ElementList(entry = "Direction", inline = true, required = false)
     public List<Direction> direction;
+
+    public JourneyDetail() {
+    }
 
     protected JourneyDetail(Parcel in) {
         noNamespaceSchemaLocation = in.readString();
@@ -133,17 +146,4 @@ public class JourneyDetail implements Parcelable {
             dest.writeList(direction);
         }
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<JourneyDetail> CREATOR = new Parcelable.Creator<JourneyDetail>() {
-        @Override
-        public JourneyDetail createFromParcel(Parcel in) {
-            return new JourneyDetail(in);
-        }
-
-        @Override
-        public JourneyDetail[] newArray(int size) {
-            return new JourneyDetail[size];
-        }
-    };
 }
