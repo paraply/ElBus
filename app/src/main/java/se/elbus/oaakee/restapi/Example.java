@@ -2,7 +2,7 @@ package se.elbus.oaakee.restapi;
 
 import android.util.Log;
 
-import se.elbus.oaakee.restapi.ecmodel.Bus_info;
+import se.elbus.oaakee.restapi.ecmodel.busInfo;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
@@ -13,10 +13,6 @@ import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 import java.util.Calendar;
 import java.util.List;
 
-
-/**
- * Created by paraply on 2015-10-05.
- */
 public class Example implements VTCallback, ECCallback {
     VTClient vast;
     ECClient ecity;
@@ -66,29 +62,29 @@ public class Example implements VTCallback, ECCallback {
 
 
     @Override
-    public void got_sensor_data(List<Bus_info> bus_info) {
-        for (Bus_info b : bus_info) {
+    public void got_sensor_data(List<busInfo> busInfo) {
+        for (busInfo b : busInfo) {
             Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {
-        for (Bus_info b : bus_info) {
+    public void got_sensor_data_from_all_buses(List<busInfo> busInfo) {
+        for (busInfo b : busInfo) {
             Log.i("### SENSOR RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_reource_data(List<Bus_info> bus_info) {
-        for (Bus_info b : bus_info) {
+    public void got_reource_data(List<busInfo> busInfo) {
+        for (busInfo b : busInfo) {
             Log.i("### RSRC RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
-        for (Bus_info b : bus_info) {
+    public void got_reource_data_from_all_buses(List<busInfo> busInfo) {
+        for (busInfo b : busInfo) {
             Log.i("### RSRC RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }

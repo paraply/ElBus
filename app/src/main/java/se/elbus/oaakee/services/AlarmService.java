@@ -17,13 +17,13 @@ import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.ECCallback;
 import se.elbus.oaakee.restapi.ECClient;
-import se.elbus.oaakee.restapi.ecmodel.Bus_info;
+import se.elbus.oaakee.restapi.ecmodel.busInfo;
 
 import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Anton on 2015-09-30. Service to repeatedly check the next stop for the current bus.
+ * Service to repeatedly check the next stop for the current bus.
  * Check if stop matches the chosen destination. If so, send push notification.
  */
 
@@ -108,38 +108,38 @@ public class AlarmService extends IntentService implements ECCallback {
     }
 
     @Override
-    public void got_sensor_data(List<Bus_info> bus_info) {
-        if (bus_info == null) return;
+    public void got_sensor_data(List<busInfo> busInfo) {
+        if (busInfo == null) return;
 
-        if (bus_info.get(bus_info.size() - 1).value.equals(destination)) {
+        if (busInfo.get(busInfo.size() - 1).value.equals(destination)) {
             SendNotification();
         }
 
-        for (Bus_info b : bus_info) {
+        for (busInfo b : busInfo) {
             Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {
-        if (bus_info == null) return;
-        for (Bus_info b : bus_info) {
+    public void got_sensor_data_from_all_buses(List<busInfo> busInfo) {
+        if (busInfo == null) return;
+        for (busInfo b : busInfo) {
             Log.i("### SENSOR RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_reource_data(List<Bus_info> bus_info) {
-        if (bus_info == null) return;
-        for (Bus_info b : bus_info) {
+    public void got_reource_data(List<busInfo> busInfo) {
+        if (busInfo == null) return;
+        for (busInfo b : busInfo) {
             Log.i("### RSRC RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
-        if (bus_info == null) return;
-        for (Bus_info b : bus_info) {
+    public void got_reource_data_from_all_buses(List<busInfo> busInfo) {
+        if (busInfo == null) return;
+        for (busInfo b : busInfo) {
             Log.i("### RSRC RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
