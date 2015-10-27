@@ -14,9 +14,6 @@ import retrofit.converter.SimpleXMLConverter;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
-/**
- * Created by paraply on 2015-10-04.
- */
 // ********* EXAMPLE USAGE:
 
 //public class MainActivity extends AppCompatActivity implements VTCallback {

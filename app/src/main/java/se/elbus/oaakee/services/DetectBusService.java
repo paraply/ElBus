@@ -13,9 +13,6 @@ import se.elbus.oaakee.buses.WifiFinder;
 
 import java.util.Calendar;
 
-/**
- * Created by Anton on 2015-10-11..
- */
 public class DetectBusService extends IntentService {
 
     private static final String TAG = "DetectBusService";

@@ -20,7 +20,7 @@ import se.elbus.oaakee.restapi.ECCallback;
 import se.elbus.oaakee.restapi.ECClient;
 import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
-import se.elbus.oaakee.restapi.ecmodel.Bus_info;
+import se.elbus.oaakee.restapi.ecmodel.busInfo;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
@@ -445,23 +445,23 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
     }
 
     @Override
-    public void got_sensor_data(List<Bus_info> bus_info) {
+    public void got_sensor_data(List<busInfo> busInfo) {
     }
 
     @Override
-    public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {
+    public void got_sensor_data_from_all_buses(List<busInfo> busInfo) {
     }
 
     @Override
-    public void got_reource_data(List<Bus_info> bus_info) {
-        if (bus_info == null) return;
-        Bus_info b = bus_info.get(bus_info.size() - 1);
+    public void got_reource_data(List<busInfo> busInfo) {
+        if (busInfo == null) return;
+        busInfo b = busInfo.get(busInfo.size() - 1);
         Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         setStopBtnPressed(b.value.equals("true"));
     }
 
     @Override
-    public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
+    public void got_reource_data_from_all_buses(List<busInfo> busInfo) {
     }
 
     @Override
