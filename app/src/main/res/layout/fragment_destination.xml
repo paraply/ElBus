@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -18,11 +18,11 @@
             android:id="@+id/transportLineName"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:gravity="center_horizontal|center_vertical"
             android:background="@drawable/bus_number_circle"
+            android:gravity="center_horizontal|center_vertical"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/text_color_white"
-            tools:text="99"/>
+            tools:text="99" />
 
         <TextView
             android:id="@+id/transportLineDirection"
@@ -38,7 +38,7 @@
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            tools:text="Riktning"/>
+            tools:text="Riktning" />
 
     </LinearLayout>
 
@@ -46,12 +46,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
         android:layout_marginBottom="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_normal"
         android:layout_marginLeft="@dimen/spacing_normal"
-        android:layout_marginStart="@dimen/spacing_normal"
         android:layout_marginRight="@dimen/spacing_normal"
-        android:layout_marginEnd="@dimen/spacing_normal">
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textFrom"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="@string/from"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/transportFromStop"
@@ -72,7 +72,7 @@
             android:paddingRight="@dimen/spacing_tiny"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
-            tools:text="Hållplats"/>
+            tools:text="Hållplats" />
 
     </LinearLayout>
 
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="@string/text_want_to_go_to"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </LinearLayout>
 
@@ -102,5 +102,5 @@
         android:layout_marginEnd="@dimen/spacing_small"
         android:layout_marginLeft="@dimen/spacing_small"
         android:layout_marginRight="@dimen/spacing_small"
-        android:layout_marginStart="@dimen/spacing_small"/>
+        android:layout_marginStart="@dimen/spacing_small" />
 </LinearLayout>

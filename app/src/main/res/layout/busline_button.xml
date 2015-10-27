@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/spacing_tiny"
     android:paddingRight="@dimen/spacing_normal"
-    android:paddingTop="@dimen/spacing_tiny"
-    android:paddingBottom="@dimen/spacing_tiny">
+    android:paddingTop="@dimen/spacing_tiny">
 
     <TextView
+        android:id="@+id/stationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/stationTextView"
-        android:layout_gravity="center_vertical"
-        android:textSize="19.71sp"
-        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/timeLeftLinearLayout"
-        android:layout_toLeftOf="@+id/timeLeftLinearLayout"
-        android:maxLines="1"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="14dp"
         android:layout_marginTop="14dp"
-        android:layout_marginBottom="14dp" />
+        android:layout_toLeftOf="@+id/timeLeftLinearLayout"
+        android:layout_toStartOf="@+id/timeLeftLinearLayout"
+        android:maxLines="1"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="19.71sp" />
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/timeLeftLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:measureWithLargestChild="false"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/timeLeftLinearLayout"
-        android:layout_marginLeft="@dimen/spacing_tiny">
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/spacing_tiny"
+        android:measureWithLargestChild="false"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
             android:id="@+id/minutesTextView"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="min"
+            android:layout_gravity="center_horizontal"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
             android:id="@+id/minBelowTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:layout_gravity="center_horizontal" />
+            android:text="min"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 </RelativeLayout>
