@@ -8,10 +8,10 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.util.Log;
 
-import java.util.Calendar;
-
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.buses.WifiFinder;
+
+import java.util.Calendar;
 
 /**
  * Created by Anton on 2015-10-11..

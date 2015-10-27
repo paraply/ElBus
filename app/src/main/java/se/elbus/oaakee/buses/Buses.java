@@ -3,14 +3,14 @@ package se.elbus.oaakee.buses;
 import android.content.Context;
 import android.content.res.Resources;
 
+import se.elbus.oaakee.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import se.elbus.oaakee.R;
-
 /**
  * This class is used to store all the buses in a practical way. (Might use more memory than it has
- * to) TODO: Find a replacement. Created by TH on 2015-09-27.
+ * to) TODO: Find a replacement.
  */
 public class Buses {
     private static List<Bus> sBuses;

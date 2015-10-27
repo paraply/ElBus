@@ -25,10 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
@@ -37,6 +33,10 @@ import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
 import se.elbus.oaakee.restapi.vtmodel.LocationList;
 import se.elbus.oaakee.restapi.vtmodel.StopLocation;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class TravelFragment extends Fragment implements VTCallback, LocationListener {
 
@@ -115,12 +115,11 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     }
 
     /**
-     * This will register this as a listener if it can't find an acceptably old location.
-     * It will call the listener method if it found an "old", acceptable location.
+     * This will register this as a listener if it can't find an acceptably old location. It will
+     * call the listener method if it found an "old", acceptable location.
      *
      * @param maxLocationAgeMillis is the maximum age of the location in milliseconds.
      * @param locationAccuracy     is the acceptable accuracy to have when getting the position.
-     * @throws SecurityException
      */
     private void getLocation(long maxLocationAgeMillis, int locationAccuracy) throws SecurityException {
         Criteria locationCriteria = new Criteria();
@@ -272,9 +271,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     }
 
     /**
-     * Custom adapter for departures ListView.
-     * <p/>
-     * Created by Tobias on 15-09-27.
+     * Custom adapter for departures ListView. <p/> Created by Tobias on 15-09-27.
      */
     public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
         public DeparturesAdapter(Context context, List<List<Departure>> departures) {
@@ -372,13 +369,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         /**
          * Created button for bus line departure
-         *
-         * @param parentView
-         * @param layoutInflater
-         * @param parent
-         * @param direction
-         * @param time
-         * @return
          */
         private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time, boolean addDivider) {
             View busLineButtonView = layoutInflater.inflate(R.layout.busline_button, parent, false);
@@ -407,10 +397,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         /**
          * Sets text of TextView
-         *
-         * @param id
-         * @param parent
-         * @param text
          */
         private void setTextViewText(int id, View parent, String text) {
             TextView textView = (TextView) parent.findViewById(id);
@@ -419,8 +405,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         /**
          * Sets button click
-         *
-         * @param view
          */
         private void setButtonClick(final View view, final Departure departure) {
             view.setOnClickListener(new View.OnClickListener() {
