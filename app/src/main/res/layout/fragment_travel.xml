@@ -16,19 +16,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/spacing_normal"
             android:clickable="false"
             android:singleLine="false"
             android:text="@string/current_bus_stop"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/text_color_black"
-            android:layout_marginLeft="@dimen/spacing_normal"/>
+            android:textColor="@color/text_color_black" />
 
         <Spinner
             android:id="@+id/busStopSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/spacing_normal" />
     </LinearLayout>
 
 

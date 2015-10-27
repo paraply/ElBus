@@ -10,8 +10,8 @@ import android.util.Log;
 
 import java.util.Calendar;
 
-import se.elbus.oaakee.buses.WifiFinder;
 import se.elbus.oaakee.R;
+import se.elbus.oaakee.buses.WifiFinder;
 
 /**
  * Created by Anton on 2015-10-11..
