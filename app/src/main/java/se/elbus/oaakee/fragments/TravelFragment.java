@@ -26,8 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.restapi.VTCallback;
-import se.elbus.oaakee.restapi.VTClient;
+import se.elbus.oaakee.restapi.VtCallback;
+import se.elbus.oaakee.restapi.VtClient;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class TravelFragment extends Fragment implements VTCallback, LocationListener {
+public class TravelFragment extends Fragment implements VtCallback, LocationListener {
 
     private static final String TAG = "Travel";
     private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
@@ -52,7 +52,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     private ArrayAdapter<String> mDepartureListAdapter;
     private List<List<Departure>> mDeparturesSorted;
     private ArrayAdapter<List<Departure>> mDeparturesAdapter;
-    private VTClient mVtClient;
+    private VtClient mVtClient;
     private List<StopLocation> mBusStopList; //With removed duplicates
 
     private FragmentSwitchCallbacks mFragmentSwitcher;
@@ -64,7 +64,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         super.onCreate(savedInstanceState);
         mSavedState = new Bundle();
         mDeparturesSorted = new ArrayList<>();
-        mVtClient = new VTClient(this);
+        mVtClient = new VtClient(this);
     }
 
     @Override

@@ -16,13 +16,13 @@ import retrofit.http.Query;
 
 // ********* EXAMPLE USAGE:
 
-//public class MainActivity extends AppCompatActivity implements VTCallback {
-//    VTClient vast;
+//public class MainActivity extends AppCompatActivity implements VtCallback {
+//    VtClient vast;
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
-//        vast = new VTClient(this);
+//        vast = new VtClient(this);
 //        vast.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
 //    }
 //
@@ -62,13 +62,13 @@ import retrofit.http.Query;
 //}
 
 
-public class VTClient {
+public class VtClient {
     private static final String API_KEY = "47befa35-9616-4ee0-af17-b82dd53e8e1c";
     private static final String VT_API_URL = "http://api.vasttrafik.se/bin/rest.exe/v1";
-    VTCallback vt_callback;
+    VtCallback vt_callback;
     private VTApi vt_api;
 
-    public VTClient(VTCallback vt_callback) {
+    public VtClient(VtCallback vt_callback) {
         this.vt_callback = vt_callback;
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(VT_API_URL)
@@ -82,7 +82,7 @@ public class VTClient {
 //     Given a station ID returns all departures from that station
 //
 //     Example usage:
-//          VTClient vast = new VTClient();
+//          VtClient vast = new VtClient();
 //          vast.get_station_board("9021014031336000");
 
     public void get_departure_board(String stop_id) {
@@ -126,7 +126,7 @@ public class VTClient {
 //        Sorted by: closest stop first
 
 //        Example usage:
-//          VTClient vast = new VTClient();
+//          VtClient vast = new VtClient();
 //          vast.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
 
     public void get_nearby_stops(String lat, String lon, String max_results, String max_distance) {

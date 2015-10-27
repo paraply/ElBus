@@ -13,10 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.restapi.ECCallback;
-import se.elbus.oaakee.restapi.ECClient;
-import se.elbus.oaakee.restapi.VTCallback;
-import se.elbus.oaakee.restapi.VTClient;
+import se.elbus.oaakee.restapi.VtClient;
+import se.elbus.oaakee.restapi.mEcCallback;
+import se.elbus.oaakee.restapi.EcClient;
+import se.elbus.oaakee.restapi.VtCallback;
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
@@ -36,7 +36,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class InfoFragment extends Fragment implements VTCallback, ECCallback {
+public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
 
     private static final int VT_UPDATE_TIMER_INTERVAL = 20000; // Update Västtrafik every 20000 ms
     private static final int EC_UPDATE_TIMER_INTERVAL = 10000; // Update Electricity every 10000 ms
@@ -44,8 +44,8 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
     private boolean mHasWifiInfo;
     private boolean mAtDestination;
     private Context mContext;
-    private VTClient mVtClient;
-    private ECClient mEcClient;
+    private VtClient mVtClient;
+    private EcClient mEcClient;
     private TextView mTxtFinishedIn;
     private TextView mTxtTimeLeft;
     private TextView mTxtMin;
@@ -315,8 +315,8 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
         }
 
         // Create REST clients
-        mVtClient = new VTClient(this);
-        mEcClient = new ECClient(this);
+        mVtClient = new VtClient(this);
+        mEcClient = new EcClient(this);
 
 
         updateGui(); // Update GUI once since the timer will wait a defined amount of seconds until it starts
@@ -352,7 +352,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                                     Log.i("### INFO", "EC TIMER EVENT");
                                     Calendar hundred_seconds_old = Calendar.getInstance();
                                     hundred_seconds_old.add(Calendar.SECOND, -20);
-                                    mEcClient.get_bus_resource(DetectBusService.dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
+                                    mEcClient.getBusResource(DetectBusService.dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
                                 }
                             }, 0, EC_UPDATE_TIMER_INTERVAL);
                         }

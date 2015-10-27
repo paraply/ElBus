@@ -13,20 +13,20 @@ import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 import java.util.Calendar;
 import java.util.List;
 
-public class Example implements VTCallback, ECCallback {
-    VTClient vast;
-    ECClient ecity;
+public class Example implements VtCallback, mEcCallback {
+    VtClient vast;
+    EcClient ecity;
 
     public Example() {
-        vast = new VTClient(this);
+        vast = new VtClient(this);
         vast.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
         Calendar hundred_seconds_old = Calendar.getInstance();
         hundred_seconds_old.add(Calendar.SECOND, -100);
-        ecity = new ECClient(this);
-        ecity.get_bus_sensor("Ericsson$Vin_Num_001", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$GPS");
-        ecity.get_bus_sensor("", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$GPS");
-        ecity.get_bus_resource("Ericsson$Vin_Num_001", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Latitude_Value");
-        ecity.get_bus_resource("", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Latitude_Value");
+        ecity = new EcClient(this);
+        ecity.getBusSensor("Ericsson$Vin_Num_001", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$GPS");
+        ecity.getBusSensor("", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$GPS");
+        ecity.getBusResource("Ericsson$Vin_Num_001", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Latitude_Value");
+        ecity.getBusResource("", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Latitude_Value");
     }
 
 
