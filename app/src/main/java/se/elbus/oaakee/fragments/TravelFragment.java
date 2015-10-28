@@ -47,14 +47,16 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     double mSimulatorLongitude = 11.972305;
     double mSimulatorLatitude = 57.707792;
     private Spinner mBusStops;
-    private ArrayAdapter<String> mBusStopsAdapter;
     private ListView mDeparturesList;
+
+    private ArrayAdapter<String> mBusStopsAdapter;
     private ArrayAdapter<String> mDepartureListAdapter;
-    private List<List<Departure>> mDeparturesSorted;
     private ArrayAdapter<List<Departure>> mDeparturesAdapter;
-    private VTClient mVTClient;
+
+    private List<List<Departure>> mDeparturesSorted;
     private List<StopLocation> mBusStopList; //With removed duplicates
 
+    private VTClient mVTClient;
     private FragmentSwitchCallbacks mFragmentSwitcher;
     private Bundle mSavedState;
 
@@ -70,18 +72,9 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        try {
-            getLocation(LATEST_LOCATION_TIME_MILLIS, LOCATION_ACCURACY);
-        } catch (SecurityException e) {
-            Log.e(TAG, e.getLocalizedMessage());
-        }
-
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
 
         mBusStops = (Spinner) v.findViewById(R.id.busStopSpinner);
-
-        mBusStopsAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item); // Adapter to put source stops to gui
-        mBusStopsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         initBusStopList(mBusStops);
         mDepartureListAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item);
@@ -94,9 +87,19 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         return v;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        try {
+            getLocation(LATEST_LOCATION_TIME_MILLIS, LOCATION_ACCURACY);
+        } catch (SecurityException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
+    }
+
     private void initBusStopList(final Spinner spinner) {
 
-        spinner.setAdapter(mBusStopsAdapter); // Connects the adapter to the view
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
