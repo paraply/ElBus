@@ -89,10 +89,10 @@
     </string-array>
 
     <string-array name="bsim">
-        <item>Ericsson$Vin_Num_001</item>
+        <item>Ericsson$171234</item>
         <item>YV3U0V222FA100001</item>
         <item>EOG 001</item>
-        <item>34:23:87:6F:B5:8D</item>
+        <item>00:1f:33:3f:9d:a2</item>
         <item>hybrid</item>
     </string-array>
 </resources>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 /**
  * This class is used to scan wifi networks to find the closest bus. Created by TH on 2015-09-27.
@@ -40,7 +41,7 @@ public abstract class WifiFinder extends BroadcastReceiver {
      */
     public void scan(Context context) {
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-
+        Log.i("WifiFinder", "Looking for wifi");
         /*
         TODO: Save wifi state to change it back later.
          */
@@ -96,6 +97,7 @@ public abstract class WifiFinder extends BroadcastReceiver {
         if (wifi == null) {
             return;
         }
+        Log.i("WifiFinder", "Found " + wifi.BSSID);
         Bus bus = Buses.findByMac(wifi.BSSID);
         receiveDgw(bus.dgw);
     }

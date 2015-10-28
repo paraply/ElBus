@@ -80,6 +80,7 @@ public class AlarmService extends IntentService implements ECCallback {
                 .setContentText(getString(R.string.AlarmText))
                 .setContentIntent(pi)
                 .setAutoCancel(true)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -101,10 +102,10 @@ public class AlarmService extends IntentService implements ECCallback {
             return;
         }
 
-        Log.i(TAG, "AlarmService intent received");
+        Log.i(TAG, "AlarmService intent received for " + destination);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MILLISECOND, POLL_INTERVAL);
+        calendar.add(Calendar.MILLISECOND, -POLL_INTERVAL);
 
         client.get_bus_sensor(busID, calendar.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
     }
@@ -113,12 +114,30 @@ public class AlarmService extends IntentService implements ECCallback {
     public void got_sensor_data(List<Bus_info> bus_info) {
         if (bus_info == null) return;
 
-        if (bus_info.get(bus_info.size() - 1).value.equals(destination)) {
-            SendNotification();
-        }
-
         for (Bus_info b : bus_info) {
             Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
+        }
+
+        String lastResult = bus_info.get(bus_info.size() - 1).value;
+        lastResult = lastResult.replace(' ', '_');
+        lastResult = lastResult.replace('å', 'a');
+        lastResult = lastResult.replace('Å', 'A');
+        lastResult = lastResult.replace('ä', 'a');
+        lastResult = lastResult.replace('Ä', 'A');
+        lastResult = lastResult.replace('ö', 'o');
+        lastResult = lastResult.replace('Ö', 'O');
+        lastResult = lastResult.substring(0, lastResult.length()-1);
+        Log.i(TAG, lastResult);
+        int id = getResources().getIdentifier(lastResult, "string", getPackageName());
+        Log.i(TAG, String.valueOf(id));
+        String vtResult = "";
+        if(id!=0) {
+            vtResult = getString(id);
+        }
+        Log.i("Result as VT: ", vtResult);
+
+        if (vtResult.equals(destination)) {
+            SendNotification();
         }
     }
 

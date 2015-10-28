@@ -23,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
+import se.elbus.oaakee.buses.Buses;
+import se.elbus.oaakee.buses.WifiFinder;
 import se.elbus.oaakee.restapi.ECCallback;
 import se.elbus.oaakee.restapi.ECClient;
 import se.elbus.oaakee.restapi.VTCallback;
@@ -42,6 +44,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
     private final int VT_UPDATE_TIMER_INTERVAL = 20000; // Update Västtrafik every 20000 ms
     private final int EC_UPDATE_TIMER_INTERVAL = 10000; // Update Electricity every 10000 ms
     private boolean onBus;
+    private String dgwFound;
     private boolean got_bus_info_from_wifi;
     private boolean arrived_at_destination;
     private MainActivity parent;
@@ -339,6 +342,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                     vt_client.get_journey_details(departure_from_board.journeyDetailRef);
 
                     //Check DetectBusService to see if we're on the bus
+                    /*
                     if (!got_bus_info_from_wifi) {
                         if (DetectBusService.onBus) {
                             AlarmService.setServiceAlarm(getActivity(), true, DetectBusService.dgwFound, destination.name);
@@ -356,14 +360,46 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                             }, 0, EC_UPDATE_TIMER_INTERVAL);
                         }
                     }
+                    */
                 }
             }, 0, VT_UPDATE_TIMER_INTERVAL);
 
         } else {
             Log.i("### INFO", "has arrived at destination");
-
         }
-        DetectBusService.setServiceAlarm(getActivity(), true, source.name, destination.name, departure_from_board.time, departure_from_board.name);
+
+        Log.i("### WIFI", "Checking wifi now");
+        //Check wififinder for connection
+        Buses.initBuses(getActivity());
+        WifiFinder wifiFinder = new WifiFinder(getActivity(), "ElBus") {
+            @Override
+            // Found an Dgw close to us. We assume we are on this bus
+            public void receiveDgw(String dgw) {
+                Log.i("### INFO", "Found Wifi, dgw: " + dgw);
+                /**
+                 *  Should also check if bus we think we're on matches the choice made.
+                 *  Does not matter for prototype since we only target line 55.
+                 */
+                if(!onBus) {
+                    AlarmService.setServiceAlarm(getActivity(), true, dgw, destination.name);
+                    onBus = true;
+                    got_bus_info_from_wifi = true;
+                    dgwFound = dgw;
+                    ec_update_timer = new Timer();
+                    ec_update_timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            Log.i("### INFO", "EC TIMER EVENT");
+                            Calendar hundred_seconds_old = Calendar.getInstance();
+                            hundred_seconds_old.add(Calendar.SECOND, -20);
+                            ec_client.get_bus_resource(dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
+                        }
+                    }, 0, EC_UPDATE_TIMER_INTERVAL);
+                }
+            }
+        };
+
+        //DetectBusService.setServiceAlarm(getActivity(), true, source.name, destination.name, departure_from_board.time, departure_from_board.name);
 
         return view;
     }
