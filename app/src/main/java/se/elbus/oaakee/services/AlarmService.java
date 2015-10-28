@@ -80,6 +80,7 @@ public class AlarmService extends IntentService implements ECCallback {
                 .setContentText(getString(R.string.AlarmText))
                 .setContentIntent(pi)
                 .setAutoCancel(true)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
