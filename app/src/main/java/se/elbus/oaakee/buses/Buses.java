@@ -36,6 +36,7 @@ public class Buses {
         temp.add(resources.getStringArray(R.array.b8));
         temp.add(resources.getStringArray(R.array.b9));
         temp.add(resources.getStringArray(R.array.b10));
+        temp.add(resources.getStringArray(R.array.bsim));
 
         sBuses = new ArrayList<>();
 
