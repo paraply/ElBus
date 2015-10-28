@@ -14,7 +14,6 @@ import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -46,6 +45,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
     double mSimulatorLongitude = 11.972305;
     double mSimulatorLatitude = 57.707792;
+
     private Spinner mBusStops;
     private ListView mDeparturesList;
 
@@ -59,14 +59,17 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     private FragmentSwitchCallbacks mFragmentSwitcher;
     private Bundle mSavedState;
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mFragmentSwitcher = (FragmentSwitchCallbacks) context;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSavedState = new Bundle();
         mVTClient = new VTClient(this);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -85,21 +88,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         return v;
     }
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.i(TAG, "Spinner clicked: " + mBusStops.getSelectedItem().toString() + ", Position: " + position);
-
-        StopLocation source = mBusStopList.get(position);
-
-        mSavedState.putParcelable("source", source);
-        mVTClient.getDepartureBoard(source.id);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        Log.i(TAG, "Spinner nothing selected");
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
 
@@ -110,57 +98,10 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         }
     }
 
-    /**
-     * This will register this as a listener if it can't find an acceptably old location. It will
-     * call the listener method if it found an "old", acceptable location.
-     *
-     * @param maxLocationAgeMillis is the maximum age of the location in milliseconds.
-     * @param locationAccuracy     is the acceptable accuracy to have when getting the position.
-     */
-    private void getLocation(long maxLocationAgeMillis, int locationAccuracy) throws SecurityException {
-        Criteria locationCriteria = new Criteria();
-        locationCriteria.setAccuracy(locationAccuracy);
-
-        LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        String bestProvider = manager.getBestProvider(locationCriteria, false);
-        Location fastLocation;
-        if (Build.FINGERPRINT.startsWith("generic")) {
-            fastLocation = new Location(bestProvider);
-            fastLocation.setLatitude(mSimulatorLatitude);
-            fastLocation.setLongitude(mSimulatorLongitude);
-            fastLocation.setTime(System.currentTimeMillis());
-        } else {
-            fastLocation = manager.getLastKnownLocation(bestProvider);
-        }
-
-        /*
-         If a long time has passed since the last scan.
-         */
-        if (fastLocation == null || fastLocation.getTime() + maxLocationAgeMillis < System.currentTimeMillis()) {
-            if (!manager.isProviderEnabled(bestProvider)) {
-                warnGpsOff();
-            }
-            manager.requestSingleUpdate(locationCriteria, this, Looper.myLooper());
-        } else {
-            onLocationChanged(fastLocation);
-        }
-    }
-
-    private void warnGpsOff() {
-        // TODO: Send warning to user, the GPS is off and the location might be bad.
-        Toast.makeText(getContext(), R.string.gps_off_warning_text, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void handleJourneyDetails(JourneyDetail journeyDetail) {
 
     }
-
     @Override
     public void handleNearbyStops(LocationList locationList) {
         List<StopLocation> stops1 = new ArrayList<>();
@@ -192,7 +133,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         }
         mDepartureListAdapter.notifyDataSetChanged();
     }
-
     @Override
     public void handleDepartureBoard(DepartureBoard board) {
         List<Departure> allDepartures = board.departure;
@@ -231,40 +171,80 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         mDeparturesAdapter.notifyDataSetChanged();
     }
-
     @Override
     public void handleError(String during_method, String error_msg) {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mFragmentSwitcher = (FragmentSwitchCallbacks) context;
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.i(TAG, "Spinner clicked: " + mBusStops.getSelectedItem().toString() + ", Position: " + position);
+
+        StopLocation source = mBusStopList.get(position);
+
+        mSavedState.putParcelable("source", source);
+        mVTClient.getDepartureBoard(source.id);
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Log.i(TAG, "Spinner nothing selected");
     }
 
-    /**
-     * Called when the location has changed.
-     */
     @Override
     public void onLocationChanged(Location location) {
         // TODO: Change location in GUI
         mVTClient.getNearbyStops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
 
     }
-
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
-
     @Override
     public void onProviderEnabled(String provider) {
 
     }
-
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+    /**
+     * This will register this as a listener if it can't find an acceptably old location. It will
+     * call the listener method if it found an "old", acceptable location.
+     *
+     * @param maxLocationAgeMillis is the maximum age of the location in milliseconds.
+     * @param locationAccuracy     is the acceptable accuracy to have when getting the position.
+     */
+    private void getLocation(long maxLocationAgeMillis, int locationAccuracy) throws SecurityException {
+        Criteria locationCriteria = new Criteria();
+        locationCriteria.setAccuracy(locationAccuracy);
+
+        LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        String bestProvider = manager.getBestProvider(locationCriteria, false);
+        Location fastLocation;
+        if (Build.FINGERPRINT.startsWith("generic")) {
+            fastLocation = new Location(bestProvider);
+            fastLocation.setLatitude(mSimulatorLatitude);
+            fastLocation.setLongitude(mSimulatorLongitude);
+            fastLocation.setTime(System.currentTimeMillis());
+        } else {
+            fastLocation = manager.getLastKnownLocation(bestProvider);
+        }
+
+        /*
+         If a long time has passed since the last scan.
+         */
+        if (fastLocation == null || fastLocation.getTime() + maxLocationAgeMillis < System.currentTimeMillis()) {
+            if (!manager.isProviderEnabled(bestProvider)) {
+                warnGpsOff();
+            }
+            manager.requestSingleUpdate(locationCriteria, this, Looper.myLooper());
+        } else {
+            onLocationChanged(fastLocation);
+        }
+    }
+    private void warnGpsOff() {
+        // TODO: Send warning to user, the GPS is off and the location might be bad.
+        Toast.makeText(getContext(), R.string.gps_off_warning_text, Toast.LENGTH_LONG).show();
     }
 
     /**
