@@ -38,7 +38,7 @@ import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
 import se.elbus.oaakee.restapi.vtmodel.LocationList;
 import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
-public class TravelFragment extends Fragment implements VTCallback, LocationListener {
+public class TravelFragment extends Fragment implements VTCallback, LocationListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "Travel";
     private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
@@ -49,7 +49,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     private Spinner mBusStops;
     private ListView mDeparturesList;
 
-    private ArrayAdapter<String> mBusStopsAdapter;
     private ArrayAdapter<String> mDepartureListAdapter;
     private ArrayAdapter<List<Departure>> mDeparturesAdapter;
 
@@ -75,8 +74,8 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
 
         mBusStops = (Spinner) v.findViewById(R.id.busStopSpinner);
-
-        initBusStopList(mBusStops);
+        mBusStops.setOnItemSelectedListener(this);
+        
         mDepartureListAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item);
         mDepartureListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -85,6 +84,20 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         mDeparturesList.setAdapter(mDeparturesAdapter);
 
         return v;
+    }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.i(TAG, "Spinner clicked: " + mBusStops.getSelectedItem().toString() + ", Position: " + position);
+
+        StopLocation source = mBusStopList.get(position);
+
+        mSavedState.putParcelable("source", source);
+        mVTClient.getDepartureBoard(source.id);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Log.i(TAG, "Spinner nothing selected");
     }
 
     @Override
@@ -96,26 +109,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         } catch (SecurityException e) {
             Log.e(TAG, e.getLocalizedMessage());
         }
-    }
-
-    private void initBusStopList(final Spinner spinner) {
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(TAG, "Spinner clicked: " + spinner.getSelectedItem().toString() + ", Position: " + position);
-
-                StopLocation source = mBusStopList.get(position);
-
-                mSavedState.putParcelable("source", source);
-                mVTClient.getDepartureBoard(source.id);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.i(TAG, "Spinner nothing selected");
-            }
-        });
     }
 
     /**
