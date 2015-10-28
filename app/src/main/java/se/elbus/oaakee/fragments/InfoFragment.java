@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.ECCallback;
+import se.elbus.oaakee.restapi.ECClient;
 import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
