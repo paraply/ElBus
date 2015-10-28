@@ -52,8 +52,8 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     private ArrayAdapter<String> mDepartureListAdapter;
     private ArrayAdapter<List<Departure>> mDeparturesAdapter;
 
-    private List<List<Departure>> mDeparturesSorted;
-    private List<StopLocation> mBusStopList; //With removed duplicates
+    private final List<List<Departure>> mDeparturesSorted = new ArrayList<>();
+    private final List<StopLocation> mBusStopList = new ArrayList<>(); //With removed duplicates
 
     private VTClient mVTClient;
     private FragmentSwitchCallbacks mFragmentSwitcher;
@@ -64,7 +64,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSavedState = new Bundle();
-        mDeparturesSorted = new ArrayList<>();
         mVTClient = new VTClient(this);
     }
 
@@ -73,14 +72,14 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
 
-        mBusStops = (Spinner) v.findViewById(R.id.busStopSpinner);
-        mBusStops.setOnItemSelectedListener(this);
-        
         mDepartureListAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item);
         mDepartureListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBusStops = (Spinner) v.findViewById(R.id.busStopSpinner);
+        mBusStops.setOnItemSelectedListener(this);
+        mBusStops.setAdapter(mDepartureListAdapter);
 
-        mDeparturesList = (ListView) v.findViewById(R.id.departuresListView);
         mDeparturesAdapter = new DeparturesAdapter(getContext(), mDeparturesSorted);
+        mDeparturesList = (ListView) v.findViewById(R.id.departuresListView);
         mDeparturesList.setAdapter(mDeparturesAdapter);
 
         return v;
@@ -185,12 +184,13 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         List<StopLocation> stops = stops1;
 
-        mBusStopList = stops;
+        mBusStopList.clear();
+        mBusStopList.addAll(stops);
 
         for (StopLocation s : mBusStopList) {
             mDepartureListAdapter.add(s.getNameWithoutCity());
         }
-        mBusStops.setAdapter(mDepartureListAdapter);
+        mDepartureListAdapter.notifyDataSetChanged();
     }
 
     @Override
