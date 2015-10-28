@@ -10,6 +10,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
 import se.elbus.oaakee.fragments.DestinationFragment;
 import se.elbus.oaakee.fragments.FragmentSwitchCallbacks;
 import se.elbus.oaakee.fragments.HamburgerFragment;
@@ -17,9 +20,6 @@ import se.elbus.oaakee.fragments.InfoFragment;
 import se.elbus.oaakee.fragments.PaymentFragment;
 import se.elbus.oaakee.fragments.SettingsFragment;
 import se.elbus.oaakee.fragments.TravelFragment;
-
-import java.util.ArrayList;
-import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity implements HamburgerFragment.NavigationDrawerCallbacks, FragmentSwitchCallbacks {
 

@@ -16,7 +16,7 @@ public abstract class WifiFinder extends BroadcastReceiver {
     /**
      * Constructor for the class.
      *
-     * @param context  is the context to first scan wifi from.
+     * @param context   is the context to first scan wifi from.
      * @param mWifiName is the exact name of the network to find.
      */
     public WifiFinder(Context context, String mWifiName) {

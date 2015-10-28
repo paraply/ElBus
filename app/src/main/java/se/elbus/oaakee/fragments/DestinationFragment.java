@@ -15,9 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.restapi.VtCallback;
-import se.elbus.oaakee.restapi.VtClient;
+import se.elbus.oaakee.restapi.VTCallback;
+import se.elbus.oaakee.restapi.VTClient;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
@@ -25,16 +28,13 @@ import se.elbus.oaakee.restapi.vtmodel.LocationList;
 import se.elbus.oaakee.restapi.vtmodel.Stop;
 import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Fragment for the "Choose destination"-layout
  */
-public class DestinationFragment extends Fragment implements VtCallback {
+public class DestinationFragment extends Fragment implements VTCallback {
 
     private ArrayAdapter mDestinationsListAdapter;
-    private VtClient mVtClient;
+    private VTClient mVTClient;
 
     private JourneyDetail mJourneyDetail;
     private StopLocation mStopLocation;
@@ -48,7 +48,7 @@ public class DestinationFragment extends Fragment implements VtCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mVtClient = new VtClient(this);
+        mVTClient = new VTClient(this);
     }
 
     @Nullable
@@ -98,7 +98,7 @@ public class DestinationFragment extends Fragment implements VtCallback {
             }
         });
 
-        mVtClient.getJourneyDetails(mDeparture.journeyDetailRef);
+        mVTClient.getJourneyDetails(mDeparture.journeyDetailRef);
 
         String white = "#ffffff";
         String backgroundColor = mDeparture.fgColor;
@@ -116,6 +116,7 @@ public class DestinationFragment extends Fragment implements VtCallback {
 
     /**
      * This will save the information gotten from the previous fragment.
+     *
      * @param outState is the bundle we get in onCreate and onCreateView.
      */
     @Override

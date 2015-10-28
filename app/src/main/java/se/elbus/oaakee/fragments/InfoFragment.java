@@ -12,11 +12,20 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.restapi.VtClient;
-import se.elbus.oaakee.restapi.mEcCallback;
+import se.elbus.oaakee.restapi.ECCallback;
 import se.elbus.oaakee.restapi.EcClient;
-import se.elbus.oaakee.restapi.VtCallback;
+import se.elbus.oaakee.restapi.VTCallback;
+import se.elbus.oaakee.restapi.VTClient;
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
@@ -27,16 +36,7 @@ import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 import se.elbus.oaakee.services.AlarmService;
 import se.elbus.oaakee.services.DetectBusService;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
-
-public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
+public class InfoFragment extends Fragment implements VTCallback, ECCallback {
 
     private static final int VT_UPDATE_TIMER_INTERVAL = 20000; // Update Västtrafik every 20000 ms
     private static final int EC_UPDATE_TIMER_INTERVAL = 10000; // Update Electricity every 10000 ms
@@ -44,7 +44,7 @@ public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
     private boolean mHasWifiInfo;
     private boolean mAtDestination;
     private Context mContext;
-    private VtClient mVtClient;
+    private VTClient mVTClient;
     private EcClient mEcClient;
     private TextView mTxtFinishedIn;
     private TextView mTxtTimeLeft;
@@ -218,6 +218,7 @@ public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
     /**
      * Helper method to show de difference between a [date , time] compared to Vasttrafik server [date , time]
      * We don't want to rely on that the local clock matches the servers, therefore we use the data that is always supplied from Vasttrafik
+     *
      * @return the time difference in minutes.
      */
     private long vtTimeDiff(String date_1, String time_1) {
@@ -315,7 +316,7 @@ public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
         }
 
         // Create REST clients
-        mVtClient = new VtClient(this);
+        mVTClient = new VTClient(this);
         mEcClient = new EcClient(this);
 
 
@@ -337,7 +338,7 @@ public class InfoFragment extends Fragment implements VtCallback, mEcCallback {
                 public void run() {
                     Log.i("### INFO", "TIMER EVENT, Checking Västtrafik API");
 
-                    mVtClient.getJourneyDetails(mDeparture.journeyDetailRef);
+                    mVTClient.getJourneyDetails(mDeparture.journeyDetailRef);
 
                     //Check DetectBusService to see if we're on the bus
                     if (!mHasWifiInfo) {

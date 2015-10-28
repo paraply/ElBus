@@ -2,6 +2,9 @@ package se.elbus.oaakee.restapi;
 
 import android.util.Log;
 
+import java.util.Calendar;
+import java.util.List;
+
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
@@ -10,15 +13,12 @@ import se.elbus.oaakee.restapi.vtmodel.LocationList;
 import se.elbus.oaakee.restapi.vtmodel.Stop;
 import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
-import java.util.Calendar;
-import java.util.List;
-
-public class Example implements VtCallback, mEcCallback {
-    VtClient vast;
+public class Example implements VTCallback, ECCallback {
+    VTClient vast;
     EcClient ecity;
 
     public Example() {
-        vast = new VtClient(this);
+        vast = new VTClient(this);
         vast.getNearbyStops("57.703834&", "11.966404", "30", "1000");
         Calendar hundred_seconds_old = Calendar.getInstance();
         hundred_seconds_old.add(Calendar.SECOND, -100);

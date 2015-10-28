@@ -3,10 +3,10 @@ package se.elbus.oaakee.buses;
 import android.content.Context;
 import android.content.res.Resources;
 
-import se.elbus.oaakee.R;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import se.elbus.oaakee.R;
 
 /**
  * This class is used to store all the buses in a practical way. TODO: Find a replacement.

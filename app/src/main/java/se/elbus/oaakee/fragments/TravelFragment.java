@@ -25,20 +25,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 import se.elbus.oaakee.R;
-import se.elbus.oaakee.restapi.VtCallback;
-import se.elbus.oaakee.restapi.VtClient;
+import se.elbus.oaakee.restapi.VTCallback;
+import se.elbus.oaakee.restapi.VTClient;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
 import se.elbus.oaakee.restapi.vtmodel.LocationList;
 import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-public class TravelFragment extends Fragment implements VtCallback, LocationListener {
+public class TravelFragment extends Fragment implements VTCallback, LocationListener {
 
     private static final String TAG = "Travel";
     private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
@@ -52,7 +52,7 @@ public class TravelFragment extends Fragment implements VtCallback, LocationList
     private ArrayAdapter<String> mDepartureListAdapter;
     private List<List<Departure>> mDeparturesSorted;
     private ArrayAdapter<List<Departure>> mDeparturesAdapter;
-    private VtClient mVtClient;
+    private VTClient mVTClient;
     private List<StopLocation> mBusStopList; //With removed duplicates
 
     private FragmentSwitchCallbacks mFragmentSwitcher;
@@ -64,7 +64,7 @@ public class TravelFragment extends Fragment implements VtCallback, LocationList
         super.onCreate(savedInstanceState);
         mSavedState = new Bundle();
         mDeparturesSorted = new ArrayList<>();
-        mVtClient = new VtClient(this);
+        mVTClient = new VTClient(this);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class TravelFragment extends Fragment implements VtCallback, LocationList
                 StopLocation source = mBusStopList.get(position);
 
                 mSavedState.putParcelable("source", source);
-                mVtClient.getDepartureBoard(source.id);
+                mVTClient.getDepartureBoard(source.id);
             }
 
             @Override
@@ -252,7 +252,7 @@ public class TravelFragment extends Fragment implements VtCallback, LocationList
     @Override
     public void onLocationChanged(Location location) {
         // TODO: Change location in GUI
-        mVtClient.getNearbyStops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
+        mVTClient.getNearbyStops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
 
     }
 

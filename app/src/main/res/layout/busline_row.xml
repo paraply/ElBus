@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:minHeight="90dp"
-              android:orientation="horizontal"
-              android:paddingBottom="@dimen/spacing_tiny"
-              android:paddingTop="@dimen/spacing_tiny"
-              android:weightSum="1">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="90dp"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/spacing_tiny"
+    android:paddingTop="@dimen/spacing_tiny"
+    android:weightSum="1">
 
     <TextView
-            android:id="@+id/busNumberTextView"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:layout_marginRight="@dimen/spacing_normal"
-            android:background="@drawable/bus_number_circle"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#ffffff"
-            android:textSize="26dp"/>
+        android:id="@+id/busNumberTextView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginRight="@dimen/spacing_normal"
+        android:background="@drawable/bus_number_circle"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ffffff"
+        android:textSize="26dp" />
 
     <LinearLayout
-            android:id="@+id/busLineButtonLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+        android:id="@+id/busLineButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
 
     </LinearLayout>
 </LinearLayout>

@@ -1,11 +1,6 @@
 package se.elbus.oaakee.restapi;
 
 
-import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
-import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
-import se.elbus.oaakee.restapi.vtmodel.JourneyDetailRef;
-import se.elbus.oaakee.restapi.vtmodel.LocationList;
-
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -13,16 +8,20 @@ import retrofit.client.Response;
 import retrofit.converter.SimpleXMLConverter;
 import retrofit.http.GET;
 import retrofit.http.Query;
+import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetailRef;
+import se.elbus.oaakee.restapi.vtmodel.LocationList;
 
 // ********* EXAMPLE USAGE:
 
 //public class MainActivity extends AppCompatActivity implements VtCallback {
-//    VtClient vast;
+//    VTClient vast;
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
-//        vast = new VtClient(this);
+//        vast = new VTClient(this);
 //        vast.getNearbyStops("57.703834&", "11.966404", "30", "1000");
 //    }
 //
@@ -62,13 +61,13 @@ import retrofit.http.Query;
 //}
 
 
-public class VtClient {
+public class VTClient {
     private static final String API_KEY = "47befa35-9616-4ee0-af17-b82dd53e8e1c";
     private static final String VT_API_URL = "http://api.vasttrafik.se/bin/rest.exe/v1";
-    private VtCallback VtCallback;
+    private VTCallback VtCallback;
     private VtApi mVtApi;
 
-    public VtClient(VtCallback vtCallback) {
+    public VTClient(VTCallback vtCallback) {
         this.VtCallback = vtCallback;
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(VT_API_URL)
