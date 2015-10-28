@@ -15,14 +15,14 @@ import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
 public class Example implements VTCallback, ECCallback {
     VTClient vast;
-    EcClient ecity;
+    ECClient ecity;
 
     public Example() {
         vast = new VTClient(this);
         vast.getNearbyStops("57.703834&", "11.966404", "30", "1000");
         Calendar hundred_seconds_old = Calendar.getInstance();
         hundred_seconds_old.add(Calendar.SECOND, -100);
-        ecity = new EcClient(this);
+        ecity = new ECClient(this);
         ecity.getBusSensor("Ericsson$Vin_Num_001", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$GPS");
         ecity.getBusSensor("", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$GPS");
         ecity.getBusResource("Ericsson$Vin_Num_001", hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Latitude_Value");

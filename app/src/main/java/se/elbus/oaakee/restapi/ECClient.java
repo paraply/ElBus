@@ -14,14 +14,14 @@ import retrofit.http.Header;
 import retrofit.http.Query;
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
 
-public class EcClient {
+public class ECClient {
     private static final String EC_API_URL = "https://ece01.ericsson.net:4443/";
     private final String CREDENTIALS = "grp31:C7CVFDHO48";
     private final String CREDENTIALS_BASE64 = "Basic " + Base64.encodeToString(CREDENTIALS.getBytes(), Base64.NO_WRAP);
     private ECCallback ec_callback;
     private mEcApi mEcApi;
 
-    public EcClient(ECCallback ec_callback) {
+    public ECClient(ECCallback ec_callback) {
         this.ec_callback = ec_callback;
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(EC_API_URL)

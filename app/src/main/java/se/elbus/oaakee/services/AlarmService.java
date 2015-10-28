@@ -19,7 +19,7 @@ import java.util.List;
 import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.ECCallback;
-import se.elbus.oaakee.restapi.EcClient;
+import se.elbus.oaakee.restapi.ECClient;
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
 
 /**
@@ -37,7 +37,7 @@ public class AlarmService extends IntentService implements ECCallback {
     private static final int POLL_INTERVAL = 1000 * 30;
     private static String mBusID = "Ericsson$Vin_Num_001";
     private static String mDestination = "Lindholmen";
-    EcClient client = new EcClient(this);
+    ECClient client = new ECClient(this);
 
     public AlarmService() {
         super(TAG);

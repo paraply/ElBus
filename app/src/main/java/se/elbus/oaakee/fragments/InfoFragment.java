@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.ECCallback;
-import se.elbus.oaakee.restapi.EcClient;
+import se.elbus.oaakee.restapi.ECClient;
 import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
@@ -45,7 +45,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
     private boolean mAtDestination;
     private Context mContext;
     private VTClient mVTClient;
-    private EcClient mEcClient;
+    private ECClient mECClient;
     private TextView mTxtFinishedIn;
     private TextView mTxtTimeLeft;
     private TextView mTxtMin;
@@ -317,7 +317,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
 
         // Create REST clients
         mVTClient = new VTClient(this);
-        mEcClient = new EcClient(this);
+        mECClient = new ECClient(this);
 
 
         updateGui(); // Update GUI once since the timer will wait a defined amount of seconds until it starts
@@ -353,7 +353,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                                     Log.i("### INFO", "EC TIMER EVENT");
                                     Calendar hundred_seconds_old = Calendar.getInstance();
                                     hundred_seconds_old.add(Calendar.SECOND, -20);
-                                    mEcClient.getBusResource(DetectBusService.dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
+                                    mECClient.getBusResource(DetectBusService.dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
                                 }
                             }, 0, EC_UPDATE_TIMER_INTERVAL);
                         }
