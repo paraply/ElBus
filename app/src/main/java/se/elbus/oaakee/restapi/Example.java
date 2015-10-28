@@ -2,6 +2,9 @@ package se.elbus.oaakee.restapi;
 
 import android.util.Log;
 
+import java.util.Calendar;
+import java.util.List;
+
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
@@ -10,10 +13,8 @@ import se.elbus.oaakee.restapi.vtmodel.LocationList;
 import se.elbus.oaakee.restapi.vtmodel.Stop;
 import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
-import java.util.Calendar;
-import java.util.List;
 
-public class Example implements VTCallback, mEcCallback {
+public class Example implements VTCallback, ECCallback {
     VTClient vast;
     ECClient ecity;
 

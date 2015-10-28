@@ -1,142 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_normal"
-                android:paddingStart="@dimen/spacing_normal">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_normal"
+    android:paddingStart="@dimen/spacing_normal">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/countdown_progressbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:fontFamily="@string/font"
+        android:inputType="none"
+        android:singleLine="false"
+        android:text="@string/your_ticket"
+        android:textAllCaps="true"
+        android:textColor="@android:color/black"
+        android:textSize="23sp" />
+
+    <ProgressBar
+        android:id="@+id/countdown_progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignBottom="@+id/button_get_ticket"
+        android:layout_alignEnd="@+id/button_get_ticket"
+        android:layout_alignLeft="@+id/button_get_ticket"
+        android:layout_alignRight="@+id/button_get_ticket"
+        android:layout_alignStart="@+id/button_get_ticket"
+        android:layout_alignTop="@+id/button_get_ticket"
+        android:layout_gravity="center"
+        android:indeterminate="false"
+        android:max="10000"
+        android:progressDrawable="@drawable/countdown_ring" />
+
+
+    <LinearLayout
+        android:id="@+id/timeleft_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/timeleft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/countdown_progressbar"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:fontFamily="@string/font"
+            android:textColor="@android:color/black"
+            android:textSize="90sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/font"
+            android:text="@string/payment_minutes"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="start"
             android:fontFamily="@string/font"
             android:inputType="none"
             android:singleLine="false"
-            android:text="@string/your_ticket"
+            android:text="@string/charge"
             android:textAllCaps="true"
             android:textColor="@android:color/black"
-            android:textSize="23sp"/>
+            android:textSize="13sp" />
 
-    <ProgressBar
-            android:id="@+id/countdown_progressbar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/chargeText"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_alignBottom="@+id/button_get_ticket"
-            android:layout_alignEnd="@+id/button_get_ticket"
-            android:layout_alignLeft="@+id/button_get_ticket"
-            android:layout_alignRight="@+id/button_get_ticket"
-            android:layout_alignStart="@+id/button_get_ticket"
-            android:layout_alignTop="@+id/button_get_ticket"
-            android:layout_gravity="center"
-            android:indeterminate="false"
-            android:max="10000"
-            android:progressDrawable="@drawable/countdown_ring"/>
-
-
-    <LinearLayout
-            android:id="@+id/timeleft_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal"
-            android:visibility="invisible">
-
-        <TextView
-                android:id="@+id/timeleft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@string/font"
-                android:textColor="@android:color/black"
-                android:textSize="90sp"/>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@string/font"
-                android:text="@string/payment_minutes"
-                android:textColor="@android:color/black"
-                android:textSize="30sp"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="false"
-            android:orientation="vertical">
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="start"
-                android:fontFamily="@string/font"
-                android:inputType="none"
-                android:singleLine="false"
-                android:text="@string/charge"
-                android:textAllCaps="true"
-                android:textColor="@android:color/black"
-                android:textSize="13sp"/>
-
-        <TextView
-                android:id="@+id/chargeText"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="start"
-                android:fontFamily="@string/font"
-                android:singleLine="true"
-                android:text="@string/empty_charge"
-                android:textColor="@android:color/black"
-                android:textSize="23sp"/>
+            android:layout_gravity="start"
+            android:fontFamily="@string/font"
+            android:singleLine="true"
+            android:text="@string/empty_charge"
+            android:textColor="@android:color/black"
+            android:textSize="23sp" />
 
     </LinearLayout>
 
     <LinearLayout
-            android:id="@+id/linearLayout3"
+        android:id="@+id/linearLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical">
+
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentRight="true"
-            android:orientation="vertical">
+            android:layout_height="fill_parent"
+            android:layout_gravity="end"
+            android:fontFamily="@string/font"
+            android:text="@string/latest"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="13sp" />
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="end"
-                android:fontFamily="@string/font"
-                android:text="@string/latest"
-                android:textAllCaps="true"
-                android:textColor="@android:color/black"
-                android:textSize="13sp"/>
-
-        <TextView
-                android:id="@+id/ticket_last_gotten"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="end"
-                android:fontFamily="@string/font"
-                android:singleLine="true"
-                android:text="@string/time_never"
-                android:textColor="@android:color/black"
-                android:textSize="23sp"/>
+            android:id="@+id/ticket_last_gotten"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="end"
+            android:fontFamily="@string/font"
+            android:singleLine="true"
+            android:text="@string/time_never"
+            android:textColor="@android:color/black"
+            android:textSize="23sp" />
 
     </LinearLayout>
 
     <ImageButton
-            android:id="@+id/button_get_ticket"
-            android:layout_width="250sp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="true"
-            android:background="@drawable/ticket_button"
-            android:scaleType="center"
-            android:src="@drawable/payment_icon"/>
+        android:id="@+id/button_get_ticket"
+        android:layout_width="250sp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:background="@drawable/ticket_button"
+        android:scaleType="center"
+        android:src="@drawable/payment_icon" />
 
 </RelativeLayout>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="text_status" type="id"/>
-    <item name="buttonScan" type="id"/>
-    <item name="list" type="id"/>
-    <item name="list_value" type="id"/>
-    <item name="chargeText" type="id"/>
+    <item name="text_status" type="id" />
+    <item name="buttonScan" type="id" />
+    <item name="list" type="id" />
+    <item name="list_value" type="id" />
+    <item name="chargeText" type="id" />
 </resources>

@@ -17,10 +17,20 @@ import se.elbus.oaakee.R;
 import se.elbus.oaakee.buses.Buses;
 import se.elbus.oaakee.buses.WifiFinder;
 import se.elbus.oaakee.restapi.ECClient;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import se.elbus.oaakee.R;
+import se.elbus.oaakee.restapi.ECCallback;
 import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
-import se.elbus.oaakee.restapi.mEcCallback;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
@@ -39,7 +49,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class InfoFragment extends Fragment implements VTCallback, mEcCallback {
+
+public class InfoFragment extends Fragment implements VTCallback, ECCallback {
 
     private boolean onBus;
     private String dgwFound;
@@ -63,7 +74,6 @@ public class InfoFragment extends Fragment implements VTCallback, mEcCallback {
     private JourneyDetail journeyDetails;
 
     private boolean use_source_timetable, use_destination_timetable;
-
 
     private static final int VT_UPDATE_TIMER_INTERVAL = 20000; // Update Västtrafik every 20000 ms
     private static final int EC_UPDATE_TIMER_INTERVAL = 10000; // Update Electricity every 10000 ms
@@ -245,6 +255,7 @@ public class InfoFragment extends Fragment implements VTCallback, mEcCallback {
     /**
      * Helper method to show de difference between a [date , time] compared to Vasttrafik server [date , time]
      * We don't want to rely on that the local clock matches the servers, therefore we use the data that is always supplied from Vasttrafik
+     *
      * @return the time difference in minutes.
      */
     private long vtTimeDiff(String date_1, String time_1) {

@@ -2,8 +2,6 @@ package se.elbus.oaakee.restapi;
 
 import android.util.Base64;
 
-import se.elbus.oaakee.restapi.ecmodel.busInfo;
-
 import java.util.Date;
 import java.util.List;
 
@@ -14,15 +12,16 @@ import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Query;
+import se.elbus.oaakee.restapi.ecmodel.busInfo;
 
 public class ECClient {
     private static final String EC_API_URL = "https://ece01.ericsson.net:4443/";
     private final String CREDENTIALS = "grp31:C7CVFDHO48";
     private final String CREDENTIALS_BASE64 = "Basic " + Base64.encodeToString(CREDENTIALS.getBytes(), Base64.NO_WRAP);
-    private mEcCallback ec_callback;
+    private ECCallback ec_callback;
     private mEcApi mEcApi;
 
-    public ECClient(mEcCallback ec_callback) {
+    public ECClient(ECCallback ec_callback) {
         this.ec_callback = ec_callback;
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(EC_API_URL)

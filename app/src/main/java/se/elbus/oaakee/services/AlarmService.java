@@ -13,14 +13,14 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
-import se.elbus.oaakee.MainActivity;
-import se.elbus.oaakee.R;
-import se.elbus.oaakee.restapi.mEcCallback;
-import se.elbus.oaakee.restapi.ECClient;
-import se.elbus.oaakee.restapi.ecmodel.busInfo;
-
 import java.util.Calendar;
 import java.util.List;
+
+import se.elbus.oaakee.MainActivity;
+import se.elbus.oaakee.R;
+import se.elbus.oaakee.restapi.ECClient;
+import se.elbus.oaakee.restapi.ECCallback;
+import se.elbus.oaakee.restapi.ecmodel.busInfo;
 
 /**
  * Service to repeatedly check the next stop for the current bus.
@@ -30,7 +30,7 @@ import java.util.List;
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
 // The activity using the service must have a method equivalent to the newIntent method in this class (for the callback from the notification)
 
-public class AlarmService extends IntentService implements mEcCallback {
+public class AlarmService extends IntentService implements ECCallback {
 
     private static final String TAG = "AlarmService";
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up

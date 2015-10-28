@@ -1,11 +1,6 @@
 package se.elbus.oaakee.restapi;
 
 
-import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
-import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
-import se.elbus.oaakee.restapi.vtmodel.JourneyDetailRef;
-import se.elbus.oaakee.restapi.vtmodel.LocationList;
-
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -13,18 +8,21 @@ import retrofit.client.Response;
 import retrofit.converter.SimpleXMLConverter;
 import retrofit.http.GET;
 import retrofit.http.Query;
+import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetailRef;
+import se.elbus.oaakee.restapi.vtmodel.LocationList;
 
 // ********* EXAMPLE USAGE:
 
 //public class MainActivity extends AppCompatActivity implements VTCallback {
+//public class MainActivity extends AppCompatActivity implements VtCallback {
 //    VTClient vast;
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
 //        vast = new VTClient(this);
-//        vast.get_nearby_stops("57.703834&", "11.966404", "30", "1000");
-//        vast = new VtClient(this);
 //        vast.getNearbyStops("57.703834&", "11.966404", "30", "1000");
 //    }
 //
@@ -70,8 +68,8 @@ public class VTClient {
     private VTCallback VTCallback;
     private VtApi mVtApi;
 
-    public VTClient(VTCallback vt_callback) {
-        this.VTCallback = vt_callback;
+    public VTClient(VTCallback vtCallback) {
+        this.VTCallback = vtCallback;
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(VT_API_URL)
 //                .setLogLevel(RestAdapter.LogLevel.FULL)

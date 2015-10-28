@@ -1,10 +1,10 @@
 package se.elbus.oaakee.restapi;
 
-import se.elbus.oaakee.restapi.ecmodel.busInfo;
-
 import java.util.List;
 
-public interface mEcCallback {
+import se.elbus.oaakee.restapi.ecmodel.busInfo;
+
+public interface ECCallback {
     void handleSensorData(List<busInfo> busInfo);
 
     void handleSensorDataFromAllBuses(List<busInfo> busInfo);
