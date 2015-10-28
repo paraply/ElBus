@@ -100,13 +100,7 @@ public class DestinationFragment extends Fragment implements VTCallback {
 
         mVTClient.getJourneyDetails(mDeparture.journeyDetailRef);
 
-        String white = "#ffffff";
         String backgroundColor = mDeparture.fgColor;
-        mTransportLineName.setTextColor(Color.parseColor(white));
-        Log.i("DEST", "Color white: " + mDeparture.fgColor + ", " + mDeparture.sname);
-        if (mDeparture.fgColor.equals(white)) {
-            backgroundColor = "#DBDBDB"; //grey if background white
-        }
         mTransportLineName.getBackground().setColorFilter(Color.parseColor(backgroundColor), PorterDuff.Mode.MULTIPLY);
 
         mTransportLineDirection.requestFocus(); // Make the line direction scroll if necessary

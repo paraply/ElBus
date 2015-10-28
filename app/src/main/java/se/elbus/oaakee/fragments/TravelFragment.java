@@ -128,6 +128,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         mBusStopList.clear();
         mBusStopList.addAll(stops);
 
+        mDepartureListAdapter.clear();
         for (StopLocation s : mBusStopList) {
             mDepartureListAdapter.add(s.getNameWithoutCity());
         }
@@ -248,7 +249,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     }
 
     /**
-     * Custom adapter for departures ListView. <p/> Created by Tobias on 15-09-27.
+     * Custom adapter for departures ListView.
      */
     public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
         public DeparturesAdapter(Context context, List<List<Departure>> departures) {
@@ -258,11 +259,11 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View customView = layoutInflater.inflate(R.layout.busline_row, parent, false);
+            View v = layoutInflater.inflate(R.layout.busline_row, parent, false);
 
             List<Departure> departures = getItem(position);
 
-            TextView lineNumber = (TextView) customView.findViewById(R.id.busNumberTextView);
+            TextView lineNumber = (TextView) v.findViewById(R.id.busNumberTextView);
 
             if (departures.size() > 0) {
                 lineNumber.setText(departures.get(0).sname);
@@ -275,9 +276,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
                 try {
                     String backgroundColor = (departures.get(0)).fgColor;
-                    if (backgroundColor.equals("#ffffff")) {
-                        backgroundColor = "#DBDBDB";
-                    }
                     circle.setColorFilter(Color.parseColor(backgroundColor), PorterDuff.Mode.MULTIPLY);
                 } catch (IllegalArgumentException e) {
                     Log.e(TAG, "Failed parsing color, set to a default colour");
@@ -311,11 +309,11 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
                     minutesToDeparture = "x"; //shows "x" if something goes wrong...
                 }
 
-                View busLineButtonView = createBusLineButton(customView, layoutInflater, parent, departure.direction, minutesToDeparture, addDivider);
+                View busLineButtonView = createBusLineButton(v, layoutInflater, parent, departure.direction, minutesToDeparture, addDivider);
                 setButtonClick(busLineButtonView, departure);
             }
 
-            return customView;
+            return v;
         }
 
         /**

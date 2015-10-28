@@ -17,6 +17,8 @@
         android:layout_marginRight="@dimen/spacing_normal"
         android:background="@drawable/bus_number_circle"
         android:gravity="center"
+        android:shadowColor="@color/text_color_black"
+        android:shadowRadius="7"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#ffffff"
         android:textSize="26dp" />

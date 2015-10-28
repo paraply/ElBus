@@ -22,6 +22,8 @@
             android:gravity="center_horizontal|center_vertical"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/text_color_white"
+            android:shadowColor="@color/text_color_black"
+            android:shadowRadius="7"
             tools:text="99" />
 
         <TextView
