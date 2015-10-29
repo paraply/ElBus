@@ -25,11 +25,15 @@ import se.elbus.oaakee.restapi.vtmodel.Departure;
 public class TravelFragment extends Fragment implements AdapterView.OnItemSelectedListener, ITravelView {
 
     protected static final String TAG = "Travel";
-    ArrayAdapter<List<Departure>> mDeparturesAdapter;
+    
     private Spinner mBusStops;
+
     private FragmentSwitchCallbacks mFragmentSwitcher;
     private Bundle mSavedState;
+
+    private ArrayAdapter<List<Departure>> mDeparturesAdapter;
     private ArrayAdapter mDepartureListAdapter;
+
     private ITravelPresenter mPresenter;
 
     @Override
