@@ -43,20 +43,24 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
 
     private static final int VT_UPDATE_TIMER_INTERVAL = 20000; // Update Västtrafik every 20000 ms
     private static final int EC_UPDATE_TIMER_INTERVAL = 10000; // Update Electricity every 10000 ms
-    private boolean onBus;
     private String dgwFound;
-    private Timer ec_update_timer;
+    private Timer ecUpdateTimer;
+
     private boolean mOnBus;
     private boolean mHasWifiInfo;
     private boolean mAtDestination;
+
     private Context mContext;
+
     private VTClient mVTClient;
     private ECClient mECClient;
+
     private TextView mTxtFinishedIn;
     private TextView mTxtTimeLeft;
     private TextView mTxtMin;
     private TextView mTxtCenter;
     private Button mBtnStop;
+
     private Timer mVtTimer;
     private Timer mEcTimer;
 
@@ -387,12 +391,12 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                  *  Should also check if bus we think we're on matches the choice made.
                  *  Does not matter for prototype since we only target line 55.
                  */
-                if (!onBus) {
+                if (!mOnBus) {
                     AlarmService.setServiceAlarm(getActivity(), true, dgw, mDestination.name);
-                    onBus = true;
+                    mOnBus = true;
                     dgwFound = dgw;
-                    ec_update_timer = new Timer();
-                    ec_update_timer.schedule(new TimerTask() {
+                    ecUpdateTimer = new Timer();
+                    ecUpdateTimer.schedule(new TimerTask() {
                         @Override
                         public void run() {
                             Log.i("### INFO", "EC TIMER EVENT");
