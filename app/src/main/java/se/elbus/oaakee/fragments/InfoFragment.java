@@ -226,12 +226,9 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
     }
 
     /**
-     * <<<<<<< HEAD Helper method to show de difference between a [date , time] compared to
+     * Helper method to show de difference between a [date , time] compared to
      * Vasttrafik server [date , time] We don't want to rely on that the local clock matches the
-     * servers, therefore we use the data that is always supplied from Vasttrafik ======= Helper
-     * method to show de difference between a [date , time] compared to Vasttrafik server [date ,
-     * time] We don't want to rely on that the local clock matches the servers, therefore we use the
-     * data that is always supplied from Vasttrafik >>>>>>> 6b3d6ae644c1e4cff0ad4ea76256e5c12e96226a
+     * servers, therefore we use the data that is always supplied from Vasttrafik
      *
      * @return the time difference in minutes.
      */
