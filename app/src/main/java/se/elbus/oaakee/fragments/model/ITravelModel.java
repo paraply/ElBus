@@ -1,4 +1,4 @@
-package se.elbus.oaakee.fragments;
+package se.elbus.oaakee.fragments.model;
 
 import android.content.Context;
 

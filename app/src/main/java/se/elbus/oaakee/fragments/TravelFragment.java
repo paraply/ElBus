@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.elbus.oaakee.R;
+import se.elbus.oaakee.fragments.presenter.ITravelPresenter;
+import se.elbus.oaakee.fragments.presenter.TravelPresenterImpl;
 import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
@@ -32,7 +34,6 @@ public class TravelFragment extends Fragment implements VTCallback, AdapterView.
     protected static final String TAG = "Travel";
 
     private Spinner mBusStops;
-    private ListView mDeparturesList;
 
     private ArrayAdapter<String> mDepartureListAdapter;
     private ArrayAdapter<List<Departure>> mDeparturesAdapter;
@@ -69,7 +70,7 @@ public class TravelFragment extends Fragment implements VTCallback, AdapterView.
         mBusStops.setAdapter(mDepartureListAdapter);
 
         mDeparturesAdapter = new DeparturesAdapter(getContext(), mDeparturesSorted, this);
-        mDeparturesList = (ListView) v.findViewById(R.id.departuresListView);
+        ListView mDeparturesList = (ListView) v.findViewById(R.id.departuresListView);
         mDeparturesList.setAdapter(mDeparturesAdapter);
 
         return v;

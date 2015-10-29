@@ -1,4 +1,4 @@
-package se.elbus.oaakee.fragments;
+package se.elbus.oaakee.fragments.model;
 
 import android.content.Context;
 import android.location.Criteria;
@@ -8,6 +8,8 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+
+import se.elbus.oaakee.fragments.presenter.ITravelPresenter;
 
 public class TravelModelImpl implements ITravelModel, LocationListener {
     private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
