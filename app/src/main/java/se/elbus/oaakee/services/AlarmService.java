@@ -13,18 +13,18 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import se.elbus.oaakee.MainActivity;
+import se.elbus.oaakee.R;
+import se.elbus.oaakee.restapi.ECCallback;
+import se.elbus.oaakee.restapi.ECClient;
+import se.elbus.oaakee.restapi.ecmodel.busInfo;
+
 import java.util.Calendar;
 import java.util.List;
 
-import se.elbus.oaakee.MainActivity;
-import se.elbus.oaakee.R;
-import se.elbus.oaakee.restapi.ECClient;
-import se.elbus.oaakee.restapi.ECCallback;
-import se.elbus.oaakee.restapi.ecmodel.busInfo;
-
 /**
- * Service to repeatedly check the next stop for the current bus.
- * Check if stop matches the chosen mDestination. If so, send push notification.
+ * Service to repeatedly check the next stop for the current bus. Check if stop matches the chosen
+ * mDestination. If so, send push notification.
  */
 
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
@@ -78,7 +78,7 @@ public class AlarmService extends IntentService implements ECCallback {
                 .setContentText(getString(R.string.alarm_text))
                 .setContentIntent(pi)
                 .setAutoCancel(true)
-                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                 .build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -128,12 +128,12 @@ public class AlarmService extends IntentService implements ECCallback {
         lastResult = lastResult.replace('Ä', 'A');
         lastResult = lastResult.replace('ö', 'o');
         lastResult = lastResult.replace('Ö', 'O');
-        lastResult = lastResult.substring(0, lastResult.length()-1);
+        lastResult = lastResult.substring(0, lastResult.length() - 1);
         Log.i(TAG, lastResult);
         int id = getResources().getIdentifier(lastResult, "string", getPackageName());
         Log.i(TAG, String.valueOf(id));
         String vtResult = "";
-        if(id!=0) {
+        if (id != 0) {
             vtResult = getString(id);
         }
         Log.i("Result as VT: ", vtResult);

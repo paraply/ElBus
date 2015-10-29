@@ -13,10 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import se.elbus.oaakee.R;
+
 import java.text.DateFormat;
 import java.text.NumberFormat;
-
-import se.elbus.oaakee.R;
 
 public class PaymentFragment extends Fragment {
 

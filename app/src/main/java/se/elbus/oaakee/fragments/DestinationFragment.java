@@ -15,9 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
@@ -27,6 +24,9 @@ import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
 import se.elbus.oaakee.restapi.vtmodel.LocationList;
 import se.elbus.oaakee.restapi.vtmodel.Stop;
 import se.elbus.oaakee.restapi.vtmodel.StopLocation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment for the "Choose destination"-layout

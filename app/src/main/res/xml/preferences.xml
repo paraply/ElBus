@@ -3,10 +3,10 @@
 
     <PreferenceCategory android:title="Notifications">
         <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pushNotifications"
-            android:summary="Get notified"
-            android:title="Push Notifications" />
+                android:defaultValue="true"
+                android:key="pushNotifications"
+                android:summary="Get notified"
+                android:title="Push Notifications"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

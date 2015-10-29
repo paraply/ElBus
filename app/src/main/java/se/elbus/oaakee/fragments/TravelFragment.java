@@ -25,10 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;

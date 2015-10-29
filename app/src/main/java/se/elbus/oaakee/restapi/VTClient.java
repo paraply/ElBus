@@ -1,6 +1,11 @@
 package se.elbus.oaakee.restapi;
 
 
+import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
+import se.elbus.oaakee.restapi.vtmodel.JourneyDetailRef;
+import se.elbus.oaakee.restapi.vtmodel.LocationList;
+
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -8,10 +13,6 @@ import retrofit.client.Response;
 import retrofit.converter.SimpleXMLConverter;
 import retrofit.http.GET;
 import retrofit.http.Query;
-import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
-import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
-import se.elbus.oaakee.restapi.vtmodel.JourneyDetailRef;
-import se.elbus.oaakee.restapi.vtmodel.LocationList;
 
 // ********* EXAMPLE USAGE:
 

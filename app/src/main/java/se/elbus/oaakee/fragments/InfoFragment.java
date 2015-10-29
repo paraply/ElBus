@@ -16,17 +16,6 @@ import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.buses.Buses;
 import se.elbus.oaakee.buses.WifiFinder;
-import se.elbus.oaakee.restapi.ECClient;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
-
-import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.ECCallback;
 import se.elbus.oaakee.restapi.ECClient;
 import se.elbus.oaakee.restapi.VTCallback;
@@ -53,31 +42,11 @@ import java.util.concurrent.TimeUnit;
 
 public class InfoFragment extends Fragment implements VTCallback, ECCallback {
 
-    private boolean onBus;
-    private String dgwFound;
-    private boolean got_bus_info_from_wifi;
-    private boolean arrived_at_destination;
-    private MainActivity parent;
-    private VTClient vt_client;
-    private ECClient ec_client;
-    private TextView textView_above_circle;
-    private TextView textView_counter;
-    private TextView textView_minutes_text;
-    private TextView textView_center_text;
-    private Button stop_circle;
-    private Timer vt_update_timer;
-    private Timer ec_update_timer;
-
-
-    private StopLocation source;
-    private Stop destination;
-    private Departure departure_from_board;
-    private JourneyDetail journeyDetails;
-
-    private boolean use_source_timetable, use_destination_timetable;
-
     private static final int VT_UPDATE_TIMER_INTERVAL = 20000; // Update Västtrafik every 20000 ms
     private static final int EC_UPDATE_TIMER_INTERVAL = 10000; // Update Electricity every 10000 ms
+    private boolean onBus;
+    private String dgwFound;
+    private Timer ec_update_timer;
     private boolean mOnBus;
     private boolean mHasWifiInfo;
     private boolean mAtDestination;
@@ -254,8 +223,9 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
     }
 
     /**
-     * Helper method to show de difference between a [date , time] compared to Vasttrafik server [date , time]
-     * We don't want to rely on that the local clock matches the servers, therefore we use the data that is always supplied from Vasttrafik
+     * Helper method to show de difference between a [date , time] compared to Vasttrafik server
+     * [date , time] We don't want to rely on that the local clock matches the servers, therefore we
+     * use the data that is always supplied from Vasttrafik
      *
      * @return the time difference in minutes.
      */
@@ -415,10 +385,9 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                  *  Should also check if bus we think we're on matches the choice made.
                  *  Does not matter for prototype since we only target line 55.
                  */
-                if(!onBus) {
-                    AlarmService.setServiceAlarm(getActivity(), true, dgw, destination.name);
+                if (!onBus) {
+                    AlarmService.setServiceAlarm(getActivity(), true, dgw, mDestination.name);
                     onBus = true;
-                    got_bus_info_from_wifi = true;
                     dgwFound = dgw;
                     ec_update_timer = new Timer();
                     ec_update_timer.schedule(new TimerTask() {
@@ -427,7 +396,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                             Log.i("### INFO", "EC TIMER EVENT");
                             Calendar hundred_seconds_old = Calendar.getInstance();
                             hundred_seconds_old.add(Calendar.SECOND, -20);
-                            ec_client.getBusResource(dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
+                            mECClient.getBusResource(dgwFound, hundred_seconds_old.getTime(), Calendar.getInstance().getTime(), "Ericsson$Stop_Pressed_Value");
                         }
                     }, 0, EC_UPDATE_TIMER_INTERVAL);
                 }
