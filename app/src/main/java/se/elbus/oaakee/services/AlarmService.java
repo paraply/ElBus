@@ -83,6 +83,7 @@ public class AlarmService extends IntentService implements ECCallback {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(0, notification);
+        stopSelf();
     }
 
     private boolean isNetworkAvailableAndConnected() {

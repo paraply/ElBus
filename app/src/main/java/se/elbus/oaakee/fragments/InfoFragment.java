@@ -350,7 +350,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                     Log.i("### INFO", "TIMER EVENT, Checking Västtrafik API");
 
                     mVTClient.getJourneyDetails(mDeparture.journeyDetailRef);
-
+                    /*
                     //Check DetectBusService to see if we're on the bus
                     if (!mHasWifiInfo) {
                         if (DetectBusService.onBus) {
@@ -369,6 +369,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                             }, 0, EC_UPDATE_TIMER_INTERVAL);
                         }
                     }
+                    */
                 }
             }, 0, VT_UPDATE_TIMER_INTERVAL);
 
