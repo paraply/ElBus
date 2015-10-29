@@ -2,8 +2,6 @@ package se.elbus.oaakee.restapi;
 
 import android.util.Base64;
 
-import se.elbus.oaakee.restapi.ecmodel.busInfo;
-
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +12,7 @@ import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Query;
+import se.elbus.oaakee.restapi.ecmodel.busInfo;
 
 public class ECClient {
     private static final String EC_API_URL = "https://ece01.ericsson.net:4443/";

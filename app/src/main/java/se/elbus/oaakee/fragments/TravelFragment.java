@@ -25,6 +25,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.VTCallback;
 import se.elbus.oaakee.restapi.VTClient;
@@ -33,10 +37,6 @@ import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;
 import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
 import se.elbus.oaakee.restapi.vtmodel.LocationList;
 import se.elbus.oaakee.restapi.vtmodel.StopLocation;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 public class TravelFragment extends Fragment implements VTCallback, LocationListener {
 
