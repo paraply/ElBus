@@ -121,9 +121,6 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     /**
      * This is what changes the action bar when the app drawer is opened.
-     *
-     * @param menu
-     * @return
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,8 +137,6 @@ public class MainActivity extends AppCompatActivity implements HamburgerFragment
 
     /**
      * This is to move to the next fragment in the Travel menu.
-     *
-     * @param args
      */
     @Override
     public void nextFragment(Bundle args) {

@@ -30,15 +30,12 @@ import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
 /**
  * Fragment for the "Choose destination"-layout
- * Created by Tobias on 15-09-30.
  */
 public class DestinationFragment extends Fragment implements VTCallback {
 
-    private ListView mDestinationsListView;
     private ArrayAdapter mDestinationsListAdapter;
-    private VTClient vtClient;
+    private VTClient mVTClient;
 
-    private Departure mDeparture;
     private JourneyDetail mJourneyDetail;
     private StopLocation mStopLocation;
 
@@ -51,7 +48,7 @@ public class DestinationFragment extends Fragment implements VTCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        vtClient = new VTClient(this);
+        mVTClient = new VTClient(this);
     }
 
     @Nullable
@@ -69,7 +66,7 @@ public class DestinationFragment extends Fragment implements VTCallback {
         TextView mTransportFrom = (TextView) v.findViewById(R.id.transportFromStop);
 
         mStopLocation = mSavedInformation.getParcelable("source");
-        mDeparture = mSavedInformation.getParcelable("trip");
+        Departure mDeparture = mSavedInformation.getParcelable("trip");
 
         mTransportLineName.setText(mDeparture.sname);
 
@@ -82,7 +79,7 @@ public class DestinationFragment extends Fragment implements VTCallback {
         // Remove ", [name]"
         mTransportFrom.setText(mStopLocation.name.substring(0, mStopLocation.name.indexOf(",")));
 
-        mDestinationsListView = (ListView) v.findViewById(R.id.destinationsListView);
+        ListView mDestinationsListView = (ListView) v.findViewById(R.id.destinationsListView);
         mDestinationsListAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
         mDestinationsListView.setAdapter(mDestinationsListAdapter);
 
@@ -101,7 +98,7 @@ public class DestinationFragment extends Fragment implements VTCallback {
             }
         });
 
-        vtClient.get_journey_details(mDeparture.journeyDetailRef);
+        mVTClient.getJourneyDetails(mDeparture.journeyDetailRef);
 
         String white = "#ffffff";
         String backgroundColor = mDeparture.fgColor;
@@ -128,11 +125,8 @@ public class DestinationFragment extends Fragment implements VTCallback {
         super.onSaveInstanceState(outState);
     }
 
-    // **************************
-    // VTCallback implementation
-    // **************************
     @Override
-    public void got_journey_details(JourneyDetail journeyDetail) {
+    public void handleJourneyDetails(JourneyDetail journeyDetail) {
         mDestinationsListAdapter.clear();
         mJourneyDetail = journeyDetail;
 
@@ -156,25 +150,28 @@ public class DestinationFragment extends Fragment implements VTCallback {
         }
 
         // Index zero contains the current stop the user is standing on
-        destinations.remove(0);
-        mStops.remove(0);
+
+        if (!destinations.isEmpty()) {
+            destinations.remove(0);
+            mStops.remove(0);
+        }
 
         mDestinationsListAdapter.addAll(destinations);
         mDestinationsListAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void got_nearby_stops(LocationList locationList) {
+    public void handleNearbyStops(LocationList locationList) {
 
     }
 
     @Override
-    public void got_departure_board(DepartureBoard departureBoard) {
+    public void handleDepartureBoard(DepartureBoard departureBoard) {
 
     }
 
     @Override
-    public void got_error(String during_method, String error_msg) {
+    public void handleError(String during_method, String error_msg) {
 
     }
 

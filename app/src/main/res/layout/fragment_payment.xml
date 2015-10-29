@@ -137,6 +137,5 @@
         android:adjustViewBounds="true"
         android:background="@drawable/ticket_button"
         android:scaleType="center"
-        android:src="@drawable/ic_card_travel_black_48dp" />
-
+        android:src="@drawable/payment_icon" />
 </RelativeLayout>

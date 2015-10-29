@@ -43,27 +43,28 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     private static final String TAG = "Travel";
     private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
     private final int LOCATION_ACCURACY = Criteria.ACCURACY_LOW; // "For horizontal and vertical position this corresponds roughly to an accuracy of greater than 500 meters."
+
     double mSimulatorLongitude = 11.972305;
     double mSimulatorLatitude = 57.707792;
     private Spinner mBusStops;
     private ArrayAdapter<String> mBusStopsAdapter;
     private ListView mDeparturesList;
     private ArrayAdapter<String> mDepartureListAdapter;
-    private List<List<Departure>> departuresSorted;
+    private List<List<Departure>> mDeparturesSorted;
     private ArrayAdapter<List<Departure>> mDeparturesAdapter;
-    private VTClient vtClient;
-    private List<StopLocation> busStops; //With removed duplicates
+    private VTClient mVTClient;
+    private List<StopLocation> mBusStopList; //With removed duplicates
 
     private FragmentSwitchCallbacks mFragmentSwitcher;
-    private Bundle savedState;
+    private Bundle mSavedState;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        savedState = new Bundle();
-        departuresSorted = new ArrayList<>();
-        vtClient = new VTClient(this);
+        mSavedState = new Bundle();
+        mDeparturesSorted = new ArrayList<>();
+        mVTClient = new VTClient(this);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         mDepartureListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mDeparturesList = (ListView) v.findViewById(R.id.departuresListView);
-        mDeparturesAdapter = new DeparturesAdapter(getContext(), departuresSorted);
+        mDeparturesAdapter = new DeparturesAdapter(getContext(), mDeparturesSorted);
         mDeparturesList.setAdapter(mDeparturesAdapter);
 
         return v;
@@ -101,10 +102,10 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "Spinner clicked: " + spinner.getSelectedItem().toString() + ", Position: " + position);
 
-                StopLocation source = busStops.get(position);
+                StopLocation source = mBusStopList.get(position);
 
-                savedState.putParcelable("source", source);
-                vtClient.get_departure_board(source.id);
+                mSavedState.putParcelable("source", source);
+                mVTClient.getDepartureBoard(source.id);
             }
 
             @Override
@@ -115,12 +116,11 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     }
 
     /**
-     * This will register this as a listener if it can't find an acceptably old location.
-     * It will call the listener method if it found an "old", acceptable location.
+     * This will register this as a listener if it can't find an acceptably old location. It will
+     * call the listener method if it found an "old", acceptable location.
      *
      * @param maxLocationAgeMillis is the maximum age of the location in milliseconds.
      * @param locationAccuracy     is the acceptable accuracy to have when getting the position.
-     * @throws SecurityException
      */
     private void getLocation(long maxLocationAgeMillis, int locationAccuracy) throws SecurityException {
         Criteria locationCriteria = new Criteria();
@@ -162,12 +162,12 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     }
 
     @Override
-    public void got_journey_details(JourneyDetail journeyDetail) {
+    public void handleJourneyDetails(JourneyDetail journeyDetail) {
 
     }
 
     @Override
-    public void got_nearby_stops(LocationList locationList) {
+    public void handleNearbyStops(LocationList locationList) {
         List<StopLocation> stops1 = new ArrayList<>();
         boolean contains;
 
@@ -189,18 +189,18 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         List<StopLocation> stops = stops1;
 
-        busStops = stops;
+        mBusStopList = stops;
 
-        for (StopLocation s : busStops) {
+        for (StopLocation s : mBusStopList) {
             mDepartureListAdapter.add(s.getNameWithoutCity());
         }
         mBusStops.setAdapter(mDepartureListAdapter);
     }
 
     @Override
-    public void got_departure_board(DepartureBoard board) {
+    public void handleDepartureBoard(DepartureBoard board) {
         List<Departure> allDepartures = board.departure;
-        departuresSorted.clear();
+        mDeparturesSorted.clear();
 
         List<String> shortName = new ArrayList<>(); //list of unique short name sorted by departure time
 
@@ -230,14 +230,14 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
                     }
                 }
             }
-            departuresSorted.add(departures); //Adds list of departures for one single bus line number
+            mDeparturesSorted.add(departures); //Adds list of departures for one single bus line number
         }
 
         mDeparturesAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void got_error(String during_method, String error_msg) {
+    public void handleError(String during_method, String error_msg) {
     }
 
     @Override
@@ -252,7 +252,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     @Override
     public void onLocationChanged(Location location) {
         // TODO: Change location in GUI
-        vtClient.get_nearby_stops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
+        mVTClient.getNearbyStops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
 
     }
 
@@ -272,9 +272,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     }
 
     /**
-     * Custom adapter for departures ListView.
-     * <p/>
-     * Created by Tobias on 15-09-27.
+     * Custom adapter for departures ListView. <p/> Created by Tobias on 15-09-27.
      */
     public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
         public DeparturesAdapter(Context context, List<List<Departure>> departures) {
@@ -330,7 +328,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
                 String minutesToDeparture;
                 try {
-                    long minutes = minutesToDeparture(date, time);
+                    long minutes = getMinutesToDeparture(date, time);
                     minutesToDeparture = "" + minutes;
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -352,7 +350,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
          * @return difference from current time in minutes
          * @throws NumberFormatException If date or time is in wrong format.
          */
-        private long minutesToDeparture(String date, String time) throws NumberFormatException {
+        private long getMinutesToDeparture(String date, String time) throws NumberFormatException {
             int year = Integer.valueOf(date.substring(0, 4));
             int month = Integer.valueOf(date.substring(5, 7));
             int day = Integer.valueOf(date.substring(8, 10));
@@ -372,13 +370,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         /**
          * Created button for bus line departure
-         *
-         * @param parentView
-         * @param layoutInflater
-         * @param parent
-         * @param direction
-         * @param time
-         * @return
          */
         private View createBusLineButton(View parentView, LayoutInflater layoutInflater, ViewGroup parent, String direction, String time, boolean addDivider) {
             View busLineButtonView = layoutInflater.inflate(R.layout.busline_button, parent, false);
@@ -395,7 +386,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
             setTextViewText(R.id.stationTextView, busLineButtonView, direction);
 
             if (time.equals("0")) {
-                time = getString(R.string.NOW);
+                time = getString(R.string.now);
                 TextView minTextView = (TextView) busLineButtonView.findViewById(R.id.minBelowTextView);
                 minTextView.setVisibility(View.GONE);
             }
@@ -407,10 +398,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         /**
          * Sets text of TextView
-         *
-         * @param id
-         * @param parent
-         * @param text
          */
         private void setTextViewText(int id, View parent, String text) {
             TextView textView = (TextView) parent.findViewById(id);
@@ -419,15 +406,13 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
 
         /**
          * Sets button click
-         *
-         * @param view
          */
         private void setButtonClick(final View view, final Departure departure) {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    savedState.putParcelable("trip", departure);
-                    mFragmentSwitcher.nextFragment(savedState);
+                    mSavedState.putParcelable("trip", departure);
+                    mFragmentSwitcher.nextFragment(mSavedState);
                 }
             });
         }
