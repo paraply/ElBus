@@ -8,6 +8,7 @@ import java.util.List;
 
 import se.elbus.oaakee.fragments.ITravelView;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
+import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
 public interface ITravelModel {
     void updateLocation(Context context);
@@ -20,4 +21,6 @@ public interface ITravelModel {
 
 
     ArrayAdapter getBusStopsAdapter(Context context);
+
+    StopLocation getStop(int position);
 }

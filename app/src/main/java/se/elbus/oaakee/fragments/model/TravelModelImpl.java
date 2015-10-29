@@ -34,6 +34,7 @@ public class TravelModelImpl implements ITravelModel, LocationListener, VTCallba
     double mSimulatorLatitude = 57.707792;
 
     private final List<List<Departure>> mDeparturesSorted = new ArrayList<>();
+    private final List<StopLocation> mStopLocations = new ArrayList<>();
     private final List<String> mBusStops = new ArrayList<>();
 
 
@@ -95,6 +96,11 @@ public class TravelModelImpl implements ITravelModel, LocationListener, VTCallba
     }
 
     @Override
+    public StopLocation getStop(int position) {
+        return mStopLocations.get(position);
+    }
+
+    @Override
     public void onLocationChanged(Location location) {
         mPresenter.updateViewLocation(location);
     }
@@ -135,8 +141,8 @@ public class TravelModelImpl implements ITravelModel, LocationListener, VTCallba
                 stops1.add(s);
             }
         }
-
-
+        mStopLocations.clear();
+        mStopLocations.addAll(stops1);
 
         mBusStops.clear();
         for (StopLocation s : stops1) {

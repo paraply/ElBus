@@ -27,4 +27,6 @@ public interface ITravelPresenter {
     void updateViewNearbyStops();
 
     ArrayAdapter getBusStopsAdapter(Context context);
+
+    void updateModelBusStop(int position);
 }

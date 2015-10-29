@@ -73,11 +73,7 @@ public class TravelFragment extends Fragment implements AdapterView.OnItemSelect
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "Spinner clicked: " + mBusStops.getSelectedItem().toString() + ", Position: " + position);
-
-        StopLocation source = mBusStopList.get(position);
-
-        mSavedState.putParcelable("source", source);
-        mPresenter.updateModelDepartures(source.id);
+        mPresenter.updateModelBusStop(position);
     }
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

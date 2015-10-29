@@ -10,6 +10,7 @@ import se.elbus.oaakee.fragments.ITravelView;
 import se.elbus.oaakee.fragments.model.ITravelModel;
 import se.elbus.oaakee.fragments.model.TravelModelImpl;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
+import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
 public class TravelPresenterImpl implements ITravelPresenter {
     private  final ITravelView mView;
@@ -57,6 +58,13 @@ public class TravelPresenterImpl implements ITravelPresenter {
     @Override
     public ArrayAdapter getBusStopsAdapter(Context context) {
         return mModel.getBusStopsAdapter(context);
+    }
+
+    @Override
+    public void updateModelBusStop(int position) {
+        StopLocation newStop = mModel.getStop(position);
+        mView.saveParcelable("source", newStop);
+        mModel.updateDepartures(newStop.id);
     }
 
     @Override
