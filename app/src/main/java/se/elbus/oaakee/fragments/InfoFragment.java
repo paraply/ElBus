@@ -405,10 +405,6 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                 }
             }
         };
-
-        //DetectBusService.setServiceAlarm(getActivity(), true, source.name, destination.name, departure_from_board.time, departure_from_board.name);
-        DetectBusService.setServiceAlarm(getActivity(), true, mSource.name, mDestination.name, mDeparture.time, mDeparture.name);
-
         return view;
     }
 
