@@ -43,20 +43,24 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
 
     private static final int VT_UPDATE_TIMER_INTERVAL = 20000; // Update Västtrafik every 20000 ms
     private static final int EC_UPDATE_TIMER_INTERVAL = 10000; // Update Electricity every 10000 ms
-    private boolean onBus;
     private String dgwFound;
-    private Timer ec_update_timer;
+    private Timer ecUpdateTimer;
+
     private boolean mOnBus;
     private boolean mHasWifiInfo;
     private boolean mAtDestination;
+
     private Context mContext;
+
     private VTClient mVTClient;
     private ECClient mECClient;
+
     private TextView mTxtFinishedIn;
     private TextView mTxtTimeLeft;
     private TextView mTxtMin;
     private TextView mTxtCenter;
     private Button mBtnStop;
+
     private Timer mVtTimer;
     private Timer mEcTimer;
 
@@ -222,12 +226,9 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
     }
 
     /**
-     * <<<<<<< HEAD Helper method to show de difference between a [date , time] compared to
+     * Helper method to show de difference between a [date , time] compared to
      * Vasttrafik server [date , time] We don't want to rely on that the local clock matches the
-     * servers, therefore we use the data that is always supplied from Vasttrafik ======= Helper
-     * method to show de difference between a [date , time] compared to Vasttrafik server [date ,
-     * time] We don't want to rely on that the local clock matches the servers, therefore we use the
-     * data that is always supplied from Vasttrafik >>>>>>> 6b3d6ae644c1e4cff0ad4ea76256e5c12e96226a
+     * servers, therefore we use the data that is always supplied from Vasttrafik
      *
      * @return the time difference in minutes.
      */
@@ -387,12 +388,12 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                  *  Should also check if bus we think we're on matches the choice made.
                  *  Does not matter for prototype since we only target line 55.
                  */
-                if (!onBus) {
+                if (!mOnBus) {
                     AlarmService.setServiceAlarm(getActivity(), true, dgw, mDestination.name);
-                    onBus = true;
+                    mOnBus = true;
                     dgwFound = dgw;
-                    ec_update_timer = new Timer();
-                    ec_update_timer.schedule(new TimerTask() {
+                    ecUpdateTimer = new Timer();
+                    ecUpdateTimer.schedule(new TimerTask() {
                         @Override
                         public void run() {
                             Log.i("### INFO", "EC TIMER EVENT");
@@ -404,10 +405,6 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
                 }
             }
         };
-
-        //DetectBusService.setServiceAlarm(getActivity(), true, source.name, destination.name, departure_from_board.time, departure_from_board.name);
-        DetectBusService.setServiceAlarm(getActivity(), true, mSource.name, mDestination.name, mDeparture.time, mDeparture.name);
-
         return view;
     }
 
