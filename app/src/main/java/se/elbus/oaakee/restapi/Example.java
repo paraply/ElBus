@@ -2,9 +2,6 @@ package se.elbus.oaakee.restapi;
 
 import android.util.Log;
 
-import java.util.Calendar;
-import java.util.List;
-
 import se.elbus.oaakee.restapi.ecmodel.busInfo;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.DepartureBoard;

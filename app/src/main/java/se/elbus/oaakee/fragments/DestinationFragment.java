@@ -150,8 +150,11 @@ public class DestinationFragment extends Fragment implements VTCallback {
         }
 
         // Index zero contains the current stop the user is standing on
-        destinations.remove(0);
-        mStops.remove(0);
+
+        if (!destinations.isEmpty()) {
+            destinations.remove(0);
+            mStops.remove(0);
+        }
 
         mDestinationsListAdapter.addAll(destinations);
         mDestinationsListAdapter.notifyDataSetChanged();

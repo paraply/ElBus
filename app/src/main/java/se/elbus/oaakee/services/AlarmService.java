@@ -24,13 +24,10 @@ import java.util.List;
 
 /**
  * Service to repeatedly check the next stop for the current bus. Check if stop matches the chosen
- * mDestination. If so, send push notification.
-=======
-
-/**
- * Service to repeatedly check the next stop for the current bus.
- * Check if stop matches the chosen mDestination. If so, send push notification.
->>>>>>> 6b3d6ae644c1e4cff0ad4ea76256e5c12e96226a
+ * mDestination. If so, send push notification. =======
+ *
+ * /** Service to repeatedly check the next stop for the current bus. Check if stop matches the
+ * chosen mDestination. If so, send push notification. >>>>>>> 6b3d6ae644c1e4cff0ad4ea76256e5c12e96226a
  */
 
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
