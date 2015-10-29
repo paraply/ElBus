@@ -13,8 +13,9 @@ import se.elbus.oaakee.restapi.vtmodel.Departure;
 import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
 public class TravelPresenterImpl implements ITravelPresenter {
-    private  final ITravelView mView;
+    private final ITravelView mView;
     private final ITravelModel mModel;
+
     public TravelPresenterImpl(ITravelView travelView) {
         mView = travelView;
         mModel = new TravelModelImpl(this);
@@ -31,18 +32,13 @@ public class TravelPresenterImpl implements ITravelPresenter {
     }
 
     @Override
-    public void updateModelDepartures(String lineId) {
-        mModel.updateDepartures(lineId);
-    }
-
-    @Override
     public void updateModelNearbyStops(Location location) {
         mModel.updateStops(location);
     }
 
     @Override
     public ArrayAdapter<List<Departure>> getDeparturesAdapter(Context context, ITravelView view) {
-        return mModel.getDeparturesAdapter(context,view);
+        return mModel.getDeparturesAdapter(context, view);
     }
 
     @Override

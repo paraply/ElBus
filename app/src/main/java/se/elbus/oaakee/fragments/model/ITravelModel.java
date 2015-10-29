@@ -17,7 +17,7 @@ public interface ITravelModel {
 
     void updateStops(Location location);
 
-    ArrayAdapter<List<Departure>> getDeparturesAdapter(Context context,ITravelView view);
+    ArrayAdapter<List<Departure>> getDeparturesAdapter(Context context, ITravelView view);
 
 
     ArrayAdapter getBusStopsAdapter(Context context);

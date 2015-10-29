@@ -21,20 +21,15 @@ import se.elbus.oaakee.R;
 import se.elbus.oaakee.fragments.presenter.ITravelPresenter;
 import se.elbus.oaakee.fragments.presenter.TravelPresenterImpl;
 import se.elbus.oaakee.restapi.vtmodel.Departure;
-import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
 public class TravelFragment extends Fragment implements AdapterView.OnItemSelectedListener, ITravelView {
 
     protected static final String TAG = "Travel";
-
+    ArrayAdapter<List<Departure>> mDeparturesAdapter;
     private Spinner mBusStops;
-
     private FragmentSwitchCallbacks mFragmentSwitcher;
     private Bundle mSavedState;
-
     private ArrayAdapter mDepartureListAdapter;
-    ArrayAdapter<List<Departure>> mDeparturesAdapter;
-
     private ITravelPresenter mPresenter;
 
     @Override
@@ -42,12 +37,14 @@ public class TravelFragment extends Fragment implements AdapterView.OnItemSelect
         super.onAttach(context);
         mFragmentSwitcher = (FragmentSwitchCallbacks) context;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSavedState = new Bundle();
         mPresenter = new TravelPresenterImpl(this);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
@@ -64,6 +61,7 @@ public class TravelFragment extends Fragment implements AdapterView.OnItemSelect
 
         return v;
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -75,6 +73,7 @@ public class TravelFragment extends Fragment implements AdapterView.OnItemSelect
         Log.i(TAG, "Spinner clicked: " + mBusStops.getSelectedItem().toString() + ", Position: " + position);
         mPresenter.updateModelBusStop(position);
     }
+
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         Log.i(TAG, "Spinner nothing selected");
@@ -82,7 +81,7 @@ public class TravelFragment extends Fragment implements AdapterView.OnItemSelect
 
     @Override
     public void saveParcelable(String key, Parcelable parcelable) {
-        mSavedState.putParcelable(key,parcelable);
+        mSavedState.putParcelable(key, parcelable);
     }
 
     @Override

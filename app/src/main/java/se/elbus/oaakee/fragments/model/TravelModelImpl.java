@@ -29,16 +29,13 @@ public class TravelModelImpl implements ITravelModel, LocationListener, VTCallba
     private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
     private final int LOCATION_ACCURACY = Criteria.ACCURACY_LOW; // "For horizontal and vertical position this corresponds roughly to an accuracy of greater than 500 meters."
     private final VTClient mVTClient;
-
-    double mSimulatorLongitude = 11.972305;
-    double mSimulatorLatitude = 57.707792;
-
     private final List<List<Departure>> mDeparturesSorted = new ArrayList<>();
     private final List<StopLocation> mStopLocations = new ArrayList<>();
     private final List<String> mBusStops = new ArrayList<>();
-
-
     private final ITravelPresenter mPresenter;
+    double mSimulatorLongitude = 11.972305;
+    double mSimulatorLatitude = 57.707792;
+
     public TravelModelImpl(ITravelPresenter travelPresenter) {
         mPresenter = travelPresenter;
         mVTClient = new VTClient(this);
@@ -104,14 +101,17 @@ public class TravelModelImpl implements ITravelModel, LocationListener, VTCallba
     public void onLocationChanged(Location location) {
         mPresenter.updateViewLocation(location);
     }
+
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
+
     @Override
     public void onProviderEnabled(String provider) {
 
     }
+
     @Override
     public void onProviderDisabled(String provider) {
 
@@ -121,6 +121,7 @@ public class TravelModelImpl implements ITravelModel, LocationListener, VTCallba
     public void handleJourneyDetails(JourneyDetail journeyDetail) {
 
     }
+
     @Override
     public void handleNearbyStops(LocationList locationList) {
         List<StopLocation> stops1 = new ArrayList<>();
@@ -150,6 +151,7 @@ public class TravelModelImpl implements ITravelModel, LocationListener, VTCallba
         }
         mPresenter.updateViewNearbyStops();
     }
+
     @Override
     public void handleDepartureBoard(DepartureBoard board) {
         List<Departure> allDepartures = board.departure;
@@ -187,6 +189,7 @@ public class TravelModelImpl implements ITravelModel, LocationListener, VTCallba
         }
         mPresenter.updateViewDepartures();
     }
+
     @Override
     public void handleError(String during_method, String error_msg) {
     }

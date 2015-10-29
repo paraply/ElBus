@@ -20,10 +20,10 @@
             android:layout_height="44dp"
             android:background="@drawable/bus_number_circle"
             android:gravity="center_horizontal|center_vertical"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/text_color_white"
             android:shadowColor="@color/text_color_black"
             android:shadowRadius="7"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/text_color_white"
             tools:text="99" />
 
         <TextView

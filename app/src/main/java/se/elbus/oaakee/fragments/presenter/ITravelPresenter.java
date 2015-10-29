@@ -2,7 +2,6 @@ package se.elbus.oaakee.fragments.presenter;
 
 import android.content.Context;
 import android.location.Location;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import java.util.List;
@@ -12,11 +11,10 @@ import se.elbus.oaakee.restapi.vtmodel.Departure;
 
 public interface ITravelPresenter {
     void updateModelLocation(Context context);
+
     void updateViewLocation(Location location);
 
     void warnGPSOff();
-
-    void updateModelDepartures(String lineId);
 
     void updateModelNearbyStops(Location location);
 
