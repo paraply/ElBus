@@ -16,7 +16,6 @@ import retrofit.http.Query;
 
 // ********* EXAMPLE USAGE:
 
-//public class MainActivity extends AppCompatActivity implements VTCallback {
 //public class MainActivity extends AppCompatActivity implements VtCallback {
 //    VTClient vast;
 //    @Override
@@ -83,7 +82,7 @@ public class VTClient {
 //     Given a station ID returns all departures from that station
 //
 //     Example usage:
-//          VTClient vast = new VTClient();
+//          VtClient vast = new VtClient();
 //          vast.get_station_board("9021014031336000");
 
     public void getDepartureBoard(String stop_id) {

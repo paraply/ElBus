@@ -13,6 +13,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import se.elbus.oaakee.MainActivity;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.buses.Buses;
 import se.elbus.oaakee.buses.WifiFinder;
@@ -223,9 +232,14 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
     }
 
     /**
+<<<<<<< HEAD
      * Helper method to show de difference between a [date , time] compared to Vasttrafik server
      * [date , time] We don't want to rely on that the local clock matches the servers, therefore we
      * use the data that is always supplied from Vasttrafik
+=======
+     * Helper method to show de difference between a [date , time] compared to Vasttrafik server [date , time]
+     * We don't want to rely on that the local clock matches the servers, therefore we use the data that is always supplied from Vasttrafik
+>>>>>>> 6b3d6ae644c1e4cff0ad4ea76256e5c12e96226a
      *
      * @return the time difference in minutes.
      */
