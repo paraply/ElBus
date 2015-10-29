@@ -1,13 +1,8 @@
 package se.elbus.oaakee.fragments;
 
 import android.content.Context;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -32,14 +27,9 @@ import se.elbus.oaakee.restapi.vtmodel.JourneyDetail;
 import se.elbus.oaakee.restapi.vtmodel.LocationList;
 import se.elbus.oaakee.restapi.vtmodel.StopLocation;
 
-public class TravelFragment extends Fragment implements VTCallback, LocationListener, AdapterView.OnItemSelectedListener, ITravelView {
+public class TravelFragment extends Fragment implements VTCallback, AdapterView.OnItemSelectedListener, ITravelView {
 
     protected static final String TAG = "Travel";
-    private final long LATEST_LOCATION_TIME_MILLIS = 1 * 60 * 1000;
-    private final int LOCATION_ACCURACY = Criteria.ACCURACY_LOW; // "For horizontal and vertical position this corresponds roughly to an accuracy of greater than 500 meters."
-
-    double mSimulatorLongitude = 11.972305;
-    double mSimulatorLatitude = 57.707792;
 
     private Spinner mBusStops;
     private ListView mDeparturesList;
@@ -54,6 +44,8 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     private FragmentSwitchCallbacks mFragmentSwitcher;
     private Bundle mSavedState;
 
+    private ITravelPresenter mPresenter;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -64,10 +56,10 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
         super.onCreate(savedInstanceState);
         mSavedState = new Bundle();
         mVTClient = new VTClient(this);
+        mPresenter = new TravelPresenterImpl(this);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
 
         mDepartureListAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item);
@@ -85,12 +77,7 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     @Override
     public void onStart() {
         super.onStart();
-
-        try {
-            getLocation(LATEST_LOCATION_TIME_MILLIS, LOCATION_ACCURACY);
-        } catch (SecurityException e) {
-            Log.e(TAG, e.getLocalizedMessage());
-        }
+        mPresenter.updateModelLocation(getContext());
     }
 
     @Override
@@ -186,64 +173,6 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        // TODO: Change location in GUI
-        mVTClient.getNearbyStops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
-
-    }
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-    /**
-     * This will register this as a listener if it can't find an acceptably old location. It will
-     * call the listener method if it found an "old", acceptable location.
-     *
-     * @param maxLocationAgeMillis is the maximum age of the location in milliseconds.
-     * @param locationAccuracy     is the acceptable accuracy to have when getting the position.
-     */
-    private void getLocation(long maxLocationAgeMillis, int locationAccuracy) throws SecurityException {
-        Criteria locationCriteria = new Criteria();
-        locationCriteria.setAccuracy(locationAccuracy);
-
-        LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        String bestProvider = manager.getBestProvider(locationCriteria, false);
-        Location fastLocation;
-        if (Build.FINGERPRINT.startsWith("generic")) {
-            fastLocation = new Location(bestProvider);
-            fastLocation.setLatitude(mSimulatorLatitude);
-            fastLocation.setLongitude(mSimulatorLongitude);
-            fastLocation.setTime(System.currentTimeMillis());
-        } else {
-            fastLocation = manager.getLastKnownLocation(bestProvider);
-        }
-
-        /*
-         If a long time has passed since the last scan.
-         */
-        if (fastLocation == null || fastLocation.getTime() + maxLocationAgeMillis < System.currentTimeMillis()) {
-            if (!manager.isProviderEnabled(bestProvider)) {
-                warnGpsOff();
-            }
-            manager.requestSingleUpdate(locationCriteria, this, Looper.myLooper());
-        } else {
-            onLocationChanged(fastLocation);
-        }
-    }
-    private void warnGpsOff() {
-        // TODO: Send warning to user, the GPS is off and the location might be bad.
-        Toast.makeText(getContext(), R.string.gps_off_warning_text, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void saveParcelable(String key, Parcelable parcelable) {
         mSavedState.putParcelable(key,parcelable);
     }
@@ -251,5 +180,15 @@ public class TravelFragment extends Fragment implements VTCallback, LocationList
     @Override
     public void nextFragment() {
         mFragmentSwitcher.nextFragment(mSavedState);
+    }
+
+    @Override
+    public void warnGPSOff() {
+        Toast.makeText(getContext(), R.string.gps_off_warning_text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void updateLocation(Location location) {
+        mVTClient.getNearbyStops(location.getLatitude() + "", location.getLongitude() + "", "30", "1000");
     }
 }
