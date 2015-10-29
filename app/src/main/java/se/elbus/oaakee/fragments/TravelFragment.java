@@ -32,7 +32,7 @@ public class TravelFragment extends Fragment implements AdapterView.OnItemSelect
     private Bundle mSavedState;
 
     private ArrayAdapter<List<Departure>> mDeparturesAdapter;
-    private ArrayAdapter mDepartureListAdapter;
+    private ArrayAdapter mBusStopsAdapter;
 
     private ITravelPresenter mPresenter;
 
@@ -53,15 +53,15 @@ public class TravelFragment extends Fragment implements AdapterView.OnItemSelect
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_travel, container, false); // Main view.
 
-        mDepartureListAdapter = mPresenter.getBusStopsAdapter(getContext());
-        mDepartureListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBusStopsAdapter = mPresenter.getBusStopsAdapter(getContext());
+        mBusStopsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mBusStops = (Spinner) v.findViewById(R.id.busStopSpinner);
         mBusStops.setOnItemSelectedListener(this);
-        mBusStops.setAdapter(mDepartureListAdapter);
+        mBusStops.setAdapter(mBusStopsAdapter);
 
         mDeparturesAdapter = mPresenter.getDeparturesAdapter(getContext(), this);
-        ListView mDeparturesList = (ListView) v.findViewById(R.id.departuresListView);
-        mDeparturesList.setAdapter(mDeparturesAdapter);
+        ListView mDepartures = (ListView) v.findViewById(R.id.departuresListView);
+        mDepartures.setAdapter(mDeparturesAdapter);
 
         return v;
     }
@@ -110,6 +110,6 @@ public class TravelFragment extends Fragment implements AdapterView.OnItemSelect
 
     @Override
     public void updateNearbyStops() {
-        mDepartureListAdapter.notifyDataSetChanged();
+        mBusStopsAdapter.notifyDataSetChanged();
     }
 }
