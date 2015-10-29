@@ -20,13 +20,11 @@ import se.elbus.oaakee.MainActivity;
 import se.elbus.oaakee.R;
 import se.elbus.oaakee.restapi.ECCallback;
 import se.elbus.oaakee.restapi.ECClient;
-import se.elbus.oaakee.restapi.ecmodel.Bus_info;
+import se.elbus.oaakee.restapi.ecmodel.busInfo;
 
 /**
- * Created by Anton on 2015-09-30.
- * Service to repeatedly check the next stop for the current bus.
- * Check if stop matches the chosen destination.
- * If so, send push notification.
+ * Service to repeatedly check the next stop for the current bus. Check if stop matches the chosen
+ * mDestination. If so, send push notification.
  */
 
 // To start, use AlarmService.setServiceAlarm(getActivity(), true);
@@ -37,8 +35,8 @@ public class AlarmService extends IntentService implements ECCallback {
     private static final String TAG = "AlarmService";
     //Minimum interval from 5.1 is 60 seconds, this will be rounded up
     private static final int POLL_INTERVAL = 1000 * 30;
-    private static String busID = "Ericsson$Vin_Num_001";
-    private static String destination = "Lindholmen";
+    private static String mBusID = "Ericsson$Vin_Num_001";
+    private static String mDestination = "Lindholmen";
     ECClient client = new ECClient(this);
 
     public AlarmService() {
@@ -63,24 +61,24 @@ public class AlarmService extends IntentService implements ECCallback {
             pi.cancel();
         }
 
-        busID = bus;
-        destination = dest;
+        mBusID = bus;
+        mDestination = dest;
     }
 
-    private void SendNotification() {
+    private void sendNotification() {
         Resources resources = getResources();
         Intent i = MainActivity.newIntent(this);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
         //Strings should be in resources, not hardcoded
         Notification notification = new NotificationCompat.Builder(this)
-                .setTicker(getString(R.string.AlarmTicker))
+                .setTicker(getString(R.string.alarm_ticker))
                 .setSmallIcon(android.R.drawable.ic_menu_report_image)
-                .setContentTitle(getString(R.string.AlarmTitle))
-                .setContentText(getString(R.string.AlarmText))
+                .setContentTitle(getString(R.string.alarm_title))
+                .setContentText(getString(R.string.alarm_text))
                 .setContentIntent(pi)
                 .setAutoCancel(true)
-                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                 .build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -102,23 +100,27 @@ public class AlarmService extends IntentService implements ECCallback {
             return;
         }
 
-        Log.i(TAG, "AlarmService intent received for " + destination);
+        Log.i(TAG, "AlarmService intent received for " + mDestination);
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MILLISECOND, -POLL_INTERVAL);
 
-        client.get_bus_sensor(busID, calendar.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
+        client.getBusSensor(mBusID, calendar.getTime(), Calendar.getInstance().getTime(), "Ericsson$Next_Stop");
     }
 
     @Override
-    public void got_sensor_data(List<Bus_info> bus_info) {
-        if (bus_info == null) return;
+    public void handleSensorData(List<busInfo> busInfo) {
+        if (busInfo == null) return;
 
-        for (Bus_info b : bus_info) {
+        if (busInfo.get(busInfo.size() - 1).value.equals(mDestination)) {
+            sendNotification();
+        }
+
+        for (busInfo b : busInfo) {
             Log.i("### SENSOR RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
 
-        String lastResult = bus_info.get(bus_info.size() - 1).value;
+        String lastResult = busInfo.get(busInfo.size() - 1).value;
         lastResult = lastResult.replace(' ', '_');
         lastResult = lastResult.replace('å', 'a');
         lastResult = lastResult.replace('Å', 'A');
@@ -126,47 +128,47 @@ public class AlarmService extends IntentService implements ECCallback {
         lastResult = lastResult.replace('Ä', 'A');
         lastResult = lastResult.replace('ö', 'o');
         lastResult = lastResult.replace('Ö', 'O');
-        lastResult = lastResult.substring(0, lastResult.length()-1);
+        lastResult = lastResult.substring(0, lastResult.length() - 1);
         Log.i(TAG, lastResult);
         int id = getResources().getIdentifier(lastResult, "string", getPackageName());
         Log.i(TAG, String.valueOf(id));
         String vtResult = "";
-        if(id!=0) {
+        if (id != 0) {
             vtResult = getString(id);
         }
         Log.i("Result as VT: ", vtResult);
 
-        if (vtResult.equals(destination)) {
-            SendNotification();
+        if (vtResult.equals(mDestination)) {
+            sendNotification();
         }
     }
 
     @Override
-    public void got_sensor_data_from_all_buses(List<Bus_info> bus_info) {
-        if (bus_info == null) return;
-        for (Bus_info b : bus_info) {
+    public void handleSensorDataFromAllBuses(List<busInfo> busInfo) {
+        if (busInfo == null) return;
+        for (busInfo b : busInfo) {
             Log.i("### SENSOR RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_reource_data(List<Bus_info> bus_info) {
-        if (bus_info == null) return;
-        for (Bus_info b : bus_info) {
+    public void handleResourceData(List<busInfo> busInfo) {
+        if (busInfo == null) return;
+        for (busInfo b : busInfo) {
             Log.i("### RSRC RESULT", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_reource_data_from_all_buses(List<Bus_info> bus_info) {
-        if (bus_info == null) return;
-        for (Bus_info b : bus_info) {
+    public void handleResourceDataFromAllBuses(List<busInfo> busInfo) {
+        if (busInfo == null) return;
+        for (busInfo b : busInfo) {
             Log.i("### RSRC RESULT ALL", "BUS ID:" + b.gatewayId + " RESOURCE:" + b.resourceSpec + " VALUE:" + b.value + " TIME:" + b.timestamp);
         }
     }
 
     @Override
-    public void got_error(String during_method, String error_msg) {
+    public void handleError(String during_method, String error_msg) {
         Log.i("### ERR", "during: " + during_method + "-" + error_msg);
     }
 }

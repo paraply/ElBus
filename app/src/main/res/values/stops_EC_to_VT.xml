@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name = "Alandsgatan">Ålandsgatan, Göteborg</string>
-    <string name = "Chalmersplatsen">Chalmersplatsen, Göteborg</string>
-    <string name = "Sven_Hultins_Pl.">Sven Hultins Plats, Göteborg</string>
-    <string name = "Chalmers_Tvarg">Chalmers Tvärgata, Göteborg</string>
-    <string name = "Kapellplatsen">Kapellplatsen, Göteborg</string>
-    <string name = "Gotaplatsen">Götaplatsen, Göteborg</string>
-    <string name = "Valand">Valand, Göteborg</string>
-    <string name = "Kungsportspl">Kungsportsplatsen, Göteborg</string>
-    <string name = "Brunnsparken">Brunnsparken, Göteborg</string>
-    <string name = "Lilla_Bommen">Lilla Bommen, Göteborg</string>
-    <string name = "Frihamnsporten">Frihamnsporten, Göteborg</string>
-    <string name = "Pumpgatan">Pumpgatan, Göteborg</string>
-    <string name = "Regnbagsgatan">Regnbågsgatan, Göteborg</string>
-    <string name = "Lindholmen">Lindholmen, Göteborg</string>
-    <string name = "Teknikgatan">Teknikgatan, Göteborg</string>
-    <string name = "Lindholmsplatsen">Lindholmsplatsen, Göteborg</string>
+    <string name="Alandsgatan">Ålandsgatan, Göteborg</string>
+    <string name="Chalmersplatsen">Chalmersplatsen, Göteborg</string>
+    <string name="Sven_Hultins_Pl.">Sven Hultins Plats, Göteborg</string>
+    <string name="Chalmers_Tvarg">Chalmers Tvärgata, Göteborg</string>
+    <string name="Kapellplatsen">Kapellplatsen, Göteborg</string>
+    <string name="Gotaplatsen">Götaplatsen, Göteborg</string>
+    <string name="Valand">Valand, Göteborg</string>
+    <string name="Kungsportspl">Kungsportsplatsen, Göteborg</string>
+    <string name="Brunnsparken">Brunnsparken, Göteborg</string>
+    <string name="Lilla_Bommen">Lilla Bommen, Göteborg</string>
+    <string name="Frihamnsporten">Frihamnsporten, Göteborg</string>
+    <string name="Pumpgatan">Pumpgatan, Göteborg</string>
+    <string name="Regnbagsgatan">Regnbågsgatan, Göteborg</string>
+    <string name="Lindholmen">Lindholmen, Göteborg</string>
+    <string name="Teknikgatan">Teknikgatan, Göteborg</string>
+    <string name="Lindholmsplatsen">Lindholmsplatsen, Göteborg</string>
 </resources>

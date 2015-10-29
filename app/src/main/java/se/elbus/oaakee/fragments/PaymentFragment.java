@@ -18,10 +18,6 @@ import java.text.NumberFormat;
 
 import se.elbus.oaakee.R;
 
-
-/**
- * Created by TH on 2015-10-05.
- */
 public class PaymentFragment extends Fragment {
 
     private final long TICKET_TIME = 125000; // 2 minutes and 5 seconds.

@@ -7,8 +7,6 @@ import se.elbus.oaakee.R;
 
 /**
  * Fragment to for Settings.
- * <p/>
- * Created by Tobias on 2015-10-02.
  */
 public class SettingsFragment extends PreferenceFragmentCompat {
 
