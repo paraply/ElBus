@@ -378,7 +378,7 @@ public class InfoFragment extends Fragment implements VTCallback, ECCallback {
         Log.i("### WIFI", "Checking wifi now");
         //Check wififinder for connection
         Buses.initBuses(getActivity());
-        WifiFinder wifiFinder = new WifiFinder(getActivity(), "ElBus") {
+        WifiFinder wifiFinder = new WifiFinder(getActivity(), getString(R.string.wifi_name)) {
             @Override
             // Found an Dgw close to us. We assume we are on this bus
             public void receiveDgw(String dgw) {
