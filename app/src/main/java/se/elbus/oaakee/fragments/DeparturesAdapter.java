@@ -24,7 +24,7 @@ import se.elbus.oaakee.restapi.vtmodel.Departure;
 public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
     private ITravelView mView;
 
-    public DeparturesAdapter(Context context, List<List<Departure>> departures, TravelFragment travelFragment) {
+    public DeparturesAdapter(Context context, List<List<Departure>> departures, ITravelView travelFragment) {
         super(context, R.layout.busline_row, departures);
         this.mView = travelFragment;
     }
@@ -158,7 +158,7 @@ public class DeparturesAdapter extends ArrayAdapter<List<Departure>> {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mView.saveParcelable("trip",departure);
+                mView.saveParcelable("trip", departure);
                 mView.nextFragment();
             }
         });

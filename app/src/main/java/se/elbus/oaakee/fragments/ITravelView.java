@@ -11,4 +11,8 @@ public interface ITravelView {
     void warnGPSOff();
 
     void updateLocation(Location location);
+
+    void updateDepartures();
+
+    void updateNearbyStops();
 }
